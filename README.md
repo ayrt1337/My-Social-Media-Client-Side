@@ -1,12 +1,23 @@
-# React + Vite
+# Em desenvolvimento
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Para a finalização deste projeto ainda é necessário a implementação de uma interface responsiva.
 
-Currently, two official plugins are available:
+# Considerações iniciais
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Este projeto se consiste na criação de uma rede social, onde é possível interagir por meio de postagens e comentários, além também de outras funcionalidades.
 
-## Expanding the ESLint configuration
+Para a construção do Client-Side foi utilizado React + Vite + Tailwind
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+# Como iniciar a aplicação
+
+## Instale as dependências do projeto
+
+Abra o terminal e insira "npm install"
+
+## Inicie a front-end
+
+Ainda no terminal insira "npm run dev"
+
+Abra seu navegador e vá para o endereço "http://localhost:5173/register"
+
+Pronto! Agora o front-end da aplicação está funcionando, porém para a utilização completa da aplicação também é necessário a inicialização do Server-Side, para isso acesse este repositório: https://github.com/ayrt1337/My-Social-Media-Server-Side
