@@ -20,4 +20,4 @@ Ainda no terminal insira "npm run dev"
 
 Abra seu navegador e vá para o endereço "http://localhost:5173/register"
 
-Pronto! Agora o front-end da aplicação está funcionando, porém para a utilização completa da aplicação também é necessário a inicialização do Server-Side, para isso acesse este repositório: https://github.com/ayrt1337/My-Social-Media-Server-Side
+Pronto! Agora o front-end da aplicação está funcionando, porém para a utilização completa do sistema também é necessário a inicialização do Server-Side, para isso acesse este repositório: https://github.com/ayrt1337/My-Social-Media-Server-Side
