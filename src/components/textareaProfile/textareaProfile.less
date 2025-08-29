@@ -1,0 +1,115 @@
+@mentionsPrefixCls: profile;
+
+.@{mentionsPrefixCls} {
+  display: inline-block;
+  position: relative;
+  white-space: pre-wrap;
+
+  // ================= Input Area =================
+  > textarea, &-measure {
+    font-size: inherit;
+    font-size-adjust: inherit;
+    font-style: inherit;
+    font-variant: inherit;
+    font-stretch: inherit;
+    font-weight: inherit;
+    font-family: inherit;
+
+    padding: 0;
+    margin: 0;
+    line-height: inherit;
+    vertical-align: top;
+    overflow: inherit;
+    word-break: inherit;
+    white-space: inherit;
+    word-wrap: break-word;
+    overflow-x: initial;
+    overflow-y: auto;
+    text-align: inherit;
+    letter-spacing: inherit;
+    white-space: inherit;
+    tab-size: inherit;
+    direction: inherit;
+  }
+
+  > textarea {
+    outline: none;
+    resize: none;
+    border: solid 2px transparent;
+    border-top: none;
+    width: 100%;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    padding: 0px 15px 12px 15px;
+    font-size: 16px;
+    height: 100px;
+  }
+
+  > textarea:focus {
+    outline: none;
+    resize: none;
+    border: solid 2px #660eb3;
+    border-top: none;
+    width: 100%;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+  }
+
+  &-measure {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    pointer-events: none;
+    // color: rgba(255, 0, 0, 0.3);
+    color: transparent;
+    z-index: -1;
+  }
+
+  // ================== Dropdown ==================
+  &-dropdown {
+    &-menu {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+
+      &-item {
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+// Customize style
+.@{mentionsPrefixCls} {
+  font-size: 16px;
+  overflow: hidden;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+  height: 100px;
+
+  &-dropdown {
+    border: 1px solid #999;
+    border-radius: 3px;
+    background: #FFF;
+    margin: 12px 12px 8px 15px;
+    font-size: 16px;
+
+    &-menu {
+      &-item {
+        padding: 4px 8px;
+
+        &-active {
+          background: #e6f7ff;
+        }
+
+        &-disabled {
+          opacity: 0.5;
+        }
+      }
+    }
+  }
+}
