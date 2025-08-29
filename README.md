@@ -1,10 +1,10 @@
 # Em desenvolvimento
 
-Para a finalização deste projeto ainda é necessário a implementação de uma interface responsiva.
+Para a finalização deste projeto ainda é necessário a implementação de uma interface responsiva
 
 # Considerações iniciais
 
-Este projeto se consiste na criação de uma rede social, onde é possível interagir por meio de postagens e comentários, além também de outras funcionalidades.
+Este projeto se consiste na criação de uma rede social, onde é possível interagir por meio de postagens e comentários, além também de outras funcionalidades
 
 Para a construção do Client-Side foi utilizado React + Vite + Tailwind
 
