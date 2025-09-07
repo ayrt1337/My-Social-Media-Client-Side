@@ -39,7 +39,7 @@ const Home = () => {
 
                     if (output.img != null) setImg(output.img)
 
-                    if(output.notifications != undefined) setUnreadMessages(output.notifications)
+                    if (output.notifications != undefined) setUnreadMessages(output.notifications)
                 }
             }
 
@@ -125,10 +125,22 @@ const Home = () => {
                                 </div>
                             </div>
 
-                            {
-                                posts.map((element, index) => {
-                                    return <Posts key={index} post={element} />
-                                })
+                            {posts.length == 0 &&
+                                <div className="flex flex-col items-center h-full justify-center mt-10">
+                                    <div className="animate-spin inline-block size-10 border-5 border-current border-t-transparent text-[#660eb3] rounded-full dark:text-[#660eb3]" role="status" aria-label="loading">
+                                        <span className="sr-only">Loading...</span>
+                                    </div>
+                                </div>
+                            }
+
+                            {posts.length > 0 &&
+                                <>
+                                    {
+                                        posts.map((element, index) => {
+                                            return <Posts key={index} post={element} />
+                                        })
+                                    }
+                                </>
                             }
                         </div>
                     </div>

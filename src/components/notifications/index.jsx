@@ -9,6 +9,7 @@ const Notifications = () => {
     const [user, setUser] = useState('')
     const [img, setImg] = useState(ImageProfile)
     const [notifications, setNotifications] = useState([])
+    const [notFound, setNotFound] = useState(false)
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -61,6 +62,8 @@ const Notifications = () => {
                 const output = await result.json()
 
                 setNotifications(output.notifications)
+
+                if(output.notifications.length == 0) setNotFound(true)
             }
             getData()
         }
@@ -119,7 +122,15 @@ const Notifications = () => {
                                 })
                             }
 
-                            {notifications.length == 0 &&
+                            {(notifications.length == 0 && notFound == false) &&
+                                <div className="flex flex-col items-center h-full justify-center mt-10">
+                                    <div className="animate-spin inline-block size-10 border-5 border-current border-t-transparent text-[#660eb3] rounded-full dark:text-[#660eb3]" role="status" aria-label="loading">
+                                        <span className="sr-only">Loading...</span>
+                                    </div>
+                                </div>
+                            }
+
+                            {(notifications.length == 0 && notFound == true) &&
                                 <h1 className="font-semibold text-[25px] text-center mt-12">Não há notificações</h1>
                             }
                         </div>
