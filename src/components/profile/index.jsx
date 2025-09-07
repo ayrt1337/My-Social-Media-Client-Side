@@ -40,11 +40,10 @@ const Profile = () => {
     var inputFollowers = useRef(null)
     var inputFollowing = useRef(null)
     const [view, setView] = useState('posts')
-    const [posts, setPosts] = useState([])
-    const [comments, setComments] = useState([])
-    const [replies, setReplies] = useState([])
-    const [likes, setLikes] = useState([])
-    const [id, setId] = useState(null)
+    const [posts, setPosts] = useState(null)
+    const [comments, setComments] = useState(null)
+    const [replies, setReplies] = useState(null)
+    const [likes, setLikes] = useState(null)
     const [userId, setUserId] = useState(null)
     const [requestedUser, setRequestedUser] = useState(null)
     const [unreadMessages, setUnreadMessages] = useState(null)
@@ -54,6 +53,8 @@ const Profile = () => {
     const location = useLocation()
 
     useEffect(() => {
+        setShowLoading(true)
+        
         const getSession = async () => {
             const result = await fetch('http://localhost:3000/session', {
                 method: 'GET',
@@ -73,11 +74,10 @@ const Profile = () => {
 
                 else {
                     setUserName(output.user)
-                    setId(output._id)
 
                     if (output.img != null) setMyImg(output.img)
 
-                    if(output.notifications != undefined) setUnreadMessages(output.notifications)
+                    if (output.notifications != undefined) setUnreadMessages(output.notifications)
                 }
             }
 
@@ -88,17 +88,17 @@ const Profile = () => {
         }
 
         getSession()
-    }, [])
+    }, [location.pathname])
 
     useEffect(() => {
         setImg(ImageProfile)
-        setPosts([])
-        setComments([])
-        setReplies([])
-        setLikes([])
+        setPosts(null)
+        setComments(null)
+        setReplies(null)
+        setLikes(null)
         setView('posts')
 
-        if (id != null) {
+        if (userName != '') {
             const getUserData = async () => {
                 const result = await fetch(`http://localhost:3000/getUserData`, {
                     method: 'POST',
@@ -125,6 +125,7 @@ const Profile = () => {
                     if (output.isFollowing) setIsFollowing(true)
 
                     setNotFound(false)
+                    setShowLoading(false)
 
                     const posts = await fetch(`http://localhost:3000/userPosts/${output._id}`, {
                         method: 'GET',
@@ -142,13 +143,11 @@ const Profile = () => {
                 else {
                     setNotFound(true)
                 }
-
-                setShowLoading(false)
             }
 
             getUserData()
         }
-    }, [id, location.pathname])
+    }, [userName, location.pathname])
 
     useEffect(() => {
         if (showEdit || showFollowers || showFollowing) {
@@ -162,10 +161,10 @@ const Profile = () => {
         }
 
         else {
-            if(document.getElementById('following') != null && requestedUser == userName){
-                if(document.getElementById('following').innerText == '1') setFollowing(1)
+            if (document.getElementById('following') != null && requestedUser == userName) {
+                if (document.getElementById('following').innerText == '1') setFollowing(1)
 
-                else if(document.getElementById('following').innerText == '0' && !showFollowing) setFollowing(0)
+                else if (document.getElementById('following').innerText == '0' && !showFollowing) setFollowing(0)
             }
 
             document.body.style.height = '100%'
@@ -399,16 +398,16 @@ const Profile = () => {
 
             if (action == 'add') {
                 document.getElementById('followers').innerHTML = Number(document.getElementById('followers').innerHTML) + 1
-        
-                if(document.getElementById('followers').innerHTML == '1') setFollowers(1)
+
+                if (document.getElementById('followers').innerHTML == '1') setFollowers(1)
 
                 setIsFollowing(true)
             }
 
             else {
                 document.getElementById('followers').innerHTML = Number(document.getElementById('followers').innerHTML) - 1
-                
-                if(document.getElementById('followers').innerHTML == '0') setFollowers(0)
+
+                if (document.getElementById('followers').innerHTML == '0') setFollowers(0)
 
                 setIsFollowing(false)
             }
@@ -429,7 +428,7 @@ const Profile = () => {
                 e.target.classList.remove('bg-[#660eb3]')
                 e.target.innerHTML = 'Seguindo'
 
-                if(requestedUser == userName){
+                if (requestedUser == userName) {
                     document.getElementById('following').innerHTML = Number(document.getElementById('following').innerHTML) + 1
                 }
             }
@@ -438,7 +437,7 @@ const Profile = () => {
                 e.target.classList.add('bg-[#660eb3]')
                 e.target.innerHTML = 'Seguir'
 
-                if(requestedUser == userName){
+                if (requestedUser == userName) {
                     document.getElementById('following').innerHTML = Number(document.getElementById('following').innerHTML) - 1
                 }
             }
@@ -454,12 +453,13 @@ const Profile = () => {
             })
         }
     }
+
     const getPosts = async () => {
         if (view != 'posts') {
             setView('posts')
-            if (view == 'comments') setComments([])
-            else if (view == 'replies') setReplies([])
-            else if (view == 'likes') setLikes([])
+            if (view == 'comments') setComments(null)
+            else if (view == 'replies') setReplies(null)
+            else if (view == 'likes') setLikes(null)
 
             const result = await fetch(`http://localhost:3000/userPosts/${userId}`, {
                 method: 'GET',
@@ -472,15 +472,17 @@ const Profile = () => {
             const output = await result.json()
 
             if (output.status != 'fail') setPosts(output.posts)
+            
+            else setPosts([])
         }
     }
 
     const getComments = async () => {
         if (view != 'comments') {
             setView('comments')
-            if (view == 'posts') setPosts([])
-            else if (view == 'replies') setReplies([])
-            else if (view == 'likes') setLikes([])
+            if (view == 'posts') setPosts(null)
+            else if (view == 'replies') setReplies(null)
+            else if (view == 'likes') setLikes(null)
 
             const result = await fetch(`http://localhost:3000/userComments/${userId}`, {
                 method: 'GET',
@@ -493,15 +495,17 @@ const Profile = () => {
             const output = await result.json()
 
             if (output.status != 'fail') setComments(output.comments)
+
+            else setComments([])
         }
     }
 
     const getReplies = async () => {
         if (view != 'replies') {
             setView('replies')
-            if (view == 'posts') setPosts([])
-            else if (view == 'comments') setComments([])
-            else if (view == 'likes') setLikes([])
+            if (view == 'posts') setPosts(null)
+            else if (view == 'comments') setComments(null)
+            else if (view == 'likes') setLikes(null)
 
             const result = await fetch(`http://localhost:3000/userReplies/${userId}`, {
                 method: 'GET',
@@ -514,15 +518,17 @@ const Profile = () => {
             const output = await result.json()
 
             if (output.status != 'fail') setReplies(output.replies)
+
+            else setReplies([])
         }
     }
 
     const getLikes = async () => {
         if (view != 'likes') {
             setView('likes')
-            if (view == 'posts') setPosts([])
-            else if (view == 'comments') setComments([])
-            else if (view == 'replies') setReplies([])
+            if (view == 'posts') setPosts(null)
+            else if (view == 'comments') setComments(null)
+            else if (view == 'replies') setReplies(null)
 
             const result = await fetch(`http://localhost:3000/userLikes/${userId}`, {
                 method: 'GET',
@@ -535,6 +541,8 @@ const Profile = () => {
             const output = await result.json()
 
             if (output.status != 'fail') setLikes(output.likes)
+
+            else setLikes([])
         }
     }
 
@@ -1025,33 +1033,81 @@ const Profile = () => {
                                         </div>
 
                                         {view == 'posts' &&
-                                            posts.map((element, index) => {
-                                                return (
-                                                    <Posts profile={true} key={index} post={element} />
-                                                )
-                                            })
+                                            <>
+                                                {posts == null &&
+                                                    <div className="flex flex-col items-center h-full justify-center mt-10">
+                                                        <div className="animate-spin inline-block size-10 border-5 border-current border-t-transparent text-[#660eb3] rounded-full dark:text-[#660eb3]" role="status" aria-label="loading">
+                                                            <span className="sr-only">Loading...</span>
+                                                        </div>
+                                                    </div>
+                                                }
+
+                                                {(posts != null && posts.length > 0) &&
+                                                    posts.map((element, index) => {
+                                                        return (
+                                                            <Posts profile={true} key={index} post={element} />
+                                                        )
+                                                    })
+                                                }
+                                            </>
                                         }
 
                                         {view == 'comments' &&
-                                            comments.map((element, index) => {
-                                                return (
-                                                    <Comment profile={true} key={index} comment={element} />
-                                                )
-                                            })
+                                            <>
+                                                {comments == null &&
+                                                    <div className="flex flex-col items-center h-full justify-center mt-10">
+                                                        <div className="animate-spin inline-block size-10 border-5 border-current border-t-transparent text-[#660eb3] rounded-full dark:text-[#660eb3]" role="status" aria-label="loading">
+                                                            <span className="sr-only">Loading...</span>
+                                                        </div>
+                                                    </div>
+                                                }
+
+                                                {(comments != null && comments.length > 0) &&
+                                                    comments.map((element, index) => {
+                                                        return (
+                                                            <Comment profile={true} key={index} comment={element} />
+                                                        )
+                                                    })
+                                                }
+                                            </>
                                         }
 
                                         {view == 'replies' &&
-                                            replies.map((element, index) => {
-                                                return (
-                                                    <Posts profile={true} key={index} post={element} reply={true} />
-                                                )
-                                            })
+                                            <>
+                                                {replies == null &&
+                                                    <div className="flex flex-col items-center h-full justify-center mt-10">
+                                                        <div className="animate-spin inline-block size-10 border-5 border-current border-t-transparent text-[#660eb3] rounded-full dark:text-[#660eb3]" role="status" aria-label="loading">
+                                                            <span className="sr-only">Loading...</span>
+                                                        </div>
+                                                    </div>
+                                                }
+
+                                                {(replies != null && replies.length > 0) &&
+                                                    replies.map((element, index) => {
+                                                        return (
+                                                            <Posts profile={true} key={index} post={element} reply={true} />
+                                                        )
+                                                    })
+                                                }
+                                            </>
                                         }
 
                                         {view == 'likes' &&
-                                            likes.map((element, index) => {
-                                                return <Likes key={index} likes={element} />
-                                            })
+                                            <>
+                                                {likes == null &&
+                                                    <div className="flex flex-col items-center h-full justify-center mt-10">
+                                                        <div className="animate-spin inline-block size-10 border-5 border-current border-t-transparent text-[#660eb3] rounded-full dark:text-[#660eb3]" role="status" aria-label="loading">
+                                                            <span className="sr-only">Loading...</span>
+                                                        </div>
+                                                    </div>
+                                                }
+
+                                                {(likes != null && likes.length > 0) &&
+                                                    likes.map((element, index) => {
+                                                        return <Likes key={index} likes={element} />
+                                                    })
+                                                }
+                                            </>
                                         }
                                     </>
                                 }

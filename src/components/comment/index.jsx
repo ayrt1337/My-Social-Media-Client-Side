@@ -8,6 +8,7 @@ import ImageProfile from '../../assets/981d6b2e0ccb5e968a0618c8d47671da.jpg'
 const Comment = props => {
     const navigate = useNavigate()
     const [showReplies, setShowReplies] = useState(false)
+    const [showLoading, setShowLoading] = useState(props.comment.comments > 0 ? true : false)
     const [replies, setReplies] = useState([])
     const words = props.comment.text.split(' ')
     const [icon, setIcon] = useState(props.comment.isLiked == true ? 'fa-solid fa-heart' : 'fa-regular fa-heart')
@@ -64,6 +65,7 @@ const Comment = props => {
 
                 const output = await result.json()
                 setReplies(output.replies)
+                setShowLoading(false)
             }
         }
 
@@ -165,35 +167,47 @@ const Comment = props => {
 
             {showReplies &&
                 <>
-                    <div onClick={() => handleClick(props.comment._id, props.comment.comments)} className="border-1 border-[#808080] border-l-0 border-r-0 pl-7 pr-7 pb-5 cursor-pointer text-center pt-5">
-                        <p>Ocultar respostas</p>
-                    </div>
-
-                    <div className="flex mt-10 pl-7 pr-7">
-                        <img onClick={(e) => {
-                            e.stopPropagation()
-                            navigate(`/profile/${props.user}`)
-                        }} className="cursor-pointer border-[2px] border-[#660eb3] w-[55px] h-[55px] rounded-[50%]" src={props.profileImg} alt="" />
-
-                        <div style={replies.length > 0 ? { marginBottom: '0px' } : { marginBottom: '40px' }} onClick={(e) => e.stopPropagation()} className="flex flex-col w-full ml-3 items-start">
-                            <Textarea id={id} length={200} placeholder={'Postar resposta'} />
-
-                            <p onClick={() => submitReply(props.comment._id)} className="text-[16px] font-semibold bg-[#660eb3] mt-5 pb-2 pt-2 pl-7 pr-7 rounded-[15px] cursor-pointer">
-                                Responder
-                            </p>
+                    {showLoading &&
+                        <div className="flex flex-col items-center h-full justify-center mb-7">
+                            <div className="animate-spin inline-block size-8 border-5 border-current border-t-transparent text-[#660eb3] rounded-full dark:text-[#660eb3]" role="status" aria-label="loading">
+                                <span className="sr-only">Loading...</span>
+                            </div>
                         </div>
-                    </div>
+                    }
 
-                    {replies.length > 0 &&
+                    {!showLoading &&
                         <>
-                            {
-                                replies.map((element, index) => {
-                                    let lastIndex = null
+                            <div onClick={() => handleClick(props.comment._id, props.comment.comments)} className="border-1 border-[#808080] border-l-0 border-r-0 pl-7 pr-7 pb-5 cursor-pointer text-center pt-5">
+                                <p>Ocultar respostas</p>
+                            </div>
 
-                                    if (index == replies.length - 1) lastIndex = true
+                            <div className="flex mt-10 pl-7 pr-7">
+                                <img onClick={(e) => {
+                                    e.stopPropagation()
+                                    navigate(`/profile/${props.user}`)
+                                }} className="cursor-pointer border-[2px] border-[#660eb3] w-[55px] h-[55px] rounded-[50%]" src={props.profileImg} alt="" />
 
-                                    return <Reply postId={props.comment.postId} key={index} reply={element} index={lastIndex} commentId={props.comment._id} />
-                                })
+                                <div style={replies.length > 0 ? { marginBottom: '0px' } : { marginBottom: '40px' }} onClick={(e) => e.stopPropagation()} className="flex flex-col w-full ml-3 items-start">
+                                    <Textarea id={id} length={200} placeholder={'Postar resposta'} />
+
+                                    <p onClick={() => submitReply(props.comment._id)} className="text-[16px] font-semibold bg-[#660eb3] mt-5 pb-2 pt-2 pl-7 pr-7 rounded-[15px] cursor-pointer">
+                                        Responder
+                                    </p>
+                                </div>
+                            </div>
+
+                            {replies.length > 0 &&
+                                <>
+                                    {
+                                        replies.map((element, index) => {
+                                            let lastIndex = null
+
+                                            if (index == replies.length - 1) lastIndex = true
+
+                                            return <Reply postId={props.comment.postId} key={index} reply={element} index={lastIndex} commentId={props.comment._id} />
+                                        })
+                                    }
+                                </>
                             }
                         </>
                     }

@@ -1,6 +1,7 @@
 import { useState, useId } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useNavigate } from "react-router-dom"
+import ImageProfile from '../../assets/981d6b2e0ccb5e968a0618c8d47671da.jpg'
 
 const Likes = props => {
     const words = props.likes.text.split(' ')
@@ -20,7 +21,7 @@ const Likes = props => {
         else navigate(`/post/${props.likes.postId}?commentId=${props.likes.commentId}&replyId=${props.likes._id}`)
     }
 
-    const handleLike = async (id, userId) => {
+    const handleLike = async (id) => {
         let action
 
         const heart = document.getElementById(_id)
@@ -45,7 +46,8 @@ const Likes = props => {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
-            body: JSON.stringify({ type: type, id: id, action: action, userId: userId })
+            credentials: 'include',
+            body: JSON.stringify({ type: type, id: id, action: action })
         })
     }
 
@@ -54,7 +56,7 @@ const Likes = props => {
             <img onClick={(e) => {
                 e.stopPropagation()
                 navigate(`/profile/${props.likes.user}`)
-            }} className="border-[2px] border-[#660eb3] w-[55px] h-[55px] rounded-[50%]" src={props.likes.profileImg} alt="" />
+            }} className="border-[2px] border-[#660eb3] w-[55px] h-[55px] rounded-[50%]" src={props.likes.profileImg == null ? ImageProfile : props.likes.profileImg} alt="" />
 
             <div className="ml-3 mt-[2px]">
                 <div className="flex">
@@ -99,7 +101,7 @@ const Likes = props => {
 
                     <div style={props.likes.comments == undefined ? { marginLeft: '0px' } : { marginLeft: '20px' }} className="flex items-center" onClick={(e) => {
                         e.stopPropagation()
-                        handleLike(props.likes._id, props.userId)
+                        handleLike(props.likes._id)
                     }}>
                         <FontAwesomeIcon id={_id} style={props.likes.isLiked == true ? { color: '#660eb3' } : { color: 'white' }} className="mr-2" icon={icon} />
                         <p id={_id2} className="text-[16px]">{props.likes.likes}</p>
