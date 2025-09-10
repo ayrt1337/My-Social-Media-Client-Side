@@ -3,6 +3,7 @@ import { faHome } from "@fortawesome/free-solid-svg-icons"
 import { faSignOut } from "@fortawesome/free-solid-svg-icons"
 import { useNavigate } from "react-router-dom"
 import { faBell } from "@fortawesome/free-solid-svg-icons"
+import { useMediaQuery } from "react-responsive"
 
 const SideBar = props => {
     const navigate = useNavigate()

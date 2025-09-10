@@ -54,7 +54,7 @@ const Profile = () => {
 
     useEffect(() => {
         setShowLoading(true)
-        
+
         const getSession = async () => {
             const result = await fetch('http://localhost:3000/session', {
                 method: 'GET',
@@ -472,7 +472,7 @@ const Profile = () => {
             const output = await result.json()
 
             if (output.status != 'fail') setPosts(output.posts)
-            
+
             else setPosts([])
         }
     }
@@ -570,7 +570,7 @@ const Profile = () => {
                                         <FontAwesomeIcon onClick={() => {
                                             setShowFollowers(false)
                                             setFilteredFollowers([])
-                                            inputFollowers.current = []
+                                            inputFollowers.current = null
                                         }} icon={faClose} className="text-[30px] cursor-pointer" />
                                     </div>
 
@@ -579,6 +579,14 @@ const Profile = () => {
                                     </div>
 
                                     <div>
+                                        {inputFollowers.current == null &&
+                                            <div className="flex flex-col items-center h-full justify-center mt-10">
+                                                <div className="animate-spin inline-block size-10 border-5 border-current border-t-transparent text-[#660eb3] rounded-full dark:text-[#660eb3]" role="status" aria-label="loading">
+                                                    <span className="sr-only">Loading...</span>
+                                                </div>
+                                            </div>
+                                        }
+
                                         {(filteredFollowers.length == 0 && inputFollowers.current != null && followers != null && followers != undefined && typeof followers != 'number') &&
                                             <>
                                                 {(inputFollowers.current.value.length == 0) &&
@@ -684,7 +692,7 @@ const Profile = () => {
                                         <FontAwesomeIcon onClick={() => {
                                             setShowFollowing(false)
                                             setFilteredFollowing([])
-                                            inputFollowing.current = []
+                                            inputFollowing.current = null
                                         }} icon={faClose} className="text-[30px] cursor-pointer" />
                                     </div>
 
@@ -693,6 +701,14 @@ const Profile = () => {
                                     </div>
 
                                     <div>
+                                        {inputFollowing.current == null &&
+                                            <div className="flex flex-col items-center h-full justify-center mt-10">
+                                                <div className="animate-spin inline-block size-10 border-5 border-current border-t-transparent text-[#660eb3] rounded-full dark:text-[#660eb3]" role="status" aria-label="loading">
+                                                    <span className="sr-only">Loading...</span>
+                                                </div>
+                                            </div>
+                                        }
+
                                         {(filteredFollowing.length == 0 && inputFollowing.current != null && following != null && following != undefined && typeof following != 'number') &&
                                             <>
                                                 {inputFollowing.current.value.length == 0 &&
