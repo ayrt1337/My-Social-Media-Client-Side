@@ -4,11 +4,14 @@ import { useState, useId } from 'react'
 import ImageProfile from '../../assets/981d6b2e0ccb5e968a0618c8d47671da.jpg'
 
 const { Option } = Mentions
+let timeout
+let controller
 
 const Textarea = props => {
     const [users, setUsers] = useState([])
     const [result, setResult] = useState(false)
     const [stringPost, setStringPost] = useState(0)
+    const [mentions, setMentions] = useState([])
     const id = useId()
     const id2 = useId()
 
@@ -58,36 +61,67 @@ const Textarea = props => {
         else label.style.color = 'white'
     }
 
-    const handleChange = async (search) => {
-        const lastWord = search.split(' ')[search.split(' ').length - 1].replace(/\r\n|\n|\r/gm, ' ').split(' ')[search.split(' ')[search.split(' ').length - 1].replace(/\r\n|\n|\r/gm, ' ').split(' ').length - 1]
+    const handleChange = (search) => {
         const regex = /@[^\s]+/g
-        let value
+        const searchMentions = search.match(regex)
 
-        if (search.match(regex) != null) value = search.match(regex)[search.match(regex).length - 1]
-
-        if (value != null && value.length > 2 && value == lastWord) {
-            const result = await fetch('http://localhost:3000/searchUsers', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify({ value: value.replace('@', '') })
-            })
-
-            const output = await result.json()
-
-            if (output.status == 'success') {
-                setUsers(output.users)
-                setResult(true)
-            }
+        if (result) {
+            setResult(false)
+            setUsers([])
         }
 
-        else {
-            if (result) {
-                setResult(false)
-                setUsers([])
-            }
+        if (searchMentions != null) {
+            clearTimeout(timeout)
+            timeout = setTimeout(async () => {
+                for (let i = 0; i < searchMentions.length; i++) {
+                    if (searchMentions[i] != mentions[i] || (searchMentions[i] == mentions[i] && searchMentions[i].length == 4)) {
+                        if (searchMentions[i].length > 3) {
+                            if (controller) {
+                                controller.abort()
+                            }
+
+                            controller = new AbortController()
+                            const signal = controller.signal
+
+                            const result = await fetch('http://localhost:3000/searchUsers', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Accept': 'application/json'
+                                },
+                                signal,
+                                body: JSON.stringify({ value: searchMentions[i].replace('@', '') })
+                            })
+
+                            const output = await result.json()
+                            controller = null
+
+                            if (output.status == 'success') {
+                                setUsers(output.users)
+                                setResult(true)
+                            }
+
+                            setMentions(searchMentions)
+
+                            break
+                        }
+
+                        else {
+                            if (result) {
+                                setResult(false)
+                                setUsers([])
+                            }
+                        }
+                    }
+
+                    else if (searchMentions[i] == mentions[i] && i == searchMentions.length - 1) {
+                        if (result) {
+                            setResult(false)
+                            setUsers([])
+                        }
+                    }
+                }
+            }, 1000)
         }
     }
 

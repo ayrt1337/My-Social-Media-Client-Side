@@ -224,9 +224,11 @@ const Register = () => {
                         </a>
                     </div>
 
-                    <p>Já possui uma conta?&nbsp;
-                        <Link to='/login' className="cursor-pointer text-[#660eb3] underline">Faça o Login!</Link>
+                    <p>
+                        Já possui uma conta?
                     </p>
+
+                    <Link to='/login' className="cursor-pointer text-[#660eb3] underline">Faça o Login!</Link>
                 </div>
             </div>
         </>

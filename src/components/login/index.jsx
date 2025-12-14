@@ -177,9 +177,11 @@ const Login = () => {
                     </a>
                 </div>
 
-                <p>Não possui uma conta?&nbsp;
-                    <Link to='/register' className="cursor-pointer text-[#660eb3] underline">Registre-se agora!</Link>
+                <p>
+                    Não possui uma conta?
                 </p>
+
+                <Link to='/register' className="cursor-pointer text-[#660eb3] underline">Registre-se agora!</Link>
             </div>
         </div>
     )

@@ -2,8 +2,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faHome } from "@fortawesome/free-solid-svg-icons"
 import { faSignOut } from "@fortawesome/free-solid-svg-icons"
 import { useNavigate } from "react-router-dom"
-import { faBell } from "@fortawesome/free-solid-svg-icons"
+import { faBell, faSearch } from "@fortawesome/free-solid-svg-icons"
 import { useMediaQuery } from "react-responsive"
+import { useState } from "react"
 
 const SideBar = props => {
     const navigate = useNavigate()
@@ -34,6 +35,11 @@ const SideBar = props => {
                 <div onClick={() => navigate('/home')} className="cursor-pointer flex items-center mb-[30px]">
                     <FontAwesomeIcon className="text-[23px]" icon={faHome}/>
                     <p className="ml-[15px] text-[20px]">Home</p>
+                </div>
+
+                <div className="cursor-pointer flex items-center mb-[30px]">
+                    <FontAwesomeIcon className="text-[23px]" icon={faSearch}/>
+                    <p className="ml-[15px] text-[20px]">Pesquisar</p>
                 </div>
 
                 <div onClick={() => navigate('/notifications')} className="cursor-pointer flex items-center mb-[30px]">

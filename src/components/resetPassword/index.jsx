@@ -24,7 +24,7 @@ const ResetPassword = () => {
             if(emptyCamps > 0) errors[0].classList.remove('hidden')
 
             else{
-                const result = await fetch('http://localhost:3000/reset', {
+                await fetch('http://localhost:3000/reset', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -33,11 +33,7 @@ const ResetPassword = () => {
                     body: JSON.stringify({ 'email': email })
                 })
 
-                const output = await result.json()
-
-                if(output.status == 'success') navigate(`/confirmemailpassword?email=${email}`)
-
-                else errors[1].classList.remove('hidden')
+                navigate(`/confirmemailpassword?email=${email}`)
             }
         }
     }
