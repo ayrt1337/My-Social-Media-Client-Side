@@ -13,6 +13,7 @@ import TextareaProfile from "../textareaProfile"
 import Posts from "../post"
 import Comment from "../comment"
 import Likes from "../likes"
+import SearchOverlay from "../searchOverlay"
 
 const Profile = () => {
     const [showLoading, setShowLoading] = useState(true)
@@ -47,6 +48,7 @@ const Profile = () => {
     const [userId, setUserId] = useState(null)
     const [requestedUser, setRequestedUser] = useState(null)
     const [unreadMessages, setUnreadMessages] = useState(null)
+    const [showSearch, setShowSearch] = useState(false)
 
     const { user } = useParams()
     const navigate = useNavigate()
@@ -138,10 +140,13 @@ const Profile = () => {
                     const outputPosts = await posts.json()
 
                     if (outputPosts.status != 'fail') setPosts(outputPosts.posts)
+
+                    else setPosts([])
                 }
 
                 else {
                     setNotFound(true)
+                    setShowLoading(false)
                 }
             }
 
@@ -558,6 +563,10 @@ const Profile = () => {
 
             {!showLoading &&
                 <>
+                    {showSearch &&
+                        <SearchOverlay setShowSearch={setShowSearch} />
+                    }
+
                     {showFollowers &&
                         <>
                             <div className="absolute h-screen w-screen bg-[#808080] z-10 opacity-30"></div>
@@ -943,7 +952,7 @@ const Profile = () => {
                     }
 
                     <div className="grid grid-cols-[1fr_1.1fr_1fr]">
-                        <SideBar unreadMessages={unreadMessages} img={myImg} user={userName} />
+                        <SideBar setShowSearch={setShowSearch} showSearch={showSearch} unreadMessages={unreadMessages} img={myImg} user={userName} />
 
                         <div className="bg-[#000000] text-[#ffffff] w-full">
                             <div className="border-[#808080] border-1 border-b-0 min-h-[100vh] pt-[20px]">

@@ -1,12 +1,13 @@
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import ImageProfile from '../../assets/981d6b2e0ccb5e968a0618c8d47671da.jpg'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faClose } from "@fortawesome/free-solid-svg-icons"
 
 let timeout
 let controller
 
-const SearchInput = () => {
-    const inputDiv = useRef(null)
+const SearchOverlay = props => {
     const [users, setUsers] = useState([])
     const [inputValue, setInputValue] = useState(null)
     const [results, showResults] = useState(false)
@@ -14,11 +15,16 @@ const SearchInput = () => {
     const inputRef = useRef(null)
     const [showLoading, setShowLoading] = useState(false)
 
-    document.body.addEventListener('click', (e) => {
-        if (!inputDiv.current.contains(e.target)) {
-            if (showResults) showResults(false)
+    useEffect(() => {
+        scrollTo(top)
+        document.body.style.height = '100vh'
+        document.body.style.overflow = 'hidden'
+
+        return () => {
+            document.body.style.height = '100%'
+            document.body.style.overflow = 'visible'
         }
-    })
+    }, [])
 
     const handleInput = (e) => {
         if (e.target.value.length >= 2) {
@@ -34,7 +40,7 @@ const SearchInput = () => {
                 }
 
                 controller = new AbortController()
-                let signal = controller.signal
+                let signal = controller.abort()
 
                 const result = await fetch(`http://localhost:3000/searchUsers`, {
                     method: 'POST',
@@ -62,12 +68,16 @@ const SearchInput = () => {
     }
 
     return (
-        <div className="h-full bg-[#000000] text-[#ffffff] top-[0px] right-[0px] pl-[50px] pt-[45px] w-full">
-            <div ref={inputDiv} onFocus={handleInput} className="fixed flex flex-col relative">
-                <input ref={inputRef} onInput={handleInput} className="focus:outline-2 focus:outline-offset-2 focus:outline-none border-transparent border-2 rounded-[15px] focus:border-[#660eb3] max-w-[280px] w-full bg-[#0f0f0f] pt-3 pb-3 pr-5 pl-4" placeholder="Pesquisar" id="search" />
+        <>
+            <div className="absolute h-full w-screen bg-[#808080] z-20 opacity-30"></div>
+
+            <div className="flex flex-col flex-end absolute z-999 text-[#ffffff] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                <FontAwesomeIcon onClick={() => props.setShowSearch(false)} className="cursor-pointer text-[33px] mb-[5px] mr-[3px] self-end" icon={faClose} />
+
+                <input ref={inputRef} onInput={handleInput} className="w-[400px] rounded-[15px] focus:outline-2 focus:outline-offset-2 focus:outline-none border-transparent border-2 focus:border-[#660eb3] bg-[#0f0f0f] pt-3 pb-3 pr-5 pl-4" placeholder="Pesquisar" id="search" />
 
                 {results &&
-                    <div style={users.length > 5 ? { overflow: 'auto', height: '337px' } : { overflow: 'visible' }} id="result" className="absolute mt-17 bg-[#0f0f0f] max-w-[280px] w-full rounded-[15px]">
+                    <div style={users.length > 5 ? { overflow: 'auto', height: '337px' } : { overflow: 'visible' }} id="result" className="mt-8 bg-[#0f0f0f] max-w-[400px] w-full rounded-[15px]">
                         {showLoading &&
                             <div className="rounded-tl-[15px] rounded-tr-[15px] pt-5 flex flex-col items-center bg-[#0f0f0f] h-full justify-center">
                                 <div className="animate-spin inline-block size-5 border-5 border-current border-t-transparent text-[#660eb3] rounded-full dark:text-[#660eb3]" role="status" aria-label="loading">
@@ -111,8 +121,8 @@ const SearchInput = () => {
                     </div>
                 }
             </div>
-        </div>
+        </>
     )
 }
 
-export default SearchInput
+export default SearchOverlay

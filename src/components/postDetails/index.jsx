@@ -7,6 +7,7 @@ import { faArrowLeftLong } from '@fortawesome/free-solid-svg-icons'
 import { useParams, useNavigate } from 'react-router-dom'
 import Textarea from '../textarea'
 import Comment from '../comment'
+import SearchOverlay from '../searchOverlay'
 
 const Post = () => {
     const [showLoading, setShowLoading] = useState(true)
@@ -21,6 +22,7 @@ const Post = () => {
     const navigate = useNavigate()
     const [unreadMessages, setUnreadMessages] = useState(null)
     const [notFound, setNotFound] = useState(false)
+    const [showSearch, setShowSearch] = useState(false)
 
     const { id } = useParams()
 
@@ -77,6 +79,7 @@ const Post = () => {
 
                 if (output.status == 'fail') {
                     setNotFound(true)
+                    setShowLoading(false)
                 }
 
                 else {
@@ -168,101 +171,107 @@ const Post = () => {
             }
 
             {!showLoading &&
-                <div className="grid grid-cols-[1fr_1.1fr_1fr]">
-                    <SideBar unreadMessages={unreadMessages} img={img} user={user} />
+                <>
+                    {showSearch &&
+                        <SearchOverlay setShowSearch={setShowSearch} />
+                    }
 
-                    <div className="bg-[#000000] text-[#ffffff] w-full">
-                        <div className="border-[#808080] border-1 border-b-0 min-h-[100vh] pt-[25px]">
-                            {notFound &&
-                                <div className="p-[30px] pt-[100px] flex flex-col items-center">
-                                    <h1 className="font-semibold text-[30px]">Este post não existe</h1>
-                                    <p className="mt-3 text-[17px]">Tente realizar outra busca.</p>
-                                </div>
-                            }
+                    <div className="grid grid-cols-[1fr_1.1fr_1fr]">
+                        <SideBar setShowSearch={setShowSearch} showSearch={showSearch} unreadMessages={unreadMessages} img={img} user={user} />
 
-                            {!notFound &&
-                                <>
-                                    <div className="pl-6 pr-6 flex items-center">
-                                        <FontAwesomeIcon onClick={() => navigate('/home')} className='text-[28px] cursor-pointer ml-2' icon={faArrowLeftLong} />
-                                        <h1 className='text-[23px] ml-4 font-semibold'>Post</h1>
+                        <div className="bg-[#000000] text-[#ffffff] w-full">
+                            <div className="border-[#808080] border-1 border-b-0 min-h-[100vh] pt-[25px]">
+                                {notFound &&
+                                    <div className="p-[30px] pt-[100px] flex flex-col items-center">
+                                        <h1 className="font-semibold text-[30px]">Este post não existe</h1>
+                                        <p className="mt-3 text-[17px]">Tente realizar outra busca.</p>
                                     </div>
+                                }
 
-                                    <div className="flex w-full wrap-anywhere p-7 pt-10 pb-8 border-1 border-t-0 border-l-0 border-r-0 border-[#808080]">
-                                        <img onClick={() => navigate(`/profile/${post.user}`)} className="cursor-pointer border-[2px] border-[#660eb3] w-[70px] h-[70px] rounded-[50%]" src={post.profileImg == null ? ImageProfile : post.profileImg} alt="" />
+                                {!notFound &&
+                                    <>
+                                        <div className="pl-6 pr-6 flex items-center">
+                                            <FontAwesomeIcon onClick={() => navigate('/home')} className='text-[28px] cursor-pointer ml-2' icon={faArrowLeftLong} />
+                                            <h1 className='text-[23px] ml-4 font-semibold'>Post</h1>
+                                        </div>
 
-                                        <div className="ml-3 mt-1">
-                                            <p onClick={() => navigate(`/profile/${post.user}`)} className="text-[18px] mb-1 font-semibold cursor-pointer">{post.user}</p>
+                                        <div className="flex w-full wrap-anywhere p-7 pt-10 pb-8 border-1 border-t-0 border-l-0 border-r-0 border-[#808080]">
+                                            <img onClick={() => navigate(`/profile/${post.user}`)} className="cursor-pointer border-[2px] border-[#660eb3] w-[70px] h-[70px] rounded-[50%]" src={post.profileImg == null ? ImageProfile : post.profileImg} alt="" />
 
-                                            <p className='text-[17px]'>
-                                                {post.text != undefined &&
-                                                    post.text.split(' ').map((element) => {
-                                                        if (element.includes('@'))
-                                                            return (
-                                                                <>
-                                                                    <span onClick={(e) => {
-                                                                        e.stopPropagation()
-                                                                        navigate(`/profile/${element.replace('@', '')}`)
-                                                                    }} className="cursor-pointer text-[#660eb3] hover:underline">{element}</span>
+                                            <div className="ml-3 mt-1">
+                                                <p onClick={() => navigate(`/profile/${post.user}`)} className="text-[18px] mb-1 font-semibold cursor-pointer">{post.user}</p>
 
-                                                                    {'\u00A0'}
-                                                                </>
-                                                            )
+                                                <p className='text-[17px]'>
+                                                    {post.text != undefined &&
+                                                        post.text.split(' ').map((element) => {
+                                                            if (element.includes('@'))
+                                                                return (
+                                                                    <>
+                                                                        <span onClick={(e) => {
+                                                                            e.stopPropagation()
+                                                                            navigate(`/profile/${element.replace('@', '')}`)
+                                                                        }} className="cursor-pointer text-[#660eb3] hover:underline">{element}</span>
 
-                                                        else return element + ' '
-                                                    })
-                                                }
-                                            </p>
+                                                                        {'\u00A0'}
+                                                                    </>
+                                                                )
 
-                                            <div className='mt-3'>
-                                                <p className='text-[#cccccc] text-[15px] mb-2'>{post.createdAt}</p>
+                                                            else return element + ' '
+                                                        })
+                                                    }
+                                                </p>
 
-                                                <div className="flex text-[20px] items-center">
-                                                    <div className='flex items-center cursor-pointer'>
-                                                        <FontAwesomeIcon className="mr-2" icon='fa-regular fa-comment' />
-                                                        <p className="text-[16px]">{post.comments != undefined && typeof post.comments == 'number' ? post.comments : post.comments.length}</p>
-                                                    </div>
+                                                <div className='mt-3'>
+                                                    <p className='text-[#cccccc] text-[15px] mb-2'>{post.createdAt}</p>
 
-                                                    <div className="flex items-center cursor-pointer" onClick={() => handleLike('post', post.id)}>
-                                                        <FontAwesomeIcon id={_id} style={post.isLiked == true ? { color: '#660eb3' } : { color: 'white' }} className="mr-2 ml-5" icon={icon} />
-                                                        <p id={_id2} className="text-[16px]">{post.likes}</p>
+                                                    <div className="flex text-[20px] items-center">
+                                                        <div className='flex items-center cursor-pointer'>
+                                                            <FontAwesomeIcon className="mr-2" icon='fa-regular fa-comment' />
+                                                            <p className="text-[16px]">{post.comments != undefined && typeof post.comments == 'number' ? post.comments : post.comments.length}</p>
+                                                        </div>
+
+                                                        <div className="flex items-center cursor-pointer" onClick={() => handleLike('post', post.id)}>
+                                                            <FontAwesomeIcon id={_id} style={post.isLiked == true ? { color: '#660eb3' } : { color: 'white' }} className="mr-2 ml-5" icon={icon} />
+                                                            <p id={_id2} className="text-[16px]">{post.likes}</p>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <div className="flex p-7 border-[#808080] border-1 border-t-0 border-l-0 border-r-0">
-                                        <img onClick={() => navigate(`/profile/${user}`)} className="cursor-pointer border-[2px] border-[#660eb3] w-[55px] h-[55px] rounded-[50%]" src={img} alt="" />
+                                        <div className="flex p-7 border-[#808080] border-1 border-t-0 border-l-0 border-r-0">
+                                            <img onClick={() => navigate(`/profile/${user}`)} className="cursor-pointer border-[2px] border-[#660eb3] w-[55px] h-[55px] rounded-[50%]" src={img} alt="" />
 
-                                        <div id={_id3} className="flex flex-col w-full ml-3 items-end">
-                                            <Textarea length={200} placeholder={'Postar comentário'} />
+                                            <div id={_id3} className="flex flex-col w-full ml-3 items-end">
+                                                <Textarea length={200} placeholder={'Postar comentário'} />
 
-                                            <p onClick={submitComment} className="text-[16px] font-semibold bg-[#660eb3] mt-5 pb-2 pt-2 pl-7 pr-7 rounded-[15px] cursor-pointer">
-                                                Comentar
-                                            </p>
-                                        </div>
-                                    </div>
-
-                                    {(comments.length == 0 && post.comments > 0) &&
-                                        <div className="flex flex-col items-center h-full justify-center mt-10">
-                                            <div className="animate-spin inline-block size-10 border-5 border-current border-t-transparent text-[#660eb3] rounded-full dark:text-[#660eb3]" role="status" aria-label="loading">
-                                                <span className="sr-only">Loading...</span>
+                                                <p onClick={submitComment} className="text-[16px] font-semibold bg-[#660eb3] mt-5 pb-2 pt-2 pl-7 pr-7 rounded-[15px] cursor-pointer">
+                                                    Comentar
+                                                </p>
                                             </div>
                                         </div>
-                                    }
 
-                                    {(comments.length > 0) &&
-                                        comments.map((element, index) => {
-                                            return <Comment key={index} comment={element} profileImg={img} user={user} postId={id} />
-                                        })
-                                    }
-                                </>
-                            }
+                                        {(comments.length == 0 && post.comments > 0) &&
+                                            <div className="flex flex-col items-center h-full justify-center mt-10">
+                                                <div className="animate-spin inline-block size-10 border-5 border-current border-t-transparent text-[#660eb3] rounded-full dark:text-[#660eb3]" role="status" aria-label="loading">
+                                                    <span className="sr-only">Loading...</span>
+                                                </div>
+                                            </div>
+                                        }
+
+                                        {(comments.length > 0) &&
+                                            comments.map((element, index) => {
+                                                return <Comment key={index} comment={element} profileImg={img} user={user} postId={id} />
+                                            })
+                                        }
+                                    </>
+                                }
+                            </div>
                         </div>
-                    </div>
 
-                    <SearchInput />
-                </div>
+                        <SearchInput />
+                    </div>
+                </>
             }
         </>
     )
