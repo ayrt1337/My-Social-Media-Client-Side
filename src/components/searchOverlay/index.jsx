@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import ImageProfile from '../../assets/981d6b2e0ccb5e968a0618c8d47671da.jpg'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faClose } from "@fortawesome/free-solid-svg-icons"
+import { faClose, faUser } from "@fortawesome/free-solid-svg-icons"
 
 let timeout
 let controller
@@ -49,6 +49,7 @@ const SearchOverlay = props => {
                         'Accept': 'application/json'
                     },
                     signal,
+                    credentials: 'include',
                     body: JSON.stringify({ value: e.target.value })
                 })
 
@@ -67,6 +68,13 @@ const SearchOverlay = props => {
         }
     }
 
+    const handleEnter = (e) => {
+        if (e.key == 'Enter') {
+            props.setShowSearch(false)
+            navigate(`/profile/${inputValue}`)
+        }
+    }
+
     return (
         <>
             <div className="absolute h-full w-screen bg-[#808080] z-20 opacity-30"></div>
@@ -74,7 +82,7 @@ const SearchOverlay = props => {
             <div className="flex flex-col flex-end absolute z-999 text-[#ffffff] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                 <FontAwesomeIcon onClick={() => props.setShowSearch(false)} className="cursor-pointer text-[33px] mb-[5px] mr-[3px] self-end" icon={faClose} />
 
-                <input ref={inputRef} onInput={handleInput} className="w-[400px] rounded-[15px] focus:outline-2 focus:outline-offset-2 focus:outline-none border-transparent border-2 focus:border-[#660eb3] bg-[#0f0f0f] pt-3 pb-3 pr-5 pl-4" placeholder="Pesquisar" id="search" />
+                <input onKeyDown={handleEnter} ref={inputRef} onInput={handleInput} className="w-[400px] rounded-[15px] focus:outline-2 focus:outline-offset-2 focus:outline-none border-transparent border-2 focus:border-[#660eb3] bg-[#0f0f0f] pt-3 pb-3 pr-5 pl-4" placeholder="Pesquisar" id="search" />
 
                 {results &&
                     <div style={users.length > 5 ? { overflow: 'auto', height: '337px' } : { overflow: 'visible' }} id="result" className="mt-8 bg-[#0f0f0f] max-w-[400px] w-full rounded-[15px]">
@@ -97,14 +105,34 @@ const SearchOverlay = props => {
                                         {
                                             users.map((user, index) => {
                                                 return (
-                                                    <div style={index == 0 ? { borderTopLeftRadius: '15px', borderTopRightRadius: '15px', paddingTop: '18px' } : { borderTopLeftRadius: '0px', borderTopRightRadius: '0px' }} onClick={() => navigate(`/profile/${user.user}`)} className="hover:bg-[#30005bff] flex cursor-pointer items-center p-4 pb-3 pt-3" key={index}>
-                                                        <img className="w-[45px] h-[45px] rounded-[50%]" src={user.profileImg == null ? ImageProfile : user.profileImg} alt="" />
+                                                    <>
+                                                        <div style={index == 0 ? { borderTopLeftRadius: '15px', borderTopRightRadius: '15px', paddingTop: '18px' } : { borderTopLeftRadius: '0px', borderTopRightRadius: '0px' }} onClick={() => navigate(`/profile/${user.user}`)} className="hover:bg-[#30005bff] flex cursor-pointer items-center p-4 pb-3 pt-3" key={index}>
+                                                            <img className="w-[45px] h-[45px] rounded-[50%]" src={user.profileImg == null ? ImageProfile : user.profileImg} alt="" />
 
-                                                        <div className="flex flex-col ml-2">
-                                                            <p className="text-[15px]">{user.user}</p>
-                                                            <p className="text-[14px]">{user.bio.length >= 20 ? user.bio.substring(0, 17) + '...' : user.bio}</p>
+                                                            <div className="flex flex-col ml-2">
+                                                                <p className="text-[15px]">{user.user}</p>
+                                                                <p className="text-[14px]">{user.bio.length >= 20 ? user.bio.substring(0, 17) + '...' : user.bio}</p>
+
+                                                                {(user.isFollowingAndFollower != undefined || user.isFollowing != undefined || user.isFollowingMe != undefined) &&
+                                                                    <div className="flex items-center mt-1">
+                                                                        <FontAwesomeIcon icon={faUser} className="mr-1" />
+
+                                                                        {user.isFollowingAndFollower &&
+                                                                            <p className="text-[14px]">Vocês se seguem</p>
+                                                                        }
+
+                                                                        {user.isFollowing &&
+                                                                            <p className="text-[14px]">Você segue</p>
+                                                                        }
+
+                                                                        {user.isFollowingMe &&
+                                                                            <p className="text-[14px]">Segue você</p>
+                                                                        }
+                                                                    </div>
+                                                                }
+                                                            </div>
                                                         </div>
-                                                    </div>
+                                                    </>
                                                 )
                                             })
                                         }

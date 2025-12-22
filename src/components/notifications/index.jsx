@@ -98,7 +98,7 @@ const Notifications = () => {
                     }
 
                     <div className="grid grid-cols-[1fr_1.1fr_1fr]">
-                        <SideBar setShowSearch={setShowSearch} showSearch={showSearch} img={img} user={user} />
+                        <SideBar setShowSearch={setShowSearch} img={img} user={user} />
 
                         <div className="bg-[#000000] text-[#ffffff] w-full">
                             <div className="border-[#808080] border-1 border-b-0 min-h-[100vh] pt-[50px]">

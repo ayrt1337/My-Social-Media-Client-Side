@@ -952,7 +952,7 @@ const Profile = () => {
                     }
 
                     <div className="grid grid-cols-[1fr_1.1fr_1fr]">
-                        <SideBar setShowSearch={setShowSearch} showSearch={showSearch} unreadMessages={unreadMessages} img={myImg} user={userName} />
+                        <SideBar setShowSearch={setShowSearch} unreadMessages={unreadMessages} img={myImg} user={userName} />
 
                         <div className="bg-[#000000] text-[#ffffff] w-full">
                             <div className="border-[#808080] border-1 border-b-0 min-h-[100vh] pt-[20px]">

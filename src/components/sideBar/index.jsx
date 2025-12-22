@@ -24,16 +24,6 @@ const SideBar = props => {
         if(output.status == 'success') navigate('/login')
     }
 
-    const handleOverlay = () => {
-        if(props.showSearch){
-            props.setShowSearch(false)
-        }
-
-        else{
-            props.setShowSearch(true)
-        }
-    }
-
     return(
         <div className="flex flex-col items-end h-full bg-[#000000] text-[#ffffff] pr-[85px] pt-[60px]">
             <div className="flex flex-col fixed">
@@ -47,7 +37,7 @@ const SideBar = props => {
                     <p className="ml-[15px] text-[20px]">Home</p>
                 </div>
 
-                <div onClick={handleOverlay} className="cursor-pointer flex items-center mb-[30px]">
+                <div onClick={() => props.setShowSearch(true)} className="cursor-pointer flex items-center mb-[30px]">
                     <FontAwesomeIcon className="text-[23px]" icon={faSearch}/>
                     <p className="ml-[15px] text-[20px]">Pesquisar</p>
                 </div>

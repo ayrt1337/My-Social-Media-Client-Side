@@ -1,6 +1,8 @@
 import { useState, useRef } from "react"
 import { useNavigate } from "react-router-dom"
 import ImageProfile from '../../assets/981d6b2e0ccb5e968a0618c8d47671da.jpg'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faUser } from "@fortawesome/free-solid-svg-icons"
 
 let timeout
 let controller
@@ -42,6 +44,7 @@ const SearchInput = () => {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json'
                     },
+                    credentials: 'include',
                     signal,
                     body: JSON.stringify({ value: e.target.value })
                 })
@@ -61,10 +64,16 @@ const SearchInput = () => {
         }
     }
 
+    const handleEnter = (e) => {
+        if (e.key == 'Enter') {
+            navigate(`/profile/${inputValue}`)
+        }
+    }
+
     return (
         <div className="h-full bg-[#000000] text-[#ffffff] top-[0px] right-[0px] pl-[50px] pt-[45px] w-full">
             <div ref={inputDiv} onFocus={handleInput} className="fixed flex flex-col relative">
-                <input ref={inputRef} onInput={handleInput} className="focus:outline-2 focus:outline-offset-2 focus:outline-none border-transparent border-2 rounded-[15px] focus:border-[#660eb3] max-w-[280px] w-full bg-[#0f0f0f] pt-3 pb-3 pr-5 pl-4" placeholder="Pesquisar" id="search" />
+                <input onKeyDown={handleEnter} ref={inputRef} onInput={handleInput} className="focus:outline-2 focus:outline-offset-2 focus:outline-none border-transparent border-2 rounded-[15px] focus:border-[#660eb3] max-w-[280px] w-full bg-[#0f0f0f] pt-3 pb-3 pr-5 pl-4" placeholder="Pesquisar" id="search" />
 
                 {results &&
                     <div style={users.length > 5 ? { overflow: 'auto', height: '337px' } : { overflow: 'visible' }} id="result" className="absolute mt-17 bg-[#0f0f0f] max-w-[280px] w-full rounded-[15px]">
@@ -93,6 +102,24 @@ const SearchInput = () => {
                                                         <div className="flex flex-col ml-2">
                                                             <p className="text-[15px]">{user.user}</p>
                                                             <p className="text-[14px]">{user.bio.length >= 20 ? user.bio.substring(0, 17) + '...' : user.bio}</p>
+
+                                                            {(user.isFollowingAndFollower != undefined || user.isFollowing != undefined || user.isFollowingMe != undefined) &&
+                                                                <div className="flex items-center mt-1">
+                                                                    <FontAwesomeIcon icon={faUser} className="mr-1" />
+
+                                                                    {user.isFollowingAndFollower &&
+                                                                        <p className="text-[14px]">Vocês se seguem</p>
+                                                                    }
+
+                                                                    {user.isFollowing &&
+                                                                        <p className="text-[14px]">Você segue</p>
+                                                                    }
+
+                                                                    {user.isFollowingMe &&
+                                                                        <p className="text-[14px]">Segue você</p>
+                                                                    }
+                                                                </div>
+                                                            }
                                                         </div>
                                                     </div>
                                                 )
