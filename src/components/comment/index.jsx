@@ -4,8 +4,11 @@ import { useState, useId, useRef } from "react"
 import Reply from "../reply"
 import { useNavigate } from "react-router-dom"
 import ImageProfile from '../../assets/981d6b2e0ccb5e968a0618c8d47671da.jpg'
+import { useMediaQuery } from "react-responsive"
 
 const Comment = props => {
+    const for541Width = useMediaQuery({ query: '(max-width: 541px)' })
+
     const navigate = useNavigate()
     const [showReplies, setShowReplies] = useState(false)
     const [showLoading, setShowLoading] = useState(props.comment.comments > 0 ? true : false)
@@ -111,22 +114,30 @@ const Comment = props => {
 
     return (
         <div ref={comment} className="flex flex-col w-auto wrap-anywhere pt-7 border-[#808080] border-1 border-t-0 border-l-0 border-r-0">
-            <div id={props.comment._id} onLoad={handleLoad} onClick={() => handleClick(props.comment._id, props.comment.comments)} className="cursor-pointer flex pl-7 pr-7 pb-7">
+            <div id={props.comment._id} onLoad={handleLoad} onClick={() => handleClick(props.comment._id, props.comment.comments)} className="max-[611px]:pr-7 cursor-pointer flex pl-7 pr-7 pb-7">
                 <img onClick={(e) => {
                     e.stopPropagation()
                     navigate(`/profile/${props.comment.user}`)
-                }} className="border-[2px] border-[#660eb3] w-[55px] h-[55px] rounded-[50%]" src={props.comment.profileImg == null ? ImageProfile : props.comment.profileImg} alt="" />
+                }} className="max-[611px]:w-[45px] max-[611px]:h-[45px] border-[2px] border-[#660eb3] w-[55px] h-[55px] rounded-[50%]" src={props.comment.profileImg == null ? ImageProfile : props.comment.profileImg} alt="" />
 
                 <div className="ml-3 mt-[2px]">
-                    <div className="flex">
+                    <div className="flex max-[541px]:flex-col">
                         <p onClick={(e) => {
                             e.stopPropagation()
                             navigate(`/profile/${props.comment.user}`)
-                        }} className="mb-1 font-semibold max-w-[150px]">{props.comment.user}</p>
+                        }} className="max-[611px]:text-[15px] max-[468px]:mb-[2px] mb-1 font-semibold max-w-[150px]">{props.comment.user}</p>
 
-                        {'\u00A0'}
+                        {!for541Width &&
+                            <>
+                                {'\u00A0'}
 
-                        <p className="text-[#cccccc] text-[15px]">· {props.comment.createdAt}</p>
+                                <p className="max-[611px]:text-[14px] text-[#cccccc] text-[15px]">· {props.comment.createdAt}</p>
+                            </>
+                        }
+
+                        {for541Width &&
+                            <p className="mb-2 text-[#cccccc] text-[15px]">{props.comment.createdAt}</p>
+                        }
                     </div>
 
                     <p>

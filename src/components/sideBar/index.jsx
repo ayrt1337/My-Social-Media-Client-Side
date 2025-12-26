@@ -4,9 +4,10 @@ import { faSignOut } from "@fortawesome/free-solid-svg-icons"
 import { useNavigate } from "react-router-dom"
 import { faBell, faSearch } from "@fortawesome/free-solid-svg-icons"
 import { useMediaQuery } from "react-responsive"
-import { useState } from "react"
 
 const SideBar = props => {
+    const for1300Width = useMediaQuery({ query: '(max-width: 1300px)' })
+
     const navigate = useNavigate()
 
     const logout = async () => {
@@ -21,48 +22,62 @@ const SideBar = props => {
 
         const output = await result.json()
 
-        if(output.status == 'success') navigate('/login')
+        if (output.status == 'success') navigate('/login')
     }
 
-    return(
-        <div className="flex flex-col items-end h-full bg-[#000000] text-[#ffffff] pr-[85px] pt-[60px]">
-            <div className="flex flex-col fixed">
-                <div onClick={() => navigate(`/profile/${props.user}`)} className="text-[16px] cursor-pointer flex items-center mb-[60px]">
-                    <img className="w-[40px] h-[40px] rounded-[50%] border-[2px] border-[#660eb3]" src={props.img} alt=""/>
-                    <p className="ml-3">{props.user}</p>
-                </div>
-        
-                <div onClick={() => navigate('/home')} className="cursor-pointer flex items-center mb-[30px]">
-                    <FontAwesomeIcon className="text-[23px]" icon={faHome}/>
-                    <p className="ml-[15px] text-[20px]">Home</p>
+    return (
+        <div className="max-[500px]:m-0 max-[500px]:p-0 max-[600px]:pr-[20px] max-[1300px]:pr-[30px] flex flex-col items-end h-full bg-[#000000] text-[#ffffff] pr-[85px] pt-[50px]">
+            <div className="max-[370px]:pl-5 max-[370px]:pr-5 max-[500px]:bg-[#000000] max-[500px]:flex-row max-[500px]:justify-between max-[500px]:pb-3 max-[500px]:pr-10 max-[500px]:pt-3 max-[500px]:border-t-1 max-[500px]:border-[#808080] max-[500px]:pl-10 max-[500px]:w-[100vw] flex flex-col fixed max-[500px]:bottom-[0px]">
+                <div onClick={() => navigate(`/profile/${props.user}`)} className="max-[500px]:m-0 text-[16px] cursor-pointer flex items-center mb-[60px]">
+                    <img className="max-[500px]:w-[40px] max-[500px]:h-[40px] w-[50px] h-[50px] rounded-[50%] border-[2px] border-[#660eb3]" src={props.img} alt="" />
+                    
+                    {!for1300Width &&
+                        <p className="ml-3">{props.user}</p>
+                    }
                 </div>
 
-                <div onClick={() => props.setShowSearch(true)} className="cursor-pointer flex items-center mb-[30px]">
-                    <FontAwesomeIcon className="text-[23px]" icon={faSearch}/>
-                    <p className="ml-[15px] text-[20px]">Pesquisar</p>
+                <div onClick={() => navigate('/home')} className="max-[500px]:m-0 max-[1300px]:justify-center cursor-pointer flex items-center mb-[30px]">
+                    <FontAwesomeIcon className="text-[23px]" icon={faHome} />
+
+                    {!for1300Width &&
+                        <p className="ml-[15px] text-[20px]">Home</p>
+                    }
                 </div>
 
-                <div onClick={() => navigate('/notifications')} className="cursor-pointer flex items-center mb-[30px]">
+                <div onClick={() => props.setShowSearch(true)} className="max-[500px]:m-0 max-[1300px]:justify-center cursor-pointer flex items-center mb-[30px]">
+                    <FontAwesomeIcon className="text-[23px]" icon={faSearch} />
+
+                    {!for1300Width &&
+                        <p className="ml-[15px] text-[20px]">Pesquisar</p>
+                    }
+                </div>
+
+                <div onClick={() => navigate('/notifications')} className="max-[500px]:m-0 max-[1300px]:justify-center cursor-pointer flex items-center mb-[30px]">
                     <div className="flex items-center relative">
-                        <FontAwesomeIcon className="text-[25px]" icon={faBell}/>
-                        
+                        <FontAwesomeIcon className="text-[25px]" icon={faBell} />
+
                         {props.unreadMessages > 0 &&
                             <div className="flex items-center justify-center absolute bg-[#660eb3] p-1 rounded-[50%] w-[20px] h-[20px] left-[8px] top-[-5px]">
                                 <p className="text-[13px] text-center">{props.unreadMessages}</p>
                             </div>
                         }
                     </div>
-                    
-                    <p className="ml-[15px] text-[20px]">Notificações</p>
+
+                    {!for1300Width &&
+                        <p className="ml-[15px] text-[20px]">Notificações</p>
+                    }
                 </div>
-        
-                <div onClick={logout} className="flex items-center cursor-pointer">
-                    <FontAwesomeIcon className="text-[23px]" icon={faSignOut}/>
-                    <p className="ml-[15px] text-[20px]">Sair</p>
+
+                <div onClick={logout} className="max-[1300px]:justify-center flex items-center cursor-pointer">
+                    <FontAwesomeIcon className="text-[23px]" icon={faSignOut} />
+
+                    {!for1300Width &&
+                        <p className="ml-[15px] text-[20px]">Sair</p>
+                    }
                 </div>
             </div>
         </div>
-    )   
+    )
 }
 
 export default SideBar

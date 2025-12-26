@@ -3,11 +3,14 @@ import { useNavigate } from "react-router-dom"
 import ImageProfile from '../../assets/981d6b2e0ccb5e968a0618c8d47671da.jpg'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faUser } from "@fortawesome/free-solid-svg-icons"
+import { useMediaQuery } from "react-responsive"
 
 let timeout
 let controller
 
 const SearchInput = () => {
+    const for1080Width = useMediaQuery({ query: '(max-width: 1080px)' })
+
     const inputDiv = useRef(null)
     const [users, setUsers] = useState([])
     const [inputValue, setInputValue] = useState(null)
@@ -71,9 +74,11 @@ const SearchInput = () => {
     }
 
     return (
-        <div className="h-full bg-[#000000] text-[#ffffff] top-[0px] right-[0px] pl-[50px] pt-[45px] w-full">
+        <div className="max-[1300px]:pl-[30px] h-full bg-[#000000] text-[#ffffff] top-[0px] right-[0px] pl-[50px] pt-[50px] w-full">
             <div ref={inputDiv} onFocus={handleInput} className="fixed flex flex-col relative">
-                <input onKeyDown={handleEnter} ref={inputRef} onInput={handleInput} className="focus:outline-2 focus:outline-offset-2 focus:outline-none border-transparent border-2 rounded-[15px] focus:border-[#660eb3] max-w-[280px] w-full bg-[#0f0f0f] pt-3 pb-3 pr-5 pl-4" placeholder="Pesquisar" id="search" />
+                {!for1080Width &&
+                    <input onKeyDown={handleEnter} ref={inputRef} onInput={handleInput} className="focus:outline-2 focus:outline-offset-2 focus:outline-none border-transparent border-2 rounded-[15px] focus:border-[#660eb3] max-w-[280px] w-full bg-[#0f0f0f] pt-3 pb-3 pr-5 pl-4" placeholder="Pesquisar" id="search" />
+                }
 
                 {results &&
                     <div style={users.length > 5 ? { overflow: 'auto', height: '337px' } : { overflow: 'visible' }} id="result" className="absolute mt-17 bg-[#0f0f0f] max-w-[280px] w-full rounded-[15px]">

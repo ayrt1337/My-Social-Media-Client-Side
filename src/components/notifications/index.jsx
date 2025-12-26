@@ -4,8 +4,12 @@ import { useState, useEffect } from "react"
 import ImageProfile from '../../assets/981d6b2e0ccb5e968a0618c8d47671da.jpg'
 import { useNavigate } from "react-router-dom"
 import SearchOverlay from "../searchOverlay"
+import { useMediaQuery } from "react-responsive"
 
 const Notifications = () => {
+    const for765Width = useMediaQuery({ query: '(max-width: 765px)' })
+    const for500Width = useMediaQuery({ query: '(max-width: 499px)' })
+
     const [showLoading, setShowLoading] = useState(true)
     const [user, setUser] = useState('')
     const [img, setImg] = useState(ImageProfile)
@@ -97,11 +101,13 @@ const Notifications = () => {
                         <SearchOverlay setShowSearch={setShowSearch} />
                     }
 
-                    <div className="grid grid-cols-[1fr_1.1fr_1fr]">
-                        <SideBar setShowSearch={setShowSearch} img={img} user={user} />
+                    <div className="grid max-[500px]:flex max-[500px]:flex-col max-[500px]:justify-between max-[600px]:grid-cols-[0.7fr_3fr] max-[1080px]:grid-cols-[1fr_3fr_1fr] max-[1300px]:grid-cols-[0.7fr_3fr_1.7fr] grid-cols-[1fr_1.1fr_1fr]">
+                        {!for500Width &&
+                            <SideBar setShowSearch={setShowSearch} img={img} user={user} />
+                        }
 
-                        <div className="bg-[#000000] text-[#ffffff] w-full">
-                            <div className="border-[#808080] border-1 border-b-0 min-h-[100vh] pt-[50px]">
+                        <div className="bg-[#000000] text-[#ffffff] w-full max-[500px]:pb-[64px]">
+                            <div className="max-[500px]:min-h-[0px] max-[500px]:border-0 max-[600px]:border-r-0 border-[#808080] border-1 border-b-0 min-h-[100vh] pt-[50px]">
                                 <div>
                                     <h1 className="mt-[10px] text-[23px] font-semibold ml-7 mb-6">Notificações</h1>
                                 </div>
@@ -143,7 +149,13 @@ const Notifications = () => {
                             </div>
                         </div>
 
-                        <SearchInput />
+                        {!for765Width &&
+                            <SearchInput />
+                        }
+
+                        {for500Width &&
+                            <SideBar setShowSearch={setShowSearch} img={img} user={user} />
+                        }
                     </div>
                 </>
             }

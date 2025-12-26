@@ -8,8 +8,12 @@ import { useParams, useNavigate } from 'react-router-dom'
 import Textarea from '../textarea'
 import Comment from '../comment'
 import SearchOverlay from '../searchOverlay'
+import { useMediaQuery } from "react-responsive"
 
 const Post = () => {
+    const for765Width = useMediaQuery({ query: '(max-width: 765px)' })
+    const for500Width = useMediaQuery({ query: '(max-width: 499px)' })
+
     const [showLoading, setShowLoading] = useState(true)
     const [user, setUser] = useState('')
     const [img, setImg] = useState(ImageProfile)
@@ -176,11 +180,13 @@ const Post = () => {
                         <SearchOverlay setShowSearch={setShowSearch} />
                     }
 
-                    <div className="grid grid-cols-[1fr_1.1fr_1fr]">
-                        <SideBar setShowSearch={setShowSearch} unreadMessages={unreadMessages} img={img} user={user} />
+                    <div className="grid max-[500px]:flex max-[500px]:flex-col max-[500px]:justify-between max-[761px]:grid-cols-[0.7fr_3fr] max-[1080px]:grid-cols-[1fr_3fr_1fr] max-[1300px]:grid-cols-[0.7fr_3fr_1.7fr] grid-cols-[1fr_1.1fr_1fr]">
+                        {!for500Width &&
+                            <SideBar unreadMessages={unreadMessages} setShowSearch={setShowSearch} img={img} user={user} />
+                        }
 
-                        <div className="bg-[#000000] text-[#ffffff] w-full">
-                            <div className="border-[#808080] border-1 border-b-0 min-h-[100vh] pt-[25px]">
+                        <div className="bg-[#000000] text-[#ffffff] w-full max-[500px]:pb-[64px]">
+                            <div className="max-[500px]:min-h-[0px] max-[500px]:border-0 max-[600px]:border-r-0 border-[#808080] border-1 border-b-0 min-h-[100vh] pt-[50px]">
                                 {notFound &&
                                     <div className="p-[30px] pt-[100px] flex flex-col items-center">
                                         <h1 className="font-semibold text-[30px]">Este post não existe</h1>
@@ -196,7 +202,7 @@ const Post = () => {
                                         </div>
 
                                         <div className="flex w-full wrap-anywhere p-7 pt-10 pb-8 border-1 border-t-0 border-l-0 border-r-0 border-[#808080]">
-                                            <img onClick={() => navigate(`/profile/${post.user}`)} className="cursor-pointer border-[2px] border-[#660eb3] w-[70px] h-[70px] rounded-[50%]" src={post.profileImg == null ? ImageProfile : post.profileImg} alt="" />
+                                            <img onClick={() => navigate(`/profile/${post.user}`)} className="max-[500px]:w-[55px] max-[500px]:h-[55px] cursor-pointer border-[2px] border-[#660eb3] w-[70px] h-[70px] rounded-[50%]" src={post.profileImg == null ? ImageProfile : post.profileImg} alt="" />
 
                                             <div className="ml-3 mt-1">
                                                 <p onClick={() => navigate(`/profile/${post.user}`)} className="text-[18px] mb-1 font-semibold cursor-pointer">{post.user}</p>
@@ -269,7 +275,13 @@ const Post = () => {
                             </div>
                         </div>
 
-                        <SearchInput />
+                        {!for765Width &&
+                            <SearchInput />
+                        }
+
+                        {for500Width &&
+                            <SideBar setShowSearch={setShowSearch} unreadMessages={unreadMessages} img={img} user={user} />
+                        }
                     </div>
                 </>
             }

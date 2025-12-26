@@ -6,10 +6,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useState, useId } from 'react'
 import { useNavigate } from 'react-router-dom'
 import ImageProfile from '../../assets/981d6b2e0ccb5e968a0618c8d47671da.jpg'
+import { useMediaQuery } from 'react-responsive'
 
 library.add(fas, far, fab)
 
 const Posts = props => {
+    const for380Width = useMediaQuery({ query: '(max-width: 380px)' })
+
     const [icon, setIcon] = useState(props.post.isLiked == true ? 'fa-solid fa-heart' : 'fa-regular fa-heart')
     const words = props.post.text.split(' ')
     const _id = useId()
@@ -56,21 +59,29 @@ const Posts = props => {
             <img onClick={(e) => {
                 e.stopPropagation()
                 navigate(`/profile/${props.post.user}`)
-            }} className="border-[2px] border-[#660eb3] w-[55px] h-[55px] rounded-[50%]" src={props.post.profileImg == null ? ImageProfile : props.post.profileImg} alt="" />
+            }} className="max-[500px]:h-[45px] max-[500px]:w-[45px] border-[2px] border-[#660eb3] w-[55px] h-[55px] rounded-[50%]" src={props.post.profileImg == null ? ImageProfile : props.post.profileImg} alt="" />
 
             <div className="ml-3 mt-[2px]">
-                <div className="flex">
+                <div className="flex max-[380px]:flex-col">
                     <p onClick={(e) => {
                         e.stopPropagation()
                         navigate(`/profile/${props.post.user}`)
-                    }} className="mb-1 font-semibold max-w-[150px]">{props.post.user}</p>
+                    }} className="max-[380px]:mb-[2px] mb-1 font-semibold max-w-[150px] max-[500px]:text-[15px]">{props.post.user}</p>                    
 
-                    {'\u00A0'}
+                    {!for380Width &&
+                        <>
+                            {'\u00A0'}
+                        
+                            <p className="text-[#cccccc] text-[15px] max-[500px]:text-[14px]">· {props.post.createdAt}</p>
+                        </>
+                    }
 
-                    <p className="text-[#cccccc] text-[15px]">· {props.post.createdAt}</p>
+                    {for380Width &&
+                        <p className="mb-2 text-[#cccccc] text-[15px] max-[500px]:text-[14px]">{props.post.createdAt}</p>
+                    }
                 </div>
 
-                <p>
+                <p className='max-[500px]:text-[15px]'>
                     {
                         words.map((element) => {
                             if (element.includes('@'))
