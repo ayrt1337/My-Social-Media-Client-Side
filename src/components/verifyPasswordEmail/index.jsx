@@ -133,11 +133,11 @@ const VerifyPassword = () => {
         <>
             {(!showLoading) &&
                 <>
-                    <div className="flex flex-col items-center bg-[#0f0f0f] h-full justify-center">
+                    <div className="max-[531px]:bg-[#000000] flex flex-col items-center bg-[#0f0f0f] h-full justify-center">
                         {showInputs &&
-                            <div className="text-center flex flex-col items-center justify-between bg-[#000000] rounded-[15px] pl-10 pr-10 text-[#FFFFFF]">
-                                <div className="text-[15px] flex flex-col items-center m-10 mb-15 mt-16 w-full">
-                                    <h1 className="text-[22px] mb-8">Insira abaixo a senha nova</h1>
+                            <div className="max-[430px]:pr-5 max-[430px]:pl-5 max-[531px]:w-full text-center flex flex-col items-center justify-between bg-[#000000] rounded-[15px] pl-10 pr-10 text-[#FFFFFF]">
+                                <div className="max-[430px]:m-8 text-[15px] flex flex-col items-center m-10 mb-14 mt-14 w-full">
+                                    <h1 className="text-[20px] mb-6">Insira abaixo a nova senha</h1>
 
                                     <div className="error flex mb-5 items-center hidden">
                                         <div className="flex p-3 mr-2 bg-[#e30e2a] rounded-[50%] size-[15px] items-center justify-center">
@@ -183,31 +183,31 @@ const VerifyPassword = () => {
                                         </div>
                                     </div>
 
-                                    <a onClick={submitData} className="text-[16px] font-semibold bg-[#660eb3] pb-4 pt-4 pl-25 pr-25 rounded-[20px] cursor-pointer">
-                                        Trocar senha
+                                    <a onClick={submitData} className="text-[16px] font-semibold bg-[#660eb3] pb-3 pt-3 pl-12 pr-12 rounded-[20px] cursor-pointer">
+                                        Alterar senha
                                     </a>
                                 </div>
                             </div>
                         }
 
                         {(!showError && !showInputs) &&
-                            <div className="relative text-center flex flex-col items-center justify-between bg-[#000000] rounded-[15px] p-12 text-[#FFFFFF]">
-                                <img className='size-[230px] h-full' src={Checked} alt="" />
+                            <div className="max-[590px]:pr-8 max-[590px]:pl-8 max-[590px]:rounded-[0px] max-[590px]:w-full max-[590px]:h-full relative text-center flex flex-col items-center justify-center bg-[#000000] rounded-[15px] p-17 pb-14 pt-14 text-[#FFFFFF]">
+                                <img className='max-[590px]:size-[180px] size-[200px]' src={Checked} alt="" />
                                                             
                                 <div className="flex flex-col items-center">
-                                    <h1 className="text-[35px] mb-0 mt-3">Senha alterada!</h1>
-                                    <h1 className="text-[20px] mb-3 mt-3">Você será redirecionado para o login em breve.</h1>
+                                    <h1 className="max-[590px]:text-[24px] text-[28px] mb-0 mt-6">Senha alterada!</h1>
+                                    <h1 className="max-[590px]:text-[17px] text-[18px] mb-3 mt-3">Você será redirecionado para o login em breve.</h1>
                                 </div>
                             </div>
                         }
                         
                         {(showError && !showInputs) &&
-                            <div className="relative text-center flex flex-col items-center justify-between bg-[#000000] rounded-[15px] p-12 text-[#FFFFFF]">
-                                <img className='size-[230px] h-full' src={Error} alt="" />
+                            <div className="max-[590px]:pr-8 max-[590px]:pl-8 max-[590px]:rounded-[0px] max-[590px]:w-full max-[590px]:h-full relative text-center flex flex-col items-center justify-center bg-[#000000] rounded-[15px] p-17 pb-14 pt-14 text-[#FFFFFF]">
+                                <img className='max-[590px]:size-[180px] size-[200px]' src={Error} alt="" />
                                                             
                                 <div className="flex flex-col items-center">
-                                    <h1 className="text-[35px] mb-0 mt-3">Algo inesperado aconteceu...</h1>
-                                    <h1 className="text-[20px] mb-3 mt-3">Tente realizar a troca de senha novamente.</h1>
+                                    <h1 className="max-[590px]:text-[24px] text-[28px] mb-0 mt-6">Algo inesperado aconteceu...</h1>
+                                    <h1 className="max-[590px]:text-[17px] text-[18px] mb-3 mt-3">Tente realizar a troca de senha novamente.</h1>
                                 </div>
                             </div>
                         }

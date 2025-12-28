@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom"
 const NewUser = () => {
     const [user, setUser] = useState(null)
     const [showTerms, setShowTerms] = useState(false)
-    const [showLoading, setShowLoading] = useState(true)
+    const [showLoading, setShowLoading] = useState(false)
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -152,12 +152,12 @@ const NewUser = () => {
             {!showLoading &&
                 <>
                     {!showTerms &&
-                        <div className="flex flex-col items-center bg-[#0f0f0f] h-full justify-center">
-                            <div className="text-[15px] flex flex-col items-center justify-between bg-[#000000] rounded-[15px] pr-5 pl-5 pt-18 pb-14 text-[#FFFFFF]">
+                        <div className="max-[611px]:bg-[#000000] flex flex-col items-center bg-[#0f0f0f] h-full justify-center">
+                            <div className="max-[611px]:w-full text-[15px] flex flex-col items-center justify-between bg-[#000000] rounded-[15px] pr-5 pl-5 pt-18 pb-14 text-[#FFFFFF]">
                                 <div className="flex flex-col items-center w-full">
-                                    <div className="relative text-center flex flex-col items-center justify-between bg-[#000000] rounded-[15px] pl-12 pr-12 pb-10 text-[#FFFFFF] w-[500px]">
+                                    <div className="max-[500px]:pr-5 max-[500px]:pl-5 max-[611px]:w-full relative text-center flex flex-col items-center justify-between bg-[#000000] rounded-[15px] pl-12 pr-12 pb-10 text-[#FFFFFF] w-[500px]">
                                         <div className="flex flex-col items-center">
-                                            <h1 className="text-[30px]">Como você quer que os outros te chamem?</h1>
+                                            <h1 className="max-[500px]:text-[25px] text-[30px]">Como você quer que os outros te chamem?</h1>
                                         </div>
                                     </div>
 
@@ -201,13 +201,13 @@ const NewUser = () => {
                                         <p className="text-[#e30e2a]">Usuário muito curto!</p>
                                     </div>
 
-                                    <div className="flex w-auto flex-col">
+                                    <div className="max-[500px]:pr-4 max-[500px]:pl-4 max-[611px]:pr-7 max-[611px]:pl-7 max-[611px]:w-full flex w-auto flex-col">
                                         <div className="flex w-full items-center text-center justify-center mb-3">
                                             <label className="border-r-0 border-transparent border-2 pl-5 rounded-r-[0px] rounded-[7px] bg-[#0f0f0f] h-full flex items-center" htmlFor="user"><FontAwesomeIcon icon={faUser} /></label>
-                                            <input onKeyDown={verifyUser} onFocus={handleFocus} onBlur={handleBlur} className="focus:outline-2 focus:outline-offset-2 focus:outline-none border-l-0 border-transparent border-2 focus:border-b-[#660eb3] focus:border-t-[#660eb3] focus:border-r-[#660eb3] w-[400px] bg-[#0f0f0f] rounded-l-[0px] rounded-[7px] pt-3 pb-3 pr-5 pl-3" type="text" placeholder="Usuário" id="user"/>
+                                            <input onKeyDown={verifyUser} onFocus={handleFocus} onBlur={handleBlur} className="max-[611px]:w-full focus:outline-2 focus:outline-offset-2 focus:outline-none border-l-0 border-transparent border-2 focus:border-b-[#660eb3] focus:border-t-[#660eb3] focus:border-r-[#660eb3] w-[400px] bg-[#0f0f0f] rounded-l-[0px] rounded-[7px] pt-3 pb-3 pr-5 pl-3" type="text" placeholder="Usuário" id="user"/>
                                         </div>
 
-                                        <div className="ml-[5px] w-[430px] mt-[10px]">
+                                        <div className="ml-[5px] mt-[10px]">
                                             <h1>Lembre-se:</h1>
 
                                             <ul className="list-disc ml-[20px] mt-[15px]">
@@ -242,7 +242,7 @@ const NewUser = () => {
                                         </div>
                                     </div>
 
-                                    <a onClick={verifyUser} className="font-semibold text-[16px] bg-[#660eb3] pb-4 pt-4 pl-20 pr-20 mb-5 mt-10 rounded-[20px] cursor-pointer">
+                                    <a onClick={verifyUser} className="max-[500px]:pr-15 max-[500px]:pl-15 font-semibold text-[16px] bg-[#660eb3] pb-4 pt-4 pl-20 pr-20 mb-5 mt-10 rounded-[20px] cursor-pointer">
                                         Continuar
                                     </a>
                                 </div>
@@ -251,10 +251,10 @@ const NewUser = () => {
                     }
 
                     {showTerms &&
-                        <div className="flex flex-col items-center bg-[#0f0f0f] h-full justify-center">
-                            <div className="w-[600px] text-center text-[20px] flex flex-col items-center justify-between bg-[#000000] rounded-[15px] pr-15 pl-15 pt-18 pb-14 text-[#FFFFFF]">
-                                <p>Este website foi criado apenas com o propósito de ser adicionado a um portfólio pessoal, esta iniciativa não busca nenhum tipo de retorno financeiro, mais informações sobre o código fonte podem ser acessadas em <span className="text-[#660eb3]">//github link</span>, reportem quaisquer vulnerabilidades ou bugs pelo email <span className="text-[#660eb3]">ayrttalon@gmail.com</span> ou pelo meu instagram <span className="text-[#660eb3]">@ayrt1337</span></p>
-                                <a onClick={updateUser} className="font-semibold text-[16px] bg-[#660eb3] pb-4 pt-4 pl-20 pr-20 mt-10 rounded-[20px] cursor-pointer">
+                        <div className="max-[671px]:bg-[#000000] flex flex-col items-center bg-[#0f0f0f] h-full justify-center">
+                            <div className="max-[536px]:pl-8 max-[536px]:pr-8 max-[671px]:w-full w-[600px] text-center text-[20px] flex flex-col items-center justify-between bg-[#000000] rounded-[15px] pr-15 pl-15 pt-18 pb-14 text-[#FFFFFF]">
+                                <p className="max-[536px]:text-[17px]">Esta aplicação foi criada apenas com o propósito de ser adicionada a um portfólio pessoal, esta iniciativa não busca nenhum tipo de retorno financeiro, mais informações sobre o código fonte podem ser acessadas em <span className="text-[#660eb3]">//github link</span>, reportem quaisquer vulnerabilidades ou bugs pelo email <span className="text-[#660eb3]">ayrttalon@gmail.com</span> ou pelo meu instagram <span className="text-[#660eb3]">@ayrt1337</span></p>
+                                <a onClick={updateUser} className="max-[536px]:pl-15 max-[536px]:pr-15 font-semibold text-[16px] bg-[#660eb3] pb-4 pt-4 pl-20 pr-20 mt-10 rounded-[20px] cursor-pointer">
                                     Continuar
                                 </a>
                             </div>

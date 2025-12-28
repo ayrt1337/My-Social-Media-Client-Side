@@ -26,7 +26,7 @@ const VerifyEmail = () => {
 
             const output = await result.json()
 
-            if(output.status == 'success'){
+            if (output.status == 'success') {
                 setShowLoading(false)
 
                 setTimeout(() => {
@@ -34,7 +34,7 @@ const VerifyEmail = () => {
                 }, 2000)
             }
 
-            else{
+            else {
                 setShowLoading(false)
                 setShowError(true)
             }
@@ -43,36 +43,36 @@ const VerifyEmail = () => {
         verifyToken()
     }, [])
 
-    return(
+    return (
         <>
             {showLoading &&
                 <div className="flex flex-col items-center bg-[#0f0f0f] h-full justify-center">
                     <div className="animate-spin inline-block size-20 border-5 border-current border-t-transparent text-[#660eb3] rounded-full dark:text-[#660eb3]" role="status" aria-label="loading">
                         <span className="sr-only">Loading...</span>
                     </div>
-                </div>    
+                </div>
             }
 
             {!showLoading &&
                 <div className="flex flex-col items-center bg-[#0f0f0f] h-full justify-center">
                     {!showError &&
-                        <div className="relative text-center flex flex-col items-center justify-between bg-[#000000] rounded-[15px] p-12 text-[#FFFFFF]">
-                            <img className='size-[230px] h-full' src={Checked} alt="" />
-                                    
+                        <div className="max-[590px]:pr-8 max-[590px]:pl-8 max-[590px]:rounded-[0px] max-[590px]:w-full max-[590px]:h-full relative text-center flex flex-col items-center justify-center bg-[#000000] rounded-[15px] p-17 pb-14 pt-14 text-[#FFFFFF]">
+                            <img className='max-[590px]:size-[180px] size-[200px]' src={Checked} alt="" />
+
                             <div className="flex flex-col items-center">
-                                <h1 className="text-[35px] mb-0 mt-3">Conta cadastrada!</h1>
-                                <h1 className="text-[20px] mb-3 mt-3">Você será redirecionado para o login em breve.</h1>
+                                <h1 className="max-[590px]:text-[24px] text-[28px] mb-0 mt-6">Conta Cadastrada!</h1>
+                                <h1 className="max-[590px]:text-[17px] text-[18px] mb-3 mt-3">Você será redirecionado para o login em breve.</h1>
                             </div>
                         </div>
                     }
 
                     {showError &&
-                        <div className="relative text-center flex flex-col items-center justify-between bg-[#000000] rounded-[15px] p-12 text-[#FFFFFF]">
-                            <img className='size-[230px] h-full' src={Error} alt="" />
-                                    
+                        <div className="max-[590px]:pr-8 max-[590px]:pl-8 max-[590px]:rounded-[0px] max-[590px]:w-full max-[590px]:h-full relative text-center flex flex-col items-center justify-center bg-[#000000] rounded-[15px] p-17 pb-14 pt-14 text-[#FFFFFF]">
+                            <img className='max-[590px]:size-[180px] size-[200px]' src={Error} alt="" />
+
                             <div className="flex flex-col items-center">
-                                <h1 className="text-[35px] mb-0 mt-3">Algo inesperado aconteceu...</h1>
-                                <h1 className="text-[20px] mb-3 mt-3">Tente realizar o cadastro novamente.</h1>
+                                <h1 className="max-[590px]:text-[24px] text-[28px] mb-0 mt-6">Algo inesperado aconteceu...</h1>
+                                <h1 className="max-[590px]:text-[17px] text-[18px] mb-3 mt-3">Tente realizar o cadastro novamente.</h1>
                             </div>
                         </div>
                     }

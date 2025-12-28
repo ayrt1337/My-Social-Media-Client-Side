@@ -117,8 +117,8 @@ const Login = () => {
     }
 
     return(
-        <div className="flex flex-col items-center bg-[#0f0f0f] h-full justify-center">
-            <div className="text-center flex flex-col items-center justify-between bg-[#000000] rounded-[15px] pb-13 pl-10 pr-10 text-[#FFFFFF]">
+        <div className="max-[581px]:bg-[#000000] flex flex-col items-center bg-[#0f0f0f] h-full justify-center">
+            <div className="max-[460px]:pr-7 max-[460px]:pl-7 max-[581px]:w-full text-center flex flex-col items-center justify-between bg-[#000000] rounded-[15px] pb-13 pl-10 pr-10 text-[#FFFFFF]">
                 <div className="flex flex-col items-center m-10 w-full text-[15px]">
                     <img src={Image} className="max-w-[300px]"></img>
 
@@ -172,7 +172,7 @@ const Login = () => {
                         <Link to={'/reset'} className="cursor-pointer">Esqueceu a Senha?</Link>
                     </div>
 
-                    <a onClick={submitData} className="text-[16px] font-semibold bg-[#660eb3] pb-4 pt-4 pl-25 pr-25 rounded-[20px] cursor-pointer">
+                    <a onClick={submitData} className="max-[460px]:pl-15 max-[460px]:pr-15 text-[16px] font-semibold bg-[#660eb3] pb-4 pt-4 pl-25 pr-25 rounded-[20px] cursor-pointer">
                         Login
                     </a>
                 </div>
