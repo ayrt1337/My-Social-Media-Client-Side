@@ -18,7 +18,9 @@ import { useMediaQuery } from "react-responsive"
 
 const Profile = () => {
     const for800Width = useMediaQuery({ query: '(max-width: 800px)' })
+    const for530Width = useMediaQuery({ query: '(max-width: 530px)' })
     const for500Width = useMediaQuery({ query: '(max-width: 499px)' })
+    const for390Width = useMediaQuery({ query: '(max-width: 390px)' })
 
     const [showLoading, setShowLoading] = useState(true)
     const [userName, setUserName] = useState('')
@@ -576,9 +578,9 @@ const Profile = () => {
                         <>
                             <div className="absolute h-screen w-screen bg-[#808080] z-10 opacity-30"></div>
 
-                            <div className="max-[734px]:pr-10 max-[734px]:pl-10 flex justify-center w-full absolute z-998 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                            <div className="max-[531px]:pl-3 max-[531px]:pr-3 max-[586px]:pr-7 max-[586px]:pl-7  max-[734px]:pr-10 max-[734px]:pl-10 flex justify-center w-full absolute z-998 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                                 <div className="max-[734px]:w-full text-[#ffffff] w-[600px] h-[480px] overflow-auto bg-[#000000] rounded-[10px]">
-                                    <div className="flex flex-col p-7 pt-5 justify-between">
+                                    <div className="max-[391px]:pr-5 max-[391px]:pl-5  flex flex-col p-7 pt-5 justify-between">
                                         <div className="flex items-center justify-between w-full mb-3">
                                             <h1 className="text-[18px]">Seguidores</h1>
 
@@ -607,36 +609,79 @@ const Profile = () => {
                                                     {(inputFollowers.current.value.length == 0) &&
                                                         followers.map((element, index) => {
                                                             return (
-                                                                <div onClick={() => window.location.href = `/profile/${element.user}`} className="cursor-pointer flex items-center justify-between mt-7" key={index}>
-                                                                    <div className="flex items-center">
-                                                                        <img className="w-[50px] h-[50px] rounded-[50%] border-[2px] border-[#660eb3]" src={element.profileImg == null ? ImageProfile : element.profileImg} alt="" />
-
-                                                                        <div className="ml-1">
+                                                                <div onClick={() => window.location.href = `/profile/${element.user}`} className="max-[531px]:justify-start max-[531px]:items-start cursor-pointer flex items-center justify-between mt-7" key={index}>
+                                                                    {!for530Width &&
+                                                                        <>
                                                                             <div className="flex items-center">
-                                                                                <p className="ml-3">{element.user}</p>
+                                                                                <img className="size-[50px] rounded-[50%] border-[2px] border-[#660eb3]" src={element.profileImg == null ? ImageProfile : element.profileImg} alt="" />
 
-                                                                                {element.isFollowingMe &&
-                                                                                    <p className="text-[14px] ml-1 bg-[#0f0f0f] rounded-[5px] p-[2px] pl-2 pr-2">Segue você</p>
-                                                                                }
+                                                                                <div className="ml-1">
+                                                                                    <div className="flex items-center">
+                                                                                        <p className="ml-3">{element.user}</p>
+
+                                                                                        {element.isFollowingMe &&
+                                                                                            <p className="text-[14px] ml-1 bg-[#0f0f0f] rounded-[5px] p-[2px] pl-2 pr-2">Segue você</p>
+                                                                                        }
+                                                                                    </div>
+
+                                                                                    <p className="max-[586px]:mr-3 ml-3 text-[15px]">{element.bio.length <= 30 ? element.bio : element.bio.substring(0, 27) + '...'}</p>
+                                                                                </div>
                                                                             </div>
 
-                                                                            <p className="ml-3 text-[15px]">{element.bio.length <= 30 ? element.bio : element.bio.substring(0, 27) + '...'}</p>
-                                                                        </div>
-                                                                    </div>
+                                                                            {(element.isFollowing && element.user != userName) &&
+                                                                                <p onClick={(e) => {
+                                                                                    e.stopPropagation()
+                                                                                    handleFollow(element._id, e)
+                                                                                }} className="btnFollow cursor-pointer border-2 border-[#660eb3] rounded-[10px] pl-[15px] pr-[15px] pt-[5px] pb-[5px]">Seguindo</p>
+                                                                            }
 
-
-                                                                    {(element.isFollowing && element.user != userName) &&
-                                                                        <p onClick={(e) => {
-                                                                            e.stopPropagation()
-                                                                            handleFollow(element._id, e)
-                                                                        }} className="btnFollow cursor-pointer border-2 border-[#660eb3] rounded-[10px] pl-[15px] pr-[15px] pt-[5px] pb-[5px]">Seguindo</p>
+                                                                            {(!element.isFollowing && element.user != userName) &&
+                                                                                <p onClick={(e) => {
+                                                                                    e.stopPropagation()
+                                                                                    handleFollow(element._id, e)
+                                                                                }} className="btnFollow bg-[#660eb3] cursor-pointer border-2 border-[#660eb3] rounded-[10px] pl-[15px] pr-[15px] pt-[5px] pb-[5px]">Seguir</p>
+                                                                            }
+                                                                        </>
                                                                     }
 
-                                                                    {(!element.isFollowing && element.user != userName) &&
-                                                                        <p onClick={(e) => {
-                                                                            e.stopPropagation()
-                                                                            handleFollow(element._id, e)
-                                                                        }} className="btnFollow bg-[#660eb3] cursor-pointer border-2 border-[#660eb3] rounded-[10px] pl-[15px] pr-[15px] pt-[5px] pb-[5px]">Seguir</p>
+                                                                    {for530Width &&
+                                                                        <>
+                                                                            <img className="size-[50px] rounded-[50%] border-[2px] border-[#660eb3]" src={element.profileImg == null ? ImageProfile : element.profileImg} alt="" />
+
+                                                                            <div className="w-full">
+                                                                                <div className="w-full flex justify-between items-start">
+                                                                                    <div className="flex flex-col items-start">
+                                                                                        {!for390Width &&
+                                                                                            <p className="ml-3">{element.user}</p>
+                                                                                        }
+
+                                                                                        {for390Width &&
+                                                                                            <p className="ml-3">{element.user.length > 8 ? element.user.substring(0, 8) + '...' : element.user}</p>
+                                                                                        }
+
+                                                                                        {element.isFollowingMe &&
+                                                                                            <p className="mt-[1px] ml-[8px] text-[14px] bg-[#0f0f0f] rounded-[5px] p-[2px] pl-2 pr-2">Segue você</p>
+                                                                                        }
+                                                                                    </div>
+
+                                                                                    {(element.isFollowing && element.user != userName) &&
+                                                                                        <p onClick={(e) => {
+                                                                                            e.stopPropagation()
+                                                                                            handleFollow(element._id, e)
+                                                                                        }} className="btnFollow text-[15px] cursor-pointer border-2 border-[#660eb3] rounded-[10px] pl-[15px] pr-[15px] pt-[5px] pb-[5px]">Seguindo</p>
+                                                                                    }
+
+                                                                                    {(!element.isFollowing && element.user != userName) &&
+                                                                                        <p onClick={(e) => {
+                                                                                            e.stopPropagation()
+                                                                                            handleFollow(element._id, e)
+                                                                                        }} className="btnFollow bg-[#660eb3] cursor-pointer border-2 border-[#660eb3] rounded-[10px] text-[15px] pl-[15px] pr-[15px] pt-[5px] pb-[5px]">Seguir</p>
+                                                                                    }
+                                                                                </div>
+
+                                                                                <p className="mt-[5px] ml-3 text-[15px]">{element.bio.length <= 30 ? element.bio : element.bio.substring(0, 27) + '...'}</p>
+                                                                            </div>
+                                                                        </>
                                                                     }
                                                                 </div>
                                                             )
@@ -654,36 +699,79 @@ const Profile = () => {
                                             {(filteredFollowers.length > 0) &&
                                                 filteredFollowers.map((element, index) => {
                                                     return (
-                                                        <div onClick={() => window.location.href = `/profile/${element.user}`} className="cursor-pointer flex items-center justify-between mt-7" key={index}>
-                                                            <div className="flex items-center">
-                                                                <img className="border-[2px] border-[#660eb3] w-[50px] h-[50px] rounded-[50%]" src={element.profileImg == null ? ImageProfile : element.profileImg} alt="" />
-
-                                                                <div className="ml-1">
+                                                        <div onClick={() => window.location.href = `/profile/${element.user}`} className="max-[531px]:justify-start max-[531px]:items-start cursor-pointer flex items-center justify-between mt-7" key={index}>
+                                                            {!for530Width &&
+                                                                <>
                                                                     <div className="flex items-center">
-                                                                        <p className="ml-3">{element.user}</p>
+                                                                        <img className="size-[50px] rounded-[50%] border-[2px] border-[#660eb3]" src={element.profileImg == null ? ImageProfile : element.profileImg} alt="" />
 
-                                                                        {element.isFollowingMe &&
-                                                                            <p className="text-[14px] ml-1 bg-[#0f0f0f] rounded-[5px] p-[2px] pl-2 pr-2">Segue você</p>
-                                                                        }
+                                                                        <div className="ml-1">
+                                                                            <div className="flex items-center">
+                                                                                <p className="ml-3">{element.user}</p>
+
+                                                                                {element.isFollowingMe &&
+                                                                                    <p className="text-[14px] ml-1 bg-[#0f0f0f] rounded-[5px] p-[2px] pl-2 pr-2">Segue você</p>
+                                                                                }
+                                                                            </div>
+
+                                                                            <p className="max-[586px]:mr-3 ml-3 text-[15px]">{element.bio.length <= 30 ? element.bio : element.bio.substring(0, 27) + '...'}</p>
+                                                                        </div>
                                                                     </div>
 
-                                                                    <p className="ml-3 text-[15px]">{element.bio.length <= 30 ? element.bio : element.bio.substring(0, 27) + '...'}</p>
-                                                                </div>
-                                                            </div>
+                                                                    {(element.isFollowing && element.user != userName) &&
+                                                                        <p onClick={(e) => {
+                                                                            e.stopPropagation()
+                                                                            handleFollow(element._id, e)
+                                                                        }} className="btnFollow cursor-pointer border-2 border-[#660eb3] rounded-[10px] pl-[15px] pr-[15px] pt-[5px] pb-[5px]">Seguindo</p>
+                                                                    }
 
-
-                                                            {(element.isFollowing && element.user != userName) &&
-                                                                <p onClick={(e) => {
-                                                                    e.stopPropagation()
-                                                                    handleFollow(element._id, e)
-                                                                }} className="btnFollow cursor-pointer border-2 border-[#660eb3] rounded-[10px] pl-[15px] pr-[15px] pt-[5px] pb-[5px]">Seguindo</p>
+                                                                    {(!element.isFollowing && element.user != userName) &&
+                                                                        <p onClick={(e) => {
+                                                                            e.stopPropagation()
+                                                                            handleFollow(element._id, e)
+                                                                        }} className="btnFollow bg-[#660eb3] cursor-pointer border-2 border-[#660eb3] rounded-[10px] pl-[15px] pr-[15px] pt-[5px] pb-[5px]">Seguir</p>
+                                                                    }
+                                                                </>
                                                             }
 
-                                                            {(!element.isFollowing && element.user != userName) &&
-                                                                <p onClick={(e) => {
-                                                                    e.stopPropagation()
-                                                                    handleFollow(element._id, e)
-                                                                }} className="btnFollow bg-[#660eb3] cursor-pointer border-2 border-[#660eb3] rounded-[10px] pl-[15px] pr-[15px] pt-[5px] pb-[5px]">Seguir</p>
+                                                            {for530Width &&
+                                                                <>
+                                                                    <img className="size-[50px] rounded-[50%] border-[2px] border-[#660eb3]" src={element.profileImg == null ? ImageProfile : element.profileImg} alt="" />
+
+                                                                    <div className="w-full">
+                                                                        <div className="w-full flex justify-between items-start">
+                                                                            <div className="flex flex-col items-start">
+                                                                                {!for390Width &&
+                                                                                    <p className="ml-3">{element.user}</p>
+                                                                                }
+
+                                                                                {for390Width &&
+                                                                                    <p className="ml-3">{element.user.length > 8 ? element.user.substring(0, 8) + '...' : element.user}</p>
+                                                                                }
+
+                                                                                {element.isFollowingMe &&
+                                                                                    <p className="mt-[1px] ml-[8px] text-[14px] bg-[#0f0f0f] rounded-[5px] p-[2px] pl-2 pr-2">Segue você</p>
+                                                                                }
+                                                                            </div>
+
+                                                                            {(element.isFollowing && element.user != userName) &&
+                                                                                <p onClick={(e) => {
+                                                                                    e.stopPropagation()
+                                                                                    handleFollow(element._id, e)
+                                                                                }} className="btnFollow text-[15px] cursor-pointer border-2 border-[#660eb3] rounded-[10px] pl-[15px] pr-[15px] pt-[5px] pb-[5px]">Seguindo</p>
+                                                                            }
+
+                                                                            {(!element.isFollowing && element.user != userName) &&
+                                                                                <p onClick={(e) => {
+                                                                                    e.stopPropagation()
+                                                                                    handleFollow(element._id, e)
+                                                                                }} className="btnFollow bg-[#660eb3] cursor-pointer border-2 border-[#660eb3] rounded-[10px] text-[15px] pl-[15px] pr-[15px] pt-[5px] pb-[5px]">Seguir</p>
+                                                                            }
+                                                                        </div>
+
+                                                                        <p className="mt-[5px] ml-3 text-[15px]">{element.bio.length <= 30 ? element.bio : element.bio.substring(0, 27) + '...'}</p>
+                                                                    </div>
+                                                                </>
                                                             }
                                                         </div>
                                                     )
@@ -700,118 +788,206 @@ const Profile = () => {
                         <>
                             <div className="absolute h-screen w-screen bg-[#808080] z-10 opacity-30"></div>
 
-                            <div className="text-[#ffffff] w-[600px] h-[480px] overflow-auto absolute z-998 bg-[#000000] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-[10px]">
-                                <div className="flex flex-col p-7 pt-5 justify-between">
-                                    <div className="flex items-center justify-between w-full mb-3">
-                                        <h1 className="text-[18px]">Seguindo</h1>
+                            <div className="max-[531px]:pl-3 max-[531px]:pr-3 max-[586px]:pr-7 max-[586px]:pl-7  max-[734px]:pr-10 max-[734px]:pl-10 flex justify-center w-full absolute z-998 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                                <div className="text-[#ffffff] w-[600px] h-[480px] overflow-auto bg-[#000000] rounded-[10px]">
+                                    <div className="max-[391px]:pr-5 max-[391px]:pl-5 flex flex-col p-7 pt-5 justify-between">
+                                        <div className="flex items-center justify-between w-full mb-3">
+                                            <h1 className="text-[18px]">Seguindo</h1>
 
-                                        <FontAwesomeIcon onClick={() => {
-                                            setShowFollowing(false)
-                                            setFilteredFollowing([])
-                                            inputFollowing.current = null
-                                        }} icon={faClose} className="text-[30px] cursor-pointer" />
-                                    </div>
+                                            <FontAwesomeIcon onClick={() => {
+                                                setShowFollowing(false)
+                                                setFilteredFollowing([])
+                                                inputFollowing.current = null
+                                            }} icon={faClose} className="text-[30px] cursor-pointer" />
+                                        </div>
 
-                                    <div>
-                                        <input onInput={searchUsers} id="inputFollowing" ref={inputFollowing} className="focus:outline-2 focus:outline-offset-2 focus:outline-none border-transparent border-2 rounded-[5px] w-full bg-[#0f0f0f] pt-[6px] pb-[6px] pr-1 pl-3" placeholder="Pesquisar" />
-                                    </div>
+                                        <div>
+                                            <input onInput={searchUsers} id="inputFollowing" ref={inputFollowing} className="focus:outline-2 focus:outline-offset-2 focus:outline-none border-transparent border-2 rounded-[5px] w-full bg-[#0f0f0f] pt-[6px] pb-[6px] pr-1 pl-3" placeholder="Pesquisar" />
+                                        </div>
 
-                                    <div>
-                                        {inputFollowing.current == null &&
-                                            <div className="flex flex-col items-center h-full justify-center mt-10">
-                                                <div className="animate-spin inline-block size-10 border-5 border-current border-t-transparent text-[#660eb3] rounded-full dark:text-[#660eb3]" role="status" aria-label="loading">
-                                                    <span className="sr-only">Loading...</span>
+                                        <div>
+                                            {inputFollowing.current == null &&
+                                                <div className="flex flex-col items-center h-full justify-center mt-10">
+                                                    <div className="animate-spin inline-block size-10 border-5 border-current border-t-transparent text-[#660eb3] rounded-full dark:text-[#660eb3]" role="status" aria-label="loading">
+                                                        <span className="sr-only">Loading...</span>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        }
+                                            }
 
-                                        {(filteredFollowing.length == 0 && inputFollowing.current != null && following != null && following != undefined && typeof following != 'number') &&
-                                            <>
-                                                {inputFollowing.current.value.length == 0 &&
-                                                    following.map((element, index) => {
-                                                        return (
-                                                            <div onClick={() => window.location.href = `/profile/${element.user}`} className="cursor-pointer flex items-center justify-between mt-7" key={index}>
-                                                                <div className="flex items-center">
-                                                                    <img className="border-[2px] border-[#660eb3] w-[50px] h-[50px] rounded-[50%]" src={element.profileImg == null ? ImageProfile : element.profileImg} alt="" />
+                                            {(filteredFollowing.length == 0 && inputFollowing.current != null && following != null && following != undefined && typeof following != 'number') &&
+                                                <>
+                                                    {inputFollowing.current.value.length == 0 &&
+                                                        following.map((element, index) => {
+                                                            return (
+                                                                <div onClick={() => window.location.href = `/profile/${element.user}`} className="max-[531px]:justify-start max-[531px]:items-start cursor-pointer flex items-center justify-between mt-7" key={index}>
+                                                                    {!for530Width &&
+                                                                        <>
+                                                                            <div className="flex items-center">
+                                                                                <img className="size-[50px] rounded-[50%] border-[2px] border-[#660eb3]" src={element.profileImg == null ? ImageProfile : element.profileImg} alt="" />
 
-                                                                    <div className="ml-1">
-                                                                        <div className="flex items-center">
-                                                                            <p className="ml-3">{element.user}</p>
+                                                                                <div className="ml-1">
+                                                                                    <div className="flex items-center">
+                                                                                        <p className="ml-3">{element.user}</p>
 
-                                                                            {element.isFollowingMe &&
-                                                                                <p className="text-[14px] ml-1 bg-[#0f0f0f] rounded-[5px] p-[2px] pl-2 pr-2">Segue você</p>
+                                                                                        {element.isFollowingMe &&
+                                                                                            <p className="text-[14px] ml-1 bg-[#0f0f0f] rounded-[5px] p-[2px] pl-2 pr-2">Segue você</p>
+                                                                                        }
+                                                                                    </div>
+
+                                                                                    <p className="max-[586px]:mr-3 ml-3 text-[15px]">{element.bio.length <= 30 ? element.bio : element.bio.substring(0, 27) + '...'}</p>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            {(element.isFollowing && element.user != userName) &&
+                                                                                <p onClick={(e) => {
+                                                                                    e.stopPropagation()
+                                                                                    handleFollow(element._id, e)
+                                                                                }} className="btnFollow cursor-pointer border-2 border-[#660eb3] rounded-[10px] pl-[15px] pr-[15px] pt-[5px] pb-[5px]">Seguindo</p>
+                                                                            }
+
+                                                                            {(!element.isFollowing && element.user != userName) &&
+                                                                                <p onClick={(e) => {
+                                                                                    e.stopPropagation()
+                                                                                    handleFollow(element._id, e)
+                                                                                }} className="btnFollow bg-[#660eb3] cursor-pointer border-2 border-[#660eb3] rounded-[10px] pl-[15px] pr-[15px] pt-[5px] pb-[5px]">Seguir</p>
+                                                                            }
+                                                                        </>
+                                                                    }
+
+                                                                    {for530Width &&
+                                                                        <>
+                                                                            <img className="size-[50px] rounded-[50%] border-[2px] border-[#660eb3]" src={element.profileImg == null ? ImageProfile : element.profileImg} alt="" />
+
+                                                                            <div className="w-full">
+                                                                                <div className="w-full flex justify-between items-start">
+                                                                                    <div className="flex flex-col items-start">
+                                                                                        {!for390Width &&
+                                                                                            <p className="ml-3">{element.user}</p>
+                                                                                        }
+
+                                                                                        {for390Width &&
+                                                                                            <p className="ml-3">{element.user.length > 8 ? element.user.substring(0, 8) + '...' : element.user}</p>
+                                                                                        }
+
+                                                                                        {element.isFollowingMe &&
+                                                                                            <p className="mt-[1px] ml-[8px] text-[14px] bg-[#0f0f0f] rounded-[5px] p-[2px] pl-2 pr-2">Segue você</p>
+                                                                                        }
+                                                                                    </div>
+
+                                                                                    {(element.isFollowing && element.user != userName) &&
+                                                                                        <p onClick={(e) => {
+                                                                                            e.stopPropagation()
+                                                                                            handleFollow(element._id, e)
+                                                                                        }} className="btnFollow text-[15px] cursor-pointer border-2 border-[#660eb3] rounded-[10px] pl-[15px] pr-[15px] pt-[5px] pb-[5px]">Seguindo</p>
+                                                                                    }
+
+                                                                                    {(!element.isFollowing && element.user != userName) &&
+                                                                                        <p onClick={(e) => {
+                                                                                            e.stopPropagation()
+                                                                                            handleFollow(element._id, e)
+                                                                                        }} className="btnFollow bg-[#660eb3] cursor-pointer border-2 border-[#660eb3] rounded-[10px] text-[15px] pl-[15px] pr-[15px] pt-[5px] pb-[5px]">Seguir</p>
+                                                                                    }
+                                                                                </div>
+
+                                                                                <p className="mt-[5px] ml-3 text-[15px]">{element.bio.length <= 30 ? element.bio : element.bio.substring(0, 27) + '...'}</p>
+                                                                            </div>
+                                                                        </>
+                                                                    }
+                                                                </div>
+                                                            )
+                                                        })
+                                                    }
+
+                                                    {inputFollowing.current.value.length > 0 &&
+                                                        <div className="w-full mt-5">
+                                                            <p className="text-[#ffffff] text-center text-[18px]">Não encontrado</p>
+                                                        </div>
+                                                    }
+                                                </>
+                                            }
+
+                                            {(filteredFollowing.length > 0) &&
+                                                filteredFollowing.map((element, index) => {
+                                                    return (
+                                                        <div onClick={() => window.location.href = `/profile/${element.user}`} className="max-[531px]:justify-start max-[531px]:items-start cursor-pointer flex items-center justify-between mt-7" key={index}>
+                                                            {!for530Width &&
+                                                                <>
+                                                                    <div className="flex items-center">
+                                                                        <img className="size-[50px] rounded-[50%] border-[2px] border-[#660eb3]" src={element.profileImg == null ? ImageProfile : element.profileImg} alt="" />
+
+                                                                        <div className="ml-1">
+                                                                            <div className="flex items-center">
+                                                                                <p className="ml-3">{element.user}</p>
+
+                                                                                {element.isFollowingMe &&
+                                                                                    <p className="text-[14px] ml-1 bg-[#0f0f0f] rounded-[5px] p-[2px] pl-2 pr-2">Segue você</p>
+                                                                                }
+                                                                            </div>
+
+                                                                            <p className="max-[586px]:mr-3 ml-3 text-[15px]">{element.bio.length <= 30 ? element.bio : element.bio.substring(0, 27) + '...'}</p>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    {(element.isFollowing && element.user != userName) &&
+                                                                        <p onClick={(e) => {
+                                                                            e.stopPropagation()
+                                                                            handleFollow(element._id, e)
+                                                                        }} className="btnFollow cursor-pointer border-2 border-[#660eb3] rounded-[10px] pl-[15px] pr-[15px] pt-[5px] pb-[5px]">Seguindo</p>
+                                                                    }
+
+                                                                    {(!element.isFollowing && element.user != userName) &&
+                                                                        <p onClick={(e) => {
+                                                                            e.stopPropagation()
+                                                                            handleFollow(element._id, e)
+                                                                        }} className="btnFollow bg-[#660eb3] cursor-pointer border-2 border-[#660eb3] rounded-[10px] pl-[15px] pr-[15px] pt-[5px] pb-[5px]">Seguir</p>
+                                                                    }
+                                                                </>
+                                                            }
+
+                                                            {for530Width &&
+                                                                <>
+                                                                    <img className="size-[50px] rounded-[50%] border-[2px] border-[#660eb3]" src={element.profileImg == null ? ImageProfile : element.profileImg} alt="" />
+
+                                                                    <div className="w-full">
+                                                                        <div className="w-full flex justify-between items-start">
+                                                                            <div className="flex flex-col items-start">
+                                                                                {!for390Width &&
+                                                                                    <p className="ml-3">{element.user}</p>
+                                                                                }
+
+                                                                                {for390Width &&
+                                                                                    <p className="ml-3">{element.user.length > 8 ? element.user.substring(0, 8) + '...' : element.user}</p>
+                                                                                }
+
+                                                                                {element.isFollowingMe &&
+                                                                                    <p className="mt-[1px] ml-[8px] text-[14px] bg-[#0f0f0f] rounded-[5px] p-[2px] pl-2 pr-2">Segue você</p>
+                                                                                }
+                                                                            </div>
+
+                                                                            {(element.isFollowing && element.user != userName) &&
+                                                                                <p onClick={(e) => {
+                                                                                    e.stopPropagation()
+                                                                                    handleFollow(element._id, e)
+                                                                                }} className="btnFollow text-[15px] cursor-pointer border-2 border-[#660eb3] rounded-[10px] pl-[15px] pr-[15px] pt-[5px] pb-[5px]">Seguindo</p>
+                                                                            }
+
+                                                                            {(!element.isFollowing && element.user != userName) &&
+                                                                                <p onClick={(e) => {
+                                                                                    e.stopPropagation()
+                                                                                    handleFollow(element._id, e)
+                                                                                }} className="btnFollow bg-[#660eb3] cursor-pointer border-2 border-[#660eb3] rounded-[10px] text-[15px] pl-[15px] pr-[15px] pt-[5px] pb-[5px]">Seguir</p>
                                                                             }
                                                                         </div>
 
-                                                                        <p className="ml-3 text-[15px]">{element.bio.length <= 30 ? element.bio : element.bio.substring(0, 27) + '...'}</p>
+                                                                        <p className="mt-[5px] ml-3 text-[15px]">{element.bio.length <= 30 ? element.bio : element.bio.substring(0, 27) + '...'}</p>
                                                                     </div>
-                                                                </div>
-
-
-                                                                {(element.isFollowing && element.user != userName) &&
-                                                                    <p onClick={(e) => {
-                                                                        e.stopPropagation()
-                                                                        handleFollow(element._id, e)
-                                                                    }} className="btnFollow cursor-pointer border-2 border-[#660eb3] rounded-[10px] pl-[15px] pr-[15px] pt-[5px] pb-[5px]">Seguindo</p>
-                                                                }
-
-                                                                {(!element.isFollowing && element.user != userName) &&
-                                                                    <p onClick={(e) => {
-                                                                        e.stopPropagation()
-                                                                        handleFollow(element._id, e)
-                                                                    }} className="btnFollow bg-[#660eb3] cursor-pointer border-2 border-[#660eb3] rounded-[10px] pl-[15px] pr-[15px] pt-[5px] pb-[5px]">Seguir</p>
-                                                                }
-                                                            </div>
-                                                        )
-                                                    })
-                                                }
-
-                                                {inputFollowing.current.value.length > 0 &&
-                                                    <div className="w-full mt-5">
-                                                        <p className="text-[#ffffff] text-center text-[18px]">Não encontrado</p>
-                                                    </div>
-                                                }
-                                            </>
-                                        }
-
-                                        {(filteredFollowing.length > 0) &&
-                                            filteredFollowing.map((element, index) => {
-                                                return (
-                                                    <div onClick={() => window.location.href = `/profile/${element.user}`} className="cursor-pointer flex items-center justify-between mt-7" key={index}>
-                                                        <div className="flex items-center">
-                                                            <img className="border-[2px] border-[#660eb3] w-[50px] h-[50px] rounded-[50%]" src={element.profileImg == null ? ImageProfile : element.profileImg} alt="" />
-
-                                                            <div className="ml-1">
-                                                                <div className="flex items-center">
-                                                                    <p className="ml-3">{element.user}</p>
-
-                                                                    {element.isFollowingMe &&
-                                                                        <p className="text-[14px] ml-1 bg-[#0f0f0f] rounded-[5px] p-[2px] pl-2 pr-2">Segue você</p>
-                                                                    }
-                                                                </div>
-
-                                                                <p className="ml-3 text-[15px]">{element.bio.length <= 30 ? element.bio : element.bio.substring(0, 27) + '...'}</p>
-                                                            </div>
+                                                                </>
+                                                            }
                                                         </div>
-
-
-                                                        {(element.isFollowing && element.user != userName) &&
-                                                            <p onClick={(e) => {
-                                                                e.stopPropagation()
-                                                                handleFollow(element._id, e)
-                                                            }} className="btnFollow cursor-pointer border-2 border-[#660eb3] rounded-[10px] pl-[15px] pr-[15px] pt-[5px] pb-[5px]">Seguindo</p>
-                                                        }
-
-                                                        {(!element.isFollowing && element.user != userName) &&
-                                                            <p onClick={(e) => {
-                                                                e.stopPropagation()
-                                                                handleFollow(element._id, e)
-                                                            }} className="btnFollow bg-[#660eb3] cursor-pointer border-2 border-[#660eb3] rounded-[10px] pl-[15px] pr-[15px] pt-[5px] pb-[5px]">Seguir</p>
-                                                        }
-                                                    </div>
-                                                )
-                                            })
-                                        }
+                                                    )
+                                                })
+                                            }
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -826,7 +1002,7 @@ const Profile = () => {
                                 <div className="max-[768px]:h-auto max-[768px]:w-full p-5 text-[#ffffff] w-[600px] h-[602px] bg-[#000000] rounded-[10px]">
                                     <div className="flex items-center pb-5 justify-between">
                                         <div className="flex items-center">
-                                            <FontAwesomeIcon onClick={() => {document.getElementById('cropper').classList.add('hidden'); document.getElementById('edit').classList.remove('hidden'); fileInputRef.current.value = null}} icon={faArrowLeft} className="text-[30px] cursor-pointer" />
+                                            <FontAwesomeIcon onClick={() => { document.getElementById('cropper').classList.add('hidden'); document.getElementById('edit').classList.remove('hidden'); fileInputRef.current.value = null }} icon={faArrowLeft} className="text-[30px] cursor-pointer" />
                                             <h1 className="max-[381px]:ml-3 max-[381px]:text-[18px] text-[20px] ml-4">Editar Foto</h1>
                                         </div>
 
