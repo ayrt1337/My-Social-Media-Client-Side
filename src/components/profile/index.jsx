@@ -55,6 +55,7 @@ const Profile = () => {
     const [requestedUser, setRequestedUser] = useState(null)
     const [unreadMessages, setUnreadMessages] = useState(null)
     const [showSearch, setShowSearch] = useState(false)
+    const [showLoadingEdit, setShowLoadingEdit] = useState(false)
 
     const { user } = useParams()
     const navigate = useNavigate()
@@ -305,6 +306,7 @@ const Profile = () => {
             )
             setCroppedImage(croppedImg)
             document.getElementById('cropper').classList.add('hidden')
+            document.getElementById('edit').classList.remove('hidden')
         }
 
         catch (e) {
@@ -385,6 +387,8 @@ const Profile = () => {
 
         else {
             if (!document.getElementById('img').src.includes(ImageProfile)) newProfileImage = document.getElementById('img').src
+            
+            setShowLoadingEdit(true)
 
             const result = await fetch('http://localhost:3000/updateAccout', {
                 method: 'POST',
@@ -397,6 +401,8 @@ const Profile = () => {
             })
 
             const output = await result.json()
+
+            setShowLoadingEdit(false)
 
             if (output.status == 'fail' && newUser != userName) errors[0].classList.remove('hidden')
 
@@ -1046,6 +1052,16 @@ const Profile = () => {
                                     </div>
                                 </div>
                             </div>
+
+                            {showLoadingEdit &&
+                                <>
+                                    <div className="h-full w-full absolute z-1000 opacity-30 bg-[#808080]"></div>
+
+                                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-1001 animate-spin inline-block size-20 border-5 border-current border-t-transparent text-[#660eb3] rounded-full dark:text-[#660eb3]" role="status" aria-label="loading">
+                                        <span className="sr-only">Loading...</span>
+                                    </div>
+                                </>
+                            }
 
                             <div id="edit" className="max-[466px]:pr-5 max-[466px]:pl-5 max-[746px]:pr-10 max-[746px]:pl-10 max-[746px]:w-full absolute z-998 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                                 <div className="max-[746px]:w-full text-[#ffffff] w-[600px] h-auto bg-[#000000] rounded-[10px]">
