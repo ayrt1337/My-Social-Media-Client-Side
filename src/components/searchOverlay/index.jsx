@@ -79,13 +79,13 @@ const SearchOverlay = props => {
         <>
             <div className="absolute h-full w-screen bg-[#808080] z-20 opacity-30"></div>
 
-            <div className="flex flex-col flex-end absolute z-999 text-[#ffffff] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <div className="max-[506px]:pr-6 max-[506px]:pl-6 max-[506px]:w-full flex flex-col flex-end absolute z-999 text-[#ffffff] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                 <FontAwesomeIcon onClick={() => props.setShowSearch(false)} className="cursor-pointer text-[33px] mb-[5px] mr-[3px] self-end" icon={faClose} />
 
-                <input onKeyDown={handleEnter} ref={inputRef} onInput={handleInput} className="w-[400px] rounded-[15px] focus:outline-2 focus:outline-offset-2 focus:outline-none border-transparent border-2 focus:border-[#660eb3] bg-[#0f0f0f] pt-3 pb-3 pr-5 pl-4" placeholder="Pesquisar" id="search" />
+                <input onKeyDown={handleEnter} ref={inputRef} onInput={handleInput} className="max-[506px]:w-full w-[400px] rounded-[15px] focus:outline-2 focus:outline-offset-2 focus:outline-none border-transparent border-2 focus:border-[#660eb3] bg-[#0f0f0f] pt-3 pb-3 pr-5 pl-4" placeholder="Pesquisar" id="search" />
 
                 {results &&
-                    <div style={users.length > 5 ? { overflow: 'auto', height: '337px' } : { overflow: 'visible' }} id="result" className="mt-8 bg-[#0f0f0f] max-w-[400px] w-full rounded-[15px]">
+                    <div style={users.length > 5 ? { overflow: 'auto', height: '337px' } : { overflow: 'visible' }} id="result" className="max-[506px]:max-w-full mt-8 bg-[#0f0f0f] max-w-[400px] w-full rounded-[15px]">
                         {showLoading &&
                             <div className="rounded-tl-[15px] rounded-tr-[15px] pt-5 flex flex-col items-center bg-[#0f0f0f] h-full justify-center">
                                 <div className="animate-spin inline-block size-5 border-5 border-current border-t-transparent text-[#660eb3] rounded-full dark:text-[#660eb3]" role="status" aria-label="loading">
@@ -97,7 +97,7 @@ const SearchOverlay = props => {
                         {!showLoading &&
                             <>
                                 {users.length == 0 &&
-                                    <h2 className="text-center p-4 pt-[20px]">Não encotrado</h2>
+                                    <h2 className="text-center p-4 pb-2 pt-[20px]">Não encotrado</h2>
                                 }
 
                                 {users.length > 0 &&
@@ -106,7 +106,7 @@ const SearchOverlay = props => {
                                             users.map((user, index) => {
                                                 return (
                                                     <>
-                                                        <div style={index == 0 ? { borderTopLeftRadius: '15px', borderTopRightRadius: '15px', paddingTop: '18px' } : { borderTopLeftRadius: '0px', borderTopRightRadius: '0px' }} onClick={() => {props.setShowSearch(false); navigate(`/profile/${user.user}`)}} className="hover:bg-[#30005bff] flex cursor-pointer items-center p-4 pb-3 pt-3" key={index}>
+                                                        <div style={index == 0 ? { borderTopLeftRadius: '15px', borderTopRightRadius: '15px', paddingTop: '18px' } : { borderTopLeftRadius: '0px', borderTopRightRadius: '0px' }} onClick={() => {props.setShowSearch(false); navigate(`/profile/${user.user}`)}} className="max-[506px]:w-full hover:bg-[#30005bff] flex cursor-pointer items-center p-4 pb-3 pt-3" key={index}>
                                                             <img className="w-[45px] h-[45px] rounded-[50%]" src={user.profileImg == null ? ImageProfile : user.profileImg} alt="" />
 
                                                             <div className="flex flex-col ml-2">

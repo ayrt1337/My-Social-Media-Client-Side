@@ -11,7 +11,7 @@ import { useMediaQuery } from 'react-responsive'
 library.add(fas, far, fab)
 
 const Posts = props => {
-    const for380Width = useMediaQuery({ query: '(max-width: 380px)' })
+    const for386Width = useMediaQuery({ query: '(max-width: 386px)' })
 
     const [icon, setIcon] = useState(props.post.isLiked == true ? 'fa-solid fa-heart' : 'fa-regular fa-heart')
     const words = props.post.text.split(' ')
@@ -59,25 +59,25 @@ const Posts = props => {
             <img onClick={(e) => {
                 e.stopPropagation()
                 navigate(`/profile/${props.post.user}`)
-            }} className="max-[500px]:h-[45px] max-[500px]:w-[45px] border-[2px] border-[#660eb3] w-[55px] h-[55px] rounded-[50%]" src={props.post.profileImg == null ? ImageProfile : props.post.profileImg} alt="" />
+            }} className="max-[510px]:size-[45px] border-[2px] border-[#660eb3] size-[45px] rounded-[50%]" src={props.post.profileImg == null ? ImageProfile : props.post.profileImg} alt="" />
 
             <div className="ml-3 mt-[2px]">
-                <div className="flex max-[380px]:flex-col">
+                <div className="flex max-[387px]:flex-col">
                     <p onClick={(e) => {
                         e.stopPropagation()
                         navigate(`/profile/${props.post.user}`)
-                    }} className="max-[380px]:mb-[2px] mb-1 font-semibold max-w-[150px] max-[500px]:text-[15px]">{props.post.user}</p>                    
+                    }} className="max-[387px]:mb-[2px] mb-1 font-semibold max-w-[150px] max-[510px]:text-[15px]">{props.post.user}</p>                    
 
-                    {!for380Width &&
+                    {!for386Width &&
                         <>
                             {'\u00A0'}
                         
-                            <p className="text-[#cccccc] text-[15px] max-[500px]:text-[14px]">· {props.post.createdAt}</p>
+                            <p className="text-[#cccccc] text-[15px] max-[510px]:text-[14px]">· {props.post.createdAt}</p>
                         </>
                     }
 
-                    {for380Width &&
-                        <p className="mb-2 text-[#cccccc] text-[15px] max-[500px]:text-[14px]">{props.post.createdAt}</p>
+                    {for386Width &&
+                        <p className="mb-2 text-[#cccccc] text-[14px]">{props.post.createdAt}</p>
                     }
                 </div>
 

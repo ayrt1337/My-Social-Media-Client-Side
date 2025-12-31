@@ -14,8 +14,12 @@ import Posts from "../post"
 import Comment from "../comment"
 import Likes from "../likes"
 import SearchOverlay from "../searchOverlay"
+import { useMediaQuery } from "react-responsive"
 
 const Profile = () => {
+    const for800Width = useMediaQuery({ query: '(max-width: 800px)' })
+    const for500Width = useMediaQuery({ query: '(max-width: 499px)' })
+
     const [showLoading, setShowLoading] = useState(true)
     const [userName, setUserName] = useState('')
     const [followers, setFollowers] = useState([])
@@ -282,6 +286,7 @@ const Profile = () => {
                 setImage(reader.result)
                 setCroppedImage(null)
                 document.getElementById('cropper').classList.remove('hidden')
+                document.getElementById('edit').classList.add('hidden')
             }
         }
     }
@@ -571,118 +576,120 @@ const Profile = () => {
                         <>
                             <div className="absolute h-screen w-screen bg-[#808080] z-10 opacity-30"></div>
 
-                            <div className="text-[#ffffff] w-[600px] h-[480px] overflow-auto absolute z-998 bg-[#000000] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-[10px]">
-                                <div className="flex flex-col p-7 pt-5 justify-between">
-                                    <div className="flex items-center justify-between w-full mb-3">
-                                        <h1 className="text-[18px]">Seguidores</h1>
+                            <div className="max-[734px]:pr-10 max-[734px]:pl-10 flex justify-center w-full absolute z-998 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                                <div className="max-[734px]:w-full text-[#ffffff] w-[600px] h-[480px] overflow-auto bg-[#000000] rounded-[10px]">
+                                    <div className="flex flex-col p-7 pt-5 justify-between">
+                                        <div className="flex items-center justify-between w-full mb-3">
+                                            <h1 className="text-[18px]">Seguidores</h1>
 
-                                        <FontAwesomeIcon onClick={() => {
-                                            setShowFollowers(false)
-                                            setFilteredFollowers([])
-                                            inputFollowers.current = null
-                                        }} icon={faClose} className="text-[30px] cursor-pointer" />
-                                    </div>
+                                            <FontAwesomeIcon onClick={() => {
+                                                setShowFollowers(false)
+                                                setFilteredFollowers([])
+                                                inputFollowers.current = null
+                                            }} icon={faClose} className="text-[30px] cursor-pointer" />
+                                        </div>
 
-                                    <div>
-                                        <input onInput={searchUsers} id="inputFollowers" ref={inputFollowers} className="focus:outline-2 focus:outline-offset-2 focus:outline-none border-transparent border-2 rounded-[5px] w-full bg-[#0f0f0f] pt-[6px] pb-[6px] pr-1 pl-3" placeholder="Pesquisar" />
-                                    </div>
+                                        <div>
+                                            <input onInput={searchUsers} id="inputFollowers" ref={inputFollowers} className="focus:outline-2 focus:outline-offset-2 focus:outline-none border-transparent border-2 rounded-[5px] w-full bg-[#0f0f0f] pt-[6px] pb-[6px] pr-1 pl-3" placeholder="Pesquisar" />
+                                        </div>
 
-                                    <div>
-                                        {inputFollowers.current == null &&
-                                            <div className="flex flex-col items-center h-full justify-center mt-10">
-                                                <div className="animate-spin inline-block size-10 border-5 border-current border-t-transparent text-[#660eb3] rounded-full dark:text-[#660eb3]" role="status" aria-label="loading">
-                                                    <span className="sr-only">Loading...</span>
-                                                </div>
-                                            </div>
-                                        }
-
-                                        {(filteredFollowers.length == 0 && inputFollowers.current != null && followers != null && followers != undefined && typeof followers != 'number') &&
-                                            <>
-                                                {(inputFollowers.current.value.length == 0) &&
-                                                    followers.map((element, index) => {
-                                                        return (
-                                                            <div onClick={() => window.location.href = `/profile/${element.user}`} className="cursor-pointer flex items-center justify-between mt-7" key={index}>
-                                                                <div className="flex items-center">
-                                                                    <img className="w-[50px] h-[50px] rounded-[50%] border-[2px] border-[#660eb3]" src={element.profileImg == null ? ImageProfile : element.profileImg} alt="" />
-
-                                                                    <div className="ml-1">
-                                                                        <div className="flex items-center">
-                                                                            <p className="ml-3">{element.user}</p>
-
-                                                                            {element.isFollowingMe &&
-                                                                                <p className="text-[14px] ml-1 bg-[#0f0f0f] rounded-[5px] p-[2px] pl-2 pr-2">Segue você</p>
-                                                                            }
-                                                                        </div>
-
-                                                                        <p className="ml-3 text-[15px]">{element.bio.length <= 30 ? element.bio : element.bio.substring(0, 27) + '...'}</p>
-                                                                    </div>
-                                                                </div>
-
-
-                                                                {(element.isFollowing && element.user != userName) &&
-                                                                    <p onClick={(e) => {
-                                                                        e.stopPropagation()
-                                                                        handleFollow(element._id, e)
-                                                                    }} className="btnFollow cursor-pointer border-2 border-[#660eb3] rounded-[10px] pl-[15px] pr-[15px] pt-[5px] pb-[5px]">Seguindo</p>
-                                                                }
-
-                                                                {(!element.isFollowing && element.user != userName) &&
-                                                                    <p onClick={(e) => {
-                                                                        e.stopPropagation()
-                                                                        handleFollow(element._id, e)
-                                                                    }} className="btnFollow bg-[#660eb3] cursor-pointer border-2 border-[#660eb3] rounded-[10px] pl-[15px] pr-[15px] pt-[5px] pb-[5px]">Seguir</p>
-                                                                }
-                                                            </div>
-                                                        )
-                                                    })
-                                                }
-
-                                                {inputFollowers.current.value.length > 0 &&
-                                                    <div className="w-full mt-5">
-                                                        <p className="text-[#ffffff] text-center text-[18px]">Não encontrado</p>
+                                        <div>
+                                            {inputFollowers.current == null &&
+                                                <div className="flex flex-col items-center h-full justify-center mt-10">
+                                                    <div className="animate-spin inline-block size-10 border-5 border-current border-t-transparent text-[#660eb3] rounded-full dark:text-[#660eb3]" role="status" aria-label="loading">
+                                                        <span className="sr-only">Loading...</span>
                                                     </div>
-                                                }
-                                            </>
-                                        }
+                                                </div>
+                                            }
 
-                                        {(filteredFollowers.length > 0) &&
-                                            filteredFollowers.map((element, index) => {
-                                                return (
-                                                    <div onClick={() => window.location.href = `/profile/${element.user}`} className="cursor-pointer flex items-center justify-between mt-7" key={index}>
-                                                        <div className="flex items-center">
-                                                            <img className="border-[2px] border-[#660eb3] w-[50px] h-[50px] rounded-[50%]" src={element.profileImg == null ? ImageProfile : element.profileImg} alt="" />
+                                            {(filteredFollowers.length == 0 && inputFollowers.current != null && followers != null && followers != undefined && typeof followers != 'number') &&
+                                                <>
+                                                    {(inputFollowers.current.value.length == 0) &&
+                                                        followers.map((element, index) => {
+                                                            return (
+                                                                <div onClick={() => window.location.href = `/profile/${element.user}`} className="cursor-pointer flex items-center justify-between mt-7" key={index}>
+                                                                    <div className="flex items-center">
+                                                                        <img className="w-[50px] h-[50px] rounded-[50%] border-[2px] border-[#660eb3]" src={element.profileImg == null ? ImageProfile : element.profileImg} alt="" />
 
-                                                            <div className="ml-1">
-                                                                <div className="flex items-center">
-                                                                    <p className="ml-3">{element.user}</p>
+                                                                        <div className="ml-1">
+                                                                            <div className="flex items-center">
+                                                                                <p className="ml-3">{element.user}</p>
 
-                                                                    {element.isFollowingMe &&
-                                                                        <p className="text-[14px] ml-1 bg-[#0f0f0f] rounded-[5px] p-[2px] pl-2 pr-2">Segue você</p>
+                                                                                {element.isFollowingMe &&
+                                                                                    <p className="text-[14px] ml-1 bg-[#0f0f0f] rounded-[5px] p-[2px] pl-2 pr-2">Segue você</p>
+                                                                                }
+                                                                            </div>
+
+                                                                            <p className="ml-3 text-[15px]">{element.bio.length <= 30 ? element.bio : element.bio.substring(0, 27) + '...'}</p>
+                                                                        </div>
+                                                                    </div>
+
+
+                                                                    {(element.isFollowing && element.user != userName) &&
+                                                                        <p onClick={(e) => {
+                                                                            e.stopPropagation()
+                                                                            handleFollow(element._id, e)
+                                                                        }} className="btnFollow cursor-pointer border-2 border-[#660eb3] rounded-[10px] pl-[15px] pr-[15px] pt-[5px] pb-[5px]">Seguindo</p>
+                                                                    }
+
+                                                                    {(!element.isFollowing && element.user != userName) &&
+                                                                        <p onClick={(e) => {
+                                                                            e.stopPropagation()
+                                                                            handleFollow(element._id, e)
+                                                                        }} className="btnFollow bg-[#660eb3] cursor-pointer border-2 border-[#660eb3] rounded-[10px] pl-[15px] pr-[15px] pt-[5px] pb-[5px]">Seguir</p>
                                                                     }
                                                                 </div>
+                                                            )
+                                                        })
+                                                    }
 
-                                                                <p className="ml-3 text-[15px]">{element.bio.length <= 30 ? element.bio : element.bio.substring(0, 27) + '...'}</p>
-                                                            </div>
+                                                    {inputFollowers.current.value.length > 0 &&
+                                                        <div className="w-full mt-5">
+                                                            <p className="text-[#ffffff] text-center text-[18px]">Não encontrado</p>
                                                         </div>
+                                                    }
+                                                </>
+                                            }
+
+                                            {(filteredFollowers.length > 0) &&
+                                                filteredFollowers.map((element, index) => {
+                                                    return (
+                                                        <div onClick={() => window.location.href = `/profile/${element.user}`} className="cursor-pointer flex items-center justify-between mt-7" key={index}>
+                                                            <div className="flex items-center">
+                                                                <img className="border-[2px] border-[#660eb3] w-[50px] h-[50px] rounded-[50%]" src={element.profileImg == null ? ImageProfile : element.profileImg} alt="" />
+
+                                                                <div className="ml-1">
+                                                                    <div className="flex items-center">
+                                                                        <p className="ml-3">{element.user}</p>
+
+                                                                        {element.isFollowingMe &&
+                                                                            <p className="text-[14px] ml-1 bg-[#0f0f0f] rounded-[5px] p-[2px] pl-2 pr-2">Segue você</p>
+                                                                        }
+                                                                    </div>
+
+                                                                    <p className="ml-3 text-[15px]">{element.bio.length <= 30 ? element.bio : element.bio.substring(0, 27) + '...'}</p>
+                                                                </div>
+                                                            </div>
 
 
-                                                        {(element.isFollowing && element.user != userName) &&
-                                                            <p onClick={(e) => {
-                                                                e.stopPropagation()
-                                                                handleFollow(element._id, e)
-                                                            }} className="btnFollow cursor-pointer border-2 border-[#660eb3] rounded-[10px] pl-[15px] pr-[15px] pt-[5px] pb-[5px]">Seguindo</p>
-                                                        }
+                                                            {(element.isFollowing && element.user != userName) &&
+                                                                <p onClick={(e) => {
+                                                                    e.stopPropagation()
+                                                                    handleFollow(element._id, e)
+                                                                }} className="btnFollow cursor-pointer border-2 border-[#660eb3] rounded-[10px] pl-[15px] pr-[15px] pt-[5px] pb-[5px]">Seguindo</p>
+                                                            }
 
-                                                        {(!element.isFollowing && element.user != userName) &&
-                                                            <p onClick={(e) => {
-                                                                e.stopPropagation()
-                                                                handleFollow(element._id, e)
-                                                            }} className="btnFollow bg-[#660eb3] cursor-pointer border-2 border-[#660eb3] rounded-[10px] pl-[15px] pr-[15px] pt-[5px] pb-[5px]">Seguir</p>
-                                                        }
-                                                    </div>
-                                                )
-                                            })
-                                        }
+                                                            {(!element.isFollowing && element.user != userName) &&
+                                                                <p onClick={(e) => {
+                                                                    e.stopPropagation()
+                                                                    handleFollow(element._id, e)
+                                                                }} className="btnFollow bg-[#660eb3] cursor-pointer border-2 border-[#660eb3] rounded-[10px] pl-[15px] pr-[15px] pt-[5px] pb-[5px]">Seguir</p>
+                                                            }
+                                                        </div>
+                                                    )
+                                                })
+                                            }
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -815,147 +822,153 @@ const Profile = () => {
                         <>
                             <div className="absolute h-screen w-screen bg-[#808080] z-10 opacity-30"></div>
 
-                            <div id="cropper" className="p-5 text-[#ffffff] w-[600px] h-[602px] absolute z-999 bg-[#000000] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-[10px] hidden">
-                                <div className="flex items-center pb-5 justify-between">
-                                    <div className="flex items-center">
-                                        <FontAwesomeIcon onClick={() => document.getElementById('cropper').classList.add('hidden')} icon={faArrowLeft} className="text-[30px] cursor-pointer" />
-                                        <h1 className="text-[20px] ml-7">Editar Foto</h1>
+                            <div id="cropper" className="max-[466px]:pr-5 max-[466px]:pl-5 max-[768px]:pr-10 max-[768px]:pl-10 max-[768px]:w-full  absolute z-999 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 hidden">
+                                <div className="max-[768px]:h-auto max-[768px]:w-full p-5 text-[#ffffff] w-[600px] h-[602px] bg-[#000000] rounded-[10px]">
+                                    <div className="flex items-center pb-5 justify-between">
+                                        <div className="flex items-center">
+                                            <FontAwesomeIcon onClick={() => {document.getElementById('cropper').classList.add('hidden'); document.getElementById('edit').classList.remove('hidden'); fileInputRef.current.value = null}} icon={faArrowLeft} className="text-[30px] cursor-pointer" />
+                                            <h1 className="max-[381px]:ml-3 max-[381px]:text-[18px] text-[20px] ml-4">Editar Foto</h1>
+                                        </div>
+
+                                        <p onClick={createCroppedImage} className="font-semibold cursor-pointer border-2 border-[#660eb3] bg-[#660eb3] rounded-[10px] pl-[15px] pr-[15px] pt-[5px] pb-[5px]">Aplicar</p>
                                     </div>
 
-                                    <p onClick={createCroppedImage} className="font-semibold cursor-pointer border-2 border-[#660eb3] bg-[#660eb3] rounded-[10px] pl-[15px] pr-[15px] pt-[5px] pb-[5px]">Aplicar</p>
-                                </div>
+                                    {/* Cropper Container */}
+                                    <div className="relative h-64 md:h-96 bg-gray-200 mb-4">
+                                        <Cropper
+                                            image={image}
+                                            crop={crop}
+                                            zoom={zoom}
+                                            aspect={3 / 3}
+                                            onCropChange={setCrop}
+                                            onCropComplete={onCropComplete}
+                                            onZoomChange={setZoom}
+                                        />
+                                    </div>
 
-                                {/* Cropper Container */}
-                                <div className="relative h-64 md:h-96 bg-gray-200 mb-4">
-                                    <Cropper
-                                        image={image}
-                                        crop={crop}
-                                        zoom={zoom}
-                                        aspect={3 / 3}
-                                        onCropChange={setCrop}
-                                        onCropComplete={onCropComplete}
-                                        onZoomChange={setZoom}
-                                    />
-                                </div>
+                                    {/* Zoom Control */}
+                                    <div className="mt-10">
+                                        <label className="block text-[#ffffff] text-sm font-bold mb-2">
+                                            Zoom: {zoom.toFixed(1)}x
+                                        </label>
+                                        <input
+                                            type="range"
+                                            min="1"
+                                            max="3"
+                                            step="0.1"
+                                            value={zoom}
+                                            onChange={(e) => setZoom(Number(e.target.value))}
+                                            className="accent-[#660eb3] w-full h-2 rounded-lg appearance-none cursor-pointer"
+                                            style={{ background: '#ffffff' }}
+                                        />
+                                    </div>
 
-                                {/* Zoom Control */}
-                                <div className="mt-10">
-                                    <label className="block text-[#ffffff] text-sm font-bold mb-2">
-                                        Zoom: {zoom.toFixed(1)}x
-                                    </label>
-                                    <input
-                                        type="range"
-                                        min="1"
-                                        max="3"
-                                        step="0.1"
-                                        value={zoom}
-                                        onChange={(e) => setZoom(Number(e.target.value))}
-                                        className="accent-[#660eb3] w-full h-2 rounded-lg appearance-none cursor-pointer"
-                                        style={{ background: '#ffffff' }}
-                                    />
-                                </div>
-
-                                {/* Controls */}
-                                <div className="flex justify-between">
-                                    <button className="hidden"></button>
-                                    <button className="hidden"></button>
+                                    {/* Controls */}
+                                    <div className="flex justify-between">
+                                        <button className="hidden"></button>
+                                        <button className="hidden"></button>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div className="text-[#ffffff] w-[600px] h-auto absolute z-998 bg-[#000000] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-[10px]">
-                                <div className="flex items-center p-5 justify-between">
-                                    <div className="flex items-center">
-                                        <FontAwesomeIcon onClick={() => {
-                                            setShowEdit(false)
-                                            setCroppedImage(null)
-                                        }} icon={faClose} className="text-[30px] cursor-pointer" />
+                            <div id="edit" className="max-[466px]:pr-5 max-[466px]:pl-5 max-[746px]:pr-10 max-[746px]:pl-10 max-[746px]:w-full absolute z-998 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                                <div className="max-[746px]:w-full text-[#ffffff] w-[600px] h-auto bg-[#000000] rounded-[10px]">
+                                    <div className="flex items-center p-5 justify-between">
+                                        <div className="flex items-center">
+                                            <FontAwesomeIcon onClick={() => {
+                                                setShowEdit(false)
+                                                setCroppedImage(null)
+                                            }} icon={faClose} className="text-[30px] cursor-pointer" />
 
-                                        <h1 className="text-[20px] ml-7">Editar Perfil</h1>
-                                    </div>
-
-                                    <p onClick={editProfile} className="font-semibold cursor-pointer border-2 border-[#660eb3] bg-[#660eb3] rounded-[10px] pl-[15px] pr-[15px] pt-[5px] pb-[5px]">Salvar</p>
-                                </div>
-
-                                <div className="pt-10 pl-10 pr-10 pb-8 flex flex-col items-center">
-                                    <div>
-                                        <input onChange={onFileChange} type="file" ref={fileInputRef} className="hidden" />
-
-                                        <div onClick={() => fileInputRef.current.click()} className="relative">
-                                            <FontAwesomeIcon icon={faCamera} className="bg-[#000000] p-3 rounded-[50%] cursor-pointer absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-80 text-[23px]" />
-                                            <img id="img" className="cursor-pointer border-3 border-[#660eb3] w-[180px] h-[180px] rounded-[50%]" src={croppedImage == null ? img : croppedImage} alt="" />
-                                        </div>
-                                    </div>
-
-                                    <div className="error flex items-center mt-6 hidden">
-                                        <div className="flex p-3 mr-2 bg-[#e30e2a] rounded-[50%] size-[15px] items-center justify-center">
-                                            <FontAwesomeIcon icon={faExclamation} />
+                                            <h1 className="max-[381px]:ml-3 max-[381px]:text-[18px] text-[20px] ml-4">Editar Perfil</h1>
                                         </div>
 
-                                        <p className="text-[#e30e2a]">Usuário já cadastrado!</p>
+                                        <p onClick={editProfile} className="font-semibold cursor-pointer border-2 border-[#660eb3] bg-[#660eb3] rounded-[10px] pl-[15px] pr-[15px] pt-[5px] pb-[5px]">Salvar</p>
                                     </div>
 
-                                    <div className="error flex items-center mt-6 hidden">
-                                        <div className="flex p-3 mr-2 bg-[#e30e2a] rounded-[50%] size-[15px] items-center justify-center">
-                                            <FontAwesomeIcon icon={faExclamation} />
+                                    <div className="max-[466px]:pl-7 max-[466px]:pr-7 pt-10 pl-10 pr-10 pb-8 flex flex-col items-center">
+                                        <div>
+                                            <input onChange={onFileChange} type="file" ref={fileInputRef} className="hidden" />
+
+                                            <div onClick={() => fileInputRef.current.click()} className="relative">
+                                                <FontAwesomeIcon icon={faCamera} className="max-[381px]:text-[18px] max-[571px]:text-[20px] bg-[#000000] p-3 rounded-[50%] cursor-pointer absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-80 text-[23px]" />
+                                                <img id="img" className="max-[381px]:size-[130px] max-[571px]:size-[150px] cursor-pointer border-3 border-[#660eb3] size-[180px] rounded-[50%]" src={croppedImage == null ? img : croppedImage} alt="" />
+                                            </div>
                                         </div>
 
-                                        <p className="text-[#e30e2a]">Formato de imagem inválido!</p>
-                                    </div>
+                                        <div className="error flex items-center mt-6 hidden">
+                                            <div className="flex p-3 mr-2 bg-[#e30e2a] rounded-[50%] size-[15px] items-center justify-center">
+                                                <FontAwesomeIcon icon={faExclamation} />
+                                            </div>
 
-                                    <div className="error flex items-center mt-6 hidden">
-                                        <div className="flex p-3 mr-2 bg-[#e30e2a] rounded-[50%] size-[15px] items-center justify-center">
-                                            <FontAwesomeIcon icon={faExclamation} />
+                                            <p className="max-[381px]:text-[15px] text-[#e30e2a]">Usuário já cadastrado!</p>
                                         </div>
 
-                                        <p className="text-[#e30e2a]">Bio muito longa!</p>
-                                    </div>
+                                        <div className="error flex items-center mt-6 hidden">
+                                            <div className="flex p-3 mr-2 bg-[#e30e2a] rounded-[50%] size-[15px] items-center justify-center">
+                                                <FontAwesomeIcon icon={faExclamation} />
+                                            </div>
 
-                                    <div className="error flex items-center mt-6 hidden">
-                                        <div className="flex p-3 mr-2 bg-[#e30e2a] rounded-[50%] size-[15px] items-center justify-center">
-                                            <FontAwesomeIcon icon={faExclamation} />
+                                            <p className="max-[381px]:text-[14px] text-[#e30e2a]">Formato de imagem inválido!</p>
                                         </div>
 
-                                        <p className="text-[#e30e2a]">Usuário muito longo!</p>
-                                    </div>
+                                        <div className="error flex items-center mt-6 hidden">
+                                            <div className="flex p-3 mr-2 bg-[#e30e2a] rounded-[50%] size-[15px] items-center justify-center">
+                                                <FontAwesomeIcon icon={faExclamation} />
+                                            </div>
 
-
-                                    <div className="error flex items-center mt-6 hidden">
-                                        <div className="flex p-3 mr-2 bg-[#e30e2a] rounded-[50%] size-[15px] items-center justify-center">
-                                            <FontAwesomeIcon icon={faExclamation} />
+                                            <p className="max-[381px]:text-[15px] text-[#e30e2a]">Bio muito longa!</p>
                                         </div>
 
-                                        <p className="text-[#e30e2a]">Preencha o usuário!</p>
-                                    </div>
+                                        <div className="error flex items-center mt-6 hidden">
+                                            <div className="flex p-3 mr-2 bg-[#e30e2a] rounded-[50%] size-[15px] items-center justify-center">
+                                                <FontAwesomeIcon icon={faExclamation} />
+                                            </div>
 
-                                    <div className="error flex items-center mt-6 hidden">
-                                        <div className="flex p-3 mr-2 bg-[#e30e2a] rounded-[50%] size-[15px] items-center justify-center">
-                                            <FontAwesomeIcon icon={faExclamation} />
+                                            <p className="max-[381px]:text-[15px] text-[#e30e2a]">Usuário muito longo!</p>
                                         </div>
 
-                                        <p className="text-[#e30e2a]">Usuário muito curto!</p>
-                                    </div>
 
-                                    <div className="w-full mt-8 mb-5">
-                                        <label htmlFor="user" className="border-transparent border-2 border-b-0 flex justify-between items-center bg-[#0f0f0f] rounded-t-[10px] pr-[15px] pl-[15px] pt-3">
-                                            <p className="labelName">Usuário</p>
-                                            <p id="userLength">{stringUser} / 15</p>
-                                        </label>
-                                        <input onChange={handleInput} onInput={handleInput} onFocus={handleFocus} onBlur={handleBlur} className="rounded-b-[10px] w-full resize-none focus:outline-2 focus:outline-offset-2 focus:outline-none border-transparent border-2 focus:border-[#660eb3] border-t-0 w-full bg-[#0f0f0f] pb-3 pr-[15px] pl-[15px]" type="text" id="user" />
-                                    </div>
+                                        <div className="error flex items-center mt-6 hidden">
+                                            <div className="flex p-3 mr-2 bg-[#e30e2a] rounded-[50%] size-[15px] items-center justify-center">
+                                                <FontAwesomeIcon icon={faExclamation} />
+                                            </div>
 
-                                    <div className="w-full">
-                                        <TextareaProfile value={bio} bioLength={bio.length} length={100} />
+                                            <p className="max-[381px]:text-[15px] text-[#e30e2a]">Preencha o usuário!</p>
+                                        </div>
+
+                                        <div className="error flex items-center mt-6 hidden">
+                                            <div className="flex p-3 mr-2 bg-[#e30e2a] rounded-[50%] size-[15px] items-center justify-center">
+                                                <FontAwesomeIcon icon={faExclamation} />
+                                            </div>
+
+                                            <p className="max-[381px]:text-[15px] text-[#e30e2a]">Usuário muito curto!</p>
+                                        </div>
+
+                                        <div className="w-full mt-8 mb-5">
+                                            <label htmlFor="user" className="border-transparent border-2 border-b-0 flex justify-between items-center bg-[#0f0f0f] rounded-t-[10px] pr-[15px] pl-[15px] pt-3">
+                                                <p className="labelName">Usuário</p>
+                                                <p id="userLength">{stringUser} / 15</p>
+                                            </label>
+                                            <input onChange={handleInput} onInput={handleInput} onFocus={handleFocus} onBlur={handleBlur} className="rounded-b-[10px] w-full resize-none focus:outline-2 focus:outline-offset-2 focus:outline-none border-transparent border-2 focus:border-[#660eb3] border-t-0 w-full bg-[#0f0f0f] pb-3 pr-[15px] pl-[15px]" type="text" id="user" />
+                                        </div>
+
+                                        <div className="w-full">
+                                            <TextareaProfile value={bio} bioLength={bio.length} length={100} />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </>
                     }
 
-                    <div className="grid grid-cols-[1fr_1.1fr_1fr]">
-                        <SideBar setShowSearch={setShowSearch} unreadMessages={unreadMessages} img={myImg} user={userName} />
+                    <div className="grid max-[500px]:flex max-[500px]:flex-col max-[500px]:justify-between max-[801px]:grid-cols-[0.7fr_3fr] max-[1080px]:grid-cols-[1fr_3fr_1fr] max-[1300px]:grid-cols-[0.7fr_3fr_1.7fr] grid-cols-[1fr_1.1fr_1fr]">
+                        {!for500Width &&
+                            <SideBar setShowSearch={setShowSearch} unreadMessages={unreadMessages} img={myImg} user={userName} />
+                        }
 
                         <div className="bg-[#000000] text-[#ffffff] w-full">
-                            <div className="border-[#808080] border-1 border-b-0 min-h-[100vh] pt-[20px]">
+                            <div className="max-[500px]:pb-[64px] max-[500px]:border-0 border-[#808080] border-1 border-b-0 min-h-[100vh] pt-[20px]">
                                 {notFound &&
                                     <div className="p-[30px] pt-[100px] flex flex-col items-center">
                                         <h1 className="font-semibold text-[30px]">Essa conta não existe</h1>
@@ -965,15 +978,15 @@ const Profile = () => {
 
                                 {!notFound &&
                                     <>
-                                        <div className="pt-20 flex flex-col border-[#808080] border-1 border-t-0 border-l-0 border-r-0 w-full pl-[30px] pr-[30px]">
-                                            <div className="flex items-center justify-between">
-                                                <img className="cursor-pointer border-3 border-[#660eb3] w-[134px] h-[134px] rounded-[50%]" src={img} alt="" />
+                                        <div className="max-[376px]:pr-[20px] max-[591px]:pl-[25px] max-[591px]:pr-[25px] pt-20 flex flex-col border-[#808080] border-1 border-t-0 border-l-0 border-r-0 w-full pl-[30px] pr-[30px]">
+                                            <div className="flex items-end justify-between">
+                                                <img className="max-[376px]:size-[100px] max-[576px]:size-[110px] cursor-pointer border-3 border-[#660eb3] size-[134px] rounded-[50%]" src={img} alt="" />
 
                                                 {user == userName &&
                                                     <p onClick={() => {
                                                         setShowEdit(true)
                                                         window.scrollTo({ top: 0 })
-                                                    }} className="cursor-pointer border-2 border-[#660eb3] rounded-[10px] mt-20 pl-[15px] pr-[15px] pt-[5px] pb-[5px]">Editar Perfil</p>
+                                                    }} className="cursor-pointer border-2 border-[#660eb3] rounded-[10px] pl-[15px] pr-[15px] pt-[5px] pb-[5px]">Editar Perfil</p>
                                                 }
 
                                                 {user != userName &&
@@ -981,11 +994,11 @@ const Profile = () => {
                                                         {
                                                             <>
                                                                 {isFollowing &&
-                                                                    <p onClick={(e) => handleFollow('', e)} id="remove" className="btnFollow cursor-pointer border-2 border-[#660eb3] rounded-[10px] mt-20 pl-[15px] pr-[15px] pt-[5px] pb-[5px]">Seguindo</p>
+                                                                    <p onClick={(e) => handleFollow('', e)} id="remove" className="btnFollow cursor-pointer border-2 border-[#660eb3] rounded-[10px] pl-[15px] pr-[15px] pt-[5px] pb-[5px]">Seguindo</p>
                                                                 }
 
                                                                 {!isFollowing &&
-                                                                    <p onClick={(e) => handleFollow('', e)} id="add" className="btnFollow bg-[#660eb3] cursor-pointer border-2 border-[#660eb3] rounded-[10px] mt-20 pl-[30px] pr-[30px] pt-[5px] pb-[5px]">Seguir</p>
+                                                                    <p onClick={(e) => handleFollow('', e)} id="add" className="btnFollow bg-[#660eb3] cursor-pointer border-2 border-[#660eb3] rounded-[10px] pl-[30px] pr-[30px] pt-[5px] pb-[5px]">Seguir</p>
                                                                 }
                                                             </>
                                                         }
@@ -994,7 +1007,7 @@ const Profile = () => {
                                             </div>
 
                                             <div className="mt-5 w-full wrap-anywhere">
-                                                <h1 className="font-semibold text-[20px]">{requestedUser}</h1>
+                                                <h1 className="max-[576px]:text-[19px] font-semibold text-[20px]">{requestedUser}</h1>
                                                 <p className="mt-2 mb-5">
                                                     {
                                                         bio.split(' ').map((element) => {
@@ -1036,21 +1049,21 @@ const Profile = () => {
                                                 </div>
                                             </div>
 
-                                            <div className="flex justify-evenly pt-[50px]">
-                                                <div onClick={getPosts} style={view == 'posts' ? { borderBottom: 'solid 4px #660eb3' } : { borderBottom: 'none' }} className="cursor-pointer pb-[30px]">
+                                            <div className="max-[500px]:pb-[12px] max-[500px]:flex-col max-[500px]:justify-center max-[500px]:items-center max-[500px]:text-[16px] max-[591px]:text-[15px] flex justify-evenly pt-[50px]">
+                                                <div onClick={getPosts} style={view == 'posts' ? { borderBottom: 'solid 4px #660eb3' } : { borderBottom: 'none' }} className="max-[500px]:mb-[20px] max-[500px]:pb-[10px] cursor-pointer pb-[30px]">
                                                     <p>Postagens</p>
                                                 </div>
 
-                                                <div onClick={getComments} style={view == 'comments' ? { borderBottom: 'solid 4px #660eb3' } : { borderBottom: 'none' }} className="cursor-pointer pb-[30px]">
+                                                <div onClick={getComments} style={view == 'comments' ? { borderBottom: 'solid 4px #660eb3' } : { borderBottom: 'none' }} className="max-[500px]:mb-[20px] max-[500px]:pb-[10px] cursor-pointer pb-[30px]">
                                                     <p>Comentários</p>
                                                 </div>
 
-                                                <div onClick={getReplies} style={view == 'replies' ? { borderBottom: 'solid 4px #660eb3' } : { borderBottom: 'none' }} className="cursor-pointer pb-[30px]">
+                                                <div onClick={getReplies} style={view == 'replies' ? { borderBottom: 'solid 4px #660eb3' } : { borderBottom: 'none' }} className="max-[500px]:mb-[20px] max-[500px]:pb-[10px] cursor-pointer pb-[30px]">
                                                     <p>Respostas</p>
                                                 </div>
 
                                                 {user == userName &&
-                                                    <div onClick={getLikes} style={view == 'likes' ? { borderBottom: 'solid 4px #660eb3' } : { borderBottom: 'none' }} className="cursor-pointer pb-[30px]">
+                                                    <div onClick={getLikes} style={view == 'likes' ? { borderBottom: 'solid 4px #660eb3' } : { borderBottom: 'none' }} className="max-[500px]:pb-[10px] max-[500px]:mb-[20px] cursor-pointer pb-[30px]">
                                                         <p>Curtidas</p>
                                                     </div>
                                                 }
@@ -1139,7 +1152,13 @@ const Profile = () => {
                             </div>
                         </div>
 
-                        <SearchInput />
+                        {!for800Width &&
+                            <SearchInput />
+                        }
+
+                        {for500Width &&
+                            <SideBar setShowSearch={setShowSearch} unreadMessages={unreadMessages} img={myImg} user={userName} />
+                        }
                     </div>
                 </>
             }

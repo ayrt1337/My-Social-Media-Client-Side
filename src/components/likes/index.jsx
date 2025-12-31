@@ -2,8 +2,11 @@ import { useState, useId } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useNavigate } from "react-router-dom"
 import ImageProfile from '../../assets/981d6b2e0ccb5e968a0618c8d47671da.jpg'
+import { useMediaQuery } from "react-responsive"
 
 const Likes = props => {
+    const for386Width = useMediaQuery({ query: '(max-width: 386px)' })
+
     const words = props.likes.text.split(' ')
     const [icon, setIcon] = useState(props.likes.isLiked == true ? 'fa-solid fa-heart' : 'fa-regular fa-heart')
     const _id = useId()
@@ -56,18 +59,26 @@ const Likes = props => {
             <img onClick={(e) => {
                 e.stopPropagation()
                 navigate(`/profile/${props.likes.user}`)
-            }} className="border-[2px] border-[#660eb3] w-[55px] h-[55px] rounded-[50%]" src={props.likes.profileImg == null ? ImageProfile : props.likes.profileImg} alt="" />
+            }} className="max-[510px]:size-[45px] border-[2px] border-[#660eb3] size-[55px] rounded-[50%]" src={props.likes.profileImg == null ? ImageProfile : props.likes.profileImg} alt="" />
 
             <div className="ml-3 mt-[2px]">
-                <div className="flex">
+                <div className="max-[387px]:flex-col flex">
                     <p onClick={(e) => {
                         e.stopPropagation()
-                        navigate(`/profile/${element.user}`)
-                    }} className="mb-1 font-semibold max-w-[150px]">{props.likes.user}</p>
+                        navigate(`/profile/${props.likes.user}`)
+                    }} className="max-[387px]:mb-[2px] max-[510px]:text-[15px] mb-1 font-semibold max-w-[150px]">{props.likes.user}</p>
 
-                    {'\u00A0'}
+                    {!for386Width &&
+                        <>
+                            {'\u00A0'}
+                        
+                            <p className="text-[#cccccc] text-[15px] max-[510px]:text-[14px]">· {props.likes.createdAt}</p>
+                        </>
+                    }
 
-                    <p className="text-[#cccccc] text-[15px]">· {props.likes.createdAt}</p>
+                    {for386Width &&
+                        <p className="mb-2 text-[#cccccc] text-[14px]">{props.likes.createdAt}</p>
+                    }
                 </div>
 
                 <p>

@@ -197,7 +197,7 @@ const Post = () => {
                                 {!notFound &&
                                     <>
                                         <div className="pl-6 pr-6 flex items-center">
-                                            <FontAwesomeIcon onClick={() => navigate('/home')} className='text-[28px] cursor-pointer ml-2' icon={faArrowLeftLong} />
+                                            <FontAwesomeIcon onClick={() => navigate(-1)} className='text-[28px] cursor-pointer ml-2' icon={faArrowLeftLong} />
                                             <h1 className='text-[23px] ml-4 font-semibold'>Post</h1>
                                         </div>
 
