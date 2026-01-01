@@ -111,7 +111,6 @@ const SearchOverlay = props => {
 
                                                             <div className="flex flex-col ml-2">
                                                                 <p className="text-[15px]">{user.user}</p>
-                                                                <p className="text-[14px]">{user.bio.length >= 20 ? user.bio.substring(0, 17) + '...' : user.bio}</p>
 
                                                                 {(user.isFollowingAndFollower != undefined || user.isFollowing != undefined || user.isFollowingMe != undefined) &&
                                                                     <div className="flex items-center mt-1">

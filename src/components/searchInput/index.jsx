@@ -101,12 +101,11 @@ const SearchInput = () => {
                                         {
                                             users.map((user, index) => {
                                                 return (
-                                                    <div style={index == 0 ? { borderTopLeftRadius: '15px', borderTopRightRadius: '15px', paddingTop: '18px' } : { borderTopLeftRadius: '0px', borderTopRightRadius: '0px' }} onClick={() => navigate(`/profile/${user.user}`)} className="hover:bg-[#30005bff] flex cursor-pointer items-start p-4 pb-3 pt-3" key={index}>
+                                                    <div style={index == 0 ? { borderTopLeftRadius: '15px', borderTopRightRadius: '15px', paddingTop: '18px' } : { borderTopLeftRadius: '0px', borderTopRightRadius: '0px' }} onClick={() => navigate(`/profile/${user.user}`)} className="hover:bg-[#30005bff] flex cursor-pointer items-center p-4 pb-3 pt-3" key={index}>
                                                         <img className="w-[45px] h-[45px] rounded-[50%]" src={user.profileImg == null ? ImageProfile : user.profileImg} alt="" />
 
                                                         <div className="flex flex-col ml-2">
                                                             <p className="text-[15px]">{user.user}</p>
-                                                            <p className="text-[14px]">{user.bio.length >= 20 ? user.bio.substring(0, 17) + '...' : user.bio}</p>
 
                                                             {(user.isFollowingAndFollower != undefined || user.isFollowing != undefined || user.isFollowingMe != undefined) &&
                                                                 <div className="flex items-center mt-1">
