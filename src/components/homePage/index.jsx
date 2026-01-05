@@ -20,6 +20,7 @@ const Home = () => {
     const id = useId()
     const [unreadMessages, setUnreadMessages] = useState(null)
     const [showSearch, setShowSearch] = useState(false)
+    const [showLoadingPost, setShowLoadingPost] = useState(false)
 
     useEffect(() => {
         const getSession = async () => {
@@ -79,9 +80,11 @@ const Home = () => {
     }, [user])
 
     const submitPost = async () => {
-        const value = document.getElementById(id).firstChild.firstChild.firstChild.value
+        const value = document.getElementById(id).firstChild.firstChild.firstChild.firstChild.value
 
         if (value.length > 0 && value.length < 200) {
+            setShowLoadingPost(true)
+
             const result = await fetch('http://localhost:3000/createPost', {
                 method: 'POST',
                 headers: {
@@ -110,13 +113,23 @@ const Home = () => {
 
             {!showLoading &&
                 <>
+                    {showLoadingPost &&
+                        <>
+                            <div className="h-full w-full absolute z-1000 opacity-30 bg-[#808080]"></div>
+
+                            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-1001 animate-spin inline-block size-20 border-5 border-current border-t-transparent text-[#660eb3] rounded-full dark:text-[#660eb3]" role="status" aria-label="loading">
+                                <span className="sr-only">Loading...</span>
+                            </div>
+                        </>
+                    }
+
                     {showSearch &&
                         <SearchOverlay setShowSearch={setShowSearch} />
                     }
 
                     <div className="grid max-[500px]:flex max-[500px]:flex-col max-[500px]:justify-between max-[667px]:grid-cols-[0.7fr_3fr] max-[1080px]:grid-cols-[1fr_3fr_1fr] max-[1300px]:grid-cols-[0.7fr_3fr_1.7fr] grid-cols-[1fr_1.1fr_1fr]">
                         {!for500Width &&
-                            <SideBar setShowSearch={setShowSearch} unreadMessages={unreadMessages} img={img} user={user} />
+                            <SideBar setShowLoadingLogout={setShowLoadingPost} setShowSearch={setShowSearch} unreadMessages={unreadMessages} img={img} user={user} />
                         }
 
                         <div className="bg-[#000000] text-[#ffffff] w-full max-[500px]:pb-[64px]">
@@ -163,7 +176,7 @@ const Home = () => {
                         }
 
                         {for500Width &&
-                            <SideBar setShowSearch={setShowSearch} unreadMessages={unreadMessages} img={img} user={user} />
+                            <SideBar setShowLoadingLogout={setShowLoadingPost} setShowSearch={setShowSearch} unreadMessages={unreadMessages} img={img} user={user} />
                         }
                     </div>
                 </>

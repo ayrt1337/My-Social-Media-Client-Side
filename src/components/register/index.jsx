@@ -11,6 +11,7 @@ import { faExclamation } from "@fortawesome/free-solid-svg-icons"
 const Register = () => {
     const [showPassword1, setShowPassword1] = useState(false)
     const [showPassword2, setShowPassword2] = useState(false)
+    const [showLoading, setShowLoading] = useState(false)
     const navigate = useNavigate()
 
     const emailMask = (email) => {
@@ -21,7 +22,7 @@ const Register = () => {
     const submitData = async (e) => {
         const event = e.key || e.type
 
-        if(event == 'Enter' || event == 'click'){
+        if (event == 'Enter' || event == 'click') {
             const email = document.getElementById('email').value
             const password = document.getElementById('password').value
             const confirmPassword = document.getElementById('confirmPassword').value
@@ -29,17 +30,19 @@ const Register = () => {
             const errors = document.getElementsByClassName('error')
             var emptyCamps = 0
 
-            for(let i = 0; i <= inputs.length + 2; i++){
-                if(i <= inputs.length + 2) errors[i].classList.add('hidden')
+            for (let i = 0; i <= inputs.length + 2; i++) {
+                if (i <= inputs.length + 2) errors[i].classList.add('hidden')
 
-                if(i < errors.length - 4 && inputs[i].value == '') emptyCamps++
+                if (i < errors.length - 4 && inputs[i].value == '') emptyCamps++
             }
 
-            if(emptyCamps == 0){
-                if(emailMask(email) && password == confirmPassword){
-                    if(password.includes(' ')) errors[4].classList.remove('hidden')
+            if (emptyCamps == 0) {
+                if (emailMask(email) && password == confirmPassword) {
+                    if (password.includes(' ')) errors[4].classList.remove('hidden')
 
-                    else{
+                    else {
+                        setShowLoading(true)
+
                         const result = await fetch('http://localhost:3000/confirmEmail', {
                             method: 'POST',
                             headers: {
@@ -51,18 +54,21 @@ const Register = () => {
 
                         const output = await result.json()
 
-                        if(output.status == 'success') navigate(`/confirmemail?email=${email}&password=${password}`)
-                        
-                        else errors[2].classList.remove('hidden')
+                        if (output.status == 'success') navigate(`/confirmemail?email=${email}&password=${password}`)
+
+                        else{
+                            setShowLoading(false)
+                            errors[2].classList.remove('hidden')
+                        }
                     }
                 }
 
-                else if(password != confirmPassword) errors[3].classList.remove('hidden')
+                else if (password != confirmPassword) errors[3].classList.remove('hidden')
 
-                else if(password.includes('>') || password.includes('<')) errors[5].classList.remove('hidden')
+                else if (password.includes('>') || password.includes('<')) errors[5].classList.remove('hidden')
 
                 else errors[1].classList.remove('hidden')
-            } 
+            }
 
             else errors[0].classList.remove('hidden')
         }
@@ -72,13 +78,13 @@ const Register = () => {
         const labels = document.getElementsByTagName('label')
         const inputs = document.getElementsByTagName('input')
         const eyes = document.getElementsByClassName('eye')
-        
-        for(let i = 0; i < inputs.length; i++){
-            if(e.target == inputs[i]){
+
+        for (let i = 0; i < inputs.length; i++) {
+            if (e.target == inputs[i]) {
                 labels[i].style.border = 'solid 2px #660eb3'
                 labels[i].style.borderRight = 'solid 0px #660eb3'
 
-                if(i == 1 || i == 2){
+                if (i == 1 || i == 2) {
                     eyes[i - 1].style.border = 'solid 2px #660eb3'
                     eyes[i - 1].style.borderLeft = 'solid 0px #660eb3'
                 }
@@ -90,13 +96,13 @@ const Register = () => {
         const labels = document.getElementsByTagName('label')
         const inputs = document.getElementsByTagName('input')
         const eyes = document.getElementsByClassName('eye')
-        
-        for(let i = 0; i < inputs.length; i++){
-            if(e.target == inputs[i]){
+
+        for (let i = 0; i < inputs.length; i++) {
+            if (e.target == inputs[i]) {
                 labels[i].style.border = '2px solid transparent'
                 labels[i].style.borderRight = '0px solid transparent'
-                
-                if(i == 1 || i == 2){
+
+                if (i == 1 || i == 2) {
                     eyes[i - 1].style.border = '2px solid transparent'
                     eyes[i - 1].style.borderLeft = '0px solid transparent'
                 }
@@ -110,31 +116,41 @@ const Register = () => {
         const closedEyes = document.getElementsByClassName('closedEye')
         const closedEyeDivs = document.getElementsByClassName('closedEyeDiv')
 
-        for(let i = 0; i < openEyes.length; i++){
-            if(e.target == openEyes[i] || e.target.parentElement == openEyes[i]){
+        for (let i = 0; i < openEyes.length; i++) {
+            if (e.target == openEyes[i] || e.target.parentElement == openEyes[i]) {
                 openEyeDivs[i].classList.add('hidden')
                 closedEyeDivs[i].classList.remove('hidden')
 
-                if(i == 0) setShowPassword1(true)
+                if (i == 0) setShowPassword1(true)
                 else setShowPassword2(true)
             }
 
-            else if(e.target == closedEyes[i] || e.target.parentElement == closedEyes[i]){
+            else if (e.target == closedEyes[i] || e.target.parentElement == closedEyes[i]) {
                 closedEyeDivs[i].classList.add('hidden')
                 openEyeDivs[i].classList.remove('hidden')
-                
-                if(i == 0) setShowPassword1(false)
+
+                if (i == 0) setShowPassword1(false)
                 else setShowPassword2(false)
             }
         }
     }
 
-    return(
+    return (
         <>
-            <div className="max-[591px]:bg-[#000000] flex flex-col items-center bg-[#0f0f0f] h-full justify-center">
-                <div className="max-[460px]:pl-7 max-[460px]:pr-7 max-[591px]:w-full text-center flex flex-col items-center justify-between bg-[#000000] rounded-[15px] pb-13 pl-10 pr-10 text-[#FFFFFF]">
+            {showLoading &&
+                <>
+                    <div className="h-full w-full absolute z-1000 opacity-30 bg-[#808080]"></div>
+
+                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-1001 animate-spin inline-block size-20 border-5 border-current border-t-transparent text-[#660eb3] rounded-full dark:text-[#660eb3]" role="status" aria-label="loading">
+                        <span className="sr-only">Loading...</span>
+                    </div>
+                </>
+            }
+
+            <div className="max-[591px]:pt-8 max-[591px]:pb-8 pt-13 pb-13 max-[591px]:bg-[#000000] flex flex-col items-center bg-[#0f0f0f] min-h-[100vh] justify-center">
+                <div className="max-[460px]:pl-7 max-[460px]:pr-7 max-[591px]:w-full text-center flex flex-col items-center justify-between bg-[#000000] rounded-[15px] pt-13 pb-13 pl-10 pr-10 text-[#FFFFFF]">
                     <div className="flex flex-col items-center m-10 w-full text-[15px]">
-                        <img src={Image} className="max-[460px]:max-w-[300px] max-w-[350px]"></img>
+                        <img src={Image} className="max-[460px]:h-auto max-[460px]:max-w-[100%] max-w-[350px]"></img>
 
                         <h1 className="font-bold text-[22px] mb-5">CADASTRAR</h1>
 
@@ -186,35 +202,35 @@ const Register = () => {
                             <p className="text-[#e30e2a]">Caracteres proibidos!</p>
                         </div>
 
-                        <div className="flex w-full items-center mb-3">
-                            <label className="border-r-0 border-transparent border-2 pl-5 rounded-r-[0px] rounded-[7px] bg-[#0f0f0f] h-full flex items-center" htmlFor="email"><FontAwesomeIcon icon={faEnvelope} /></label>
-                            <input onKeyDown={submitData} onFocus={handleFocus} onBlur={handleBlur} className="focus:outline-2 focus:outline-offset-2 focus:outline-none border-l-0 border-transparent border-2 focus:border-b-[#660eb3] focus:border-t-[#660eb3] focus:border-r-[#660eb3] w-full bg-[#0f0f0f] rounded-l-[0px] rounded-[7px] pt-3 pb-3 pr-5 pl-3" type="text" placeholder="Email" id="email"/>
+                        <div className="flex w-full items-stretch mb-3">
+                            <label className="border-r-0 border-transparent border-2 pl-5 rounded-r-[0px] rounded-[7px] bg-[#0f0f0f] flex items-center" htmlFor="email"><FontAwesomeIcon icon={faEnvelope} /></label>
+                            <input onKeyDown={submitData} onFocus={handleFocus} onBlur={handleBlur} className="focus:outline-2 focus:outline-offset-2 focus:outline-none border-l-0 border-transparent border-2 focus:border-b-[#660eb3] focus:border-t-[#660eb3] focus:border-r-[#660eb3] w-full bg-[#0f0f0f] rounded-l-[0px] rounded-[7px] pt-3 pb-3 pr-5 pl-3" type="text" placeholder="Email" id="email" />
                         </div>
-                        
-                        <div className="flex w-full items-center mb-3">
-                            <label className="border-r-0 border-transparent border-2 pl-5 rounded-r-[0px] rounded-[7px] bg-[#0f0f0f] h-full flex items-center" htmlFor="password"><FontAwesomeIcon icon={faLock} /></label>
-                            <input onKeyDown={submitData} onFocus={handleFocus} onBlur={handleBlur} className="focus:outline-2 focus:outline-offset-2 focus:outline-none border-l-0 border-r-0 border-transparent border-2 focus:border-b-[#660eb3] focus:border-t-[#660eb3] w-full bg-[#0f0f0f] pt-3 pb-3 pr-5 pl-3" type={showPassword1 ? 'text' : 'password'} placeholder="Senha" id="password"/>
-                            <div className="eye h-full border-l-0 border-transparent border-2 pr-5 rounded-l-[0px] rounded-[7px] bg-[#0f0f0f] flex items-center">
+
+                        <div className="flex w-full items-stretch mb-3">
+                            <label className="border-r-0 border-transparent border-2 pl-5 rounded-r-[0px] rounded-[7px] bg-[#0f0f0f] flex items-center" htmlFor="password"><FontAwesomeIcon icon={faLock} /></label>
+                            <input onKeyDown={submitData} onFocus={handleFocus} onBlur={handleBlur} className="focus:outline-2 focus:outline-offset-2 focus:outline-none border-l-0 border-r-0 border-transparent border-2 focus:border-b-[#660eb3] focus:border-t-[#660eb3] w-full bg-[#0f0f0f] pt-3 pb-3 pr-5 pl-3" type={showPassword1 ? 'text' : 'password'} placeholder="Senha" id="password" />
+                            <div className="eye border-l-0 border-transparent border-2 pr-5 rounded-l-[0px] rounded-[7px] bg-[#0f0f0f] flex items-center">
                                 <div className="openEyeDiv">
-                                    <FontAwesomeIcon onClick={hidePassword} className="openEye cursor-pointer" icon={faEye}/>
+                                    <FontAwesomeIcon onClick={hidePassword} className="openEye cursor-pointer" icon={faEye} />
                                 </div>
-                                
+
                                 <div className="closedEyeDiv hidden">
-                                    <FontAwesomeIcon onClick={hidePassword} className="closedEye cursor-pointer" icon={faEyeSlash}/>
+                                    <FontAwesomeIcon onClick={hidePassword} className="closedEye cursor-pointer" icon={faEyeSlash} />
                                 </div>
                             </div>
-                        </div>  
+                        </div>
 
-                        <div className="flex w-full items-center mb-10">
-                            <label className="border-r-0 border-transparent border-2 pl-5 rounded-r-[0px] rounded-[7px] bg-[#0f0f0f] h-full flex items-center" htmlFor="confirmPassword"><FontAwesomeIcon icon={faLock} /></label>
-                            <input onKeyDown={submitData} onFocus={handleFocus} onBlur={handleBlur} className="focus:outline-2 focus:outline-offset-2 focus:outline-none border-l-0 border-r-0 border-transparent border-2 focus:border-b-[#660eb3] focus:border-t-[#660eb3] w-full bg-[#0f0f0f] pt-3 pb-3 pr-5 pl-3" type={showPassword2 ? 'text' : 'password'} placeholder="Confirmar Senha" id="confirmPassword"/>
-                            <div className="eye h-full border-l-0 border-transparent border-2 pr-5 rounded-l-[0px] rounded-[7px] bg-[#0f0f0f] flex items-center">
+                        <div className="flex w-full items-stretch mb-10">
+                            <label className="border-r-0 border-transparent border-2 pl-5 rounded-r-[0px] rounded-[7px] bg-[#0f0f0f] flex items-center" htmlFor="confirmPassword"><FontAwesomeIcon icon={faLock} /></label>
+                            <input onKeyDown={submitData} onFocus={handleFocus} onBlur={handleBlur} className="focus:outline-2 focus:outline-offset-2 focus:outline-none border-l-0 border-r-0 border-transparent border-2 focus:border-b-[#660eb3] focus:border-t-[#660eb3] w-full bg-[#0f0f0f] pt-3 pb-3 pr-5 pl-3" type={showPassword2 ? 'text' : 'password'} placeholder="Confirmar Senha" id="confirmPassword" />
+                            <div className="eye border-l-0 border-transparent border-2 pr-5 rounded-l-[0px] rounded-[7px] bg-[#0f0f0f] flex items-center">
                                 <div className="openEyeDiv">
-                                    <FontAwesomeIcon onClick={hidePassword} className="openEye cursor-pointer" icon={faEye}/>
+                                    <FontAwesomeIcon onClick={hidePassword} className="openEye cursor-pointer" icon={faEye} />
                                 </div>
-                                
+
                                 <div className="closedEyeDiv hidden">
-                                    <FontAwesomeIcon onClick={hidePassword} className="closedEye cursor-pointer" icon={faEyeSlash}/>
+                                    <FontAwesomeIcon onClick={hidePassword} className="closedEye cursor-pointer" icon={faEyeSlash} />
                                 </div>
                             </div>
                         </div>

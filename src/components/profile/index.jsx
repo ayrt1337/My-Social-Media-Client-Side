@@ -387,7 +387,7 @@ const Profile = () => {
 
         else {
             if (!document.getElementById('img').src.includes(ImageProfile)) newProfileImage = document.getElementById('img').src
-            
+
             setShowLoadingEdit(true)
 
             const result = await fetch('http://localhost:3000/updateAccout', {
@@ -402,9 +402,10 @@ const Profile = () => {
 
             const output = await result.json()
 
-            setShowLoadingEdit(false)
-
-            if (output.status == 'fail' && newUser != userName) errors[0].classList.remove('hidden')
+            if (output.status == 'fail' && newUser != userName) {
+                setShowLoadingEdit(false)
+                errors[0].classList.remove('hidden')
+            }
 
             else window.location.href = `/profile/${newUser}`
         }
@@ -576,6 +577,16 @@ const Profile = () => {
 
             {!showLoading &&
                 <>
+                    {showLoadingEdit &&
+                        <>
+                            <div className="h-full w-full absolute z-1000 opacity-30 bg-[#808080]"></div>
+
+                            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-1001 animate-spin inline-block size-20 border-5 border-current border-t-transparent text-[#660eb3] rounded-full dark:text-[#660eb3]" role="status" aria-label="loading">
+                                <span className="sr-only">Loading...</span>
+                            </div>
+                        </>
+                    }
+
                     {showSearch &&
                         <SearchOverlay setShowSearch={setShowSearch} />
                     }
@@ -1053,16 +1064,6 @@ const Profile = () => {
                                 </div>
                             </div>
 
-                            {showLoadingEdit &&
-                                <>
-                                    <div className="h-full w-full absolute z-1000 opacity-30 bg-[#808080]"></div>
-
-                                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-1001 animate-spin inline-block size-20 border-5 border-current border-t-transparent text-[#660eb3] rounded-full dark:text-[#660eb3]" role="status" aria-label="loading">
-                                        <span className="sr-only">Loading...</span>
-                                    </div>
-                                </>
-                            }
-
                             <div id="edit" className="max-[466px]:pr-5 max-[466px]:pl-5 max-[746px]:pr-10 max-[746px]:pl-10 max-[746px]:w-full absolute z-998 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                                 <div className="max-[746px]:w-full text-[#ffffff] w-[600px] h-auto bg-[#000000] rounded-[10px]">
                                     <div className="flex items-center p-5 justify-between">
@@ -1156,15 +1157,15 @@ const Profile = () => {
 
                     <div className="grid max-[500px]:flex max-[500px]:flex-col max-[500px]:justify-between max-[801px]:grid-cols-[0.7fr_3fr] max-[1080px]:grid-cols-[1fr_3fr_1fr] max-[1300px]:grid-cols-[0.7fr_3fr_1.7fr] grid-cols-[1fr_1.1fr_1fr]">
                         {!for500Width &&
-                            <SideBar setShowSearch={setShowSearch} unreadMessages={unreadMessages} img={myImg} user={userName} />
+                            <SideBar setShowLoadingLogout={setShowLoadingEdit} setShowSearch={setShowSearch} unreadMessages={unreadMessages} img={myImg} user={userName} />
                         }
 
                         <div className="bg-[#000000] text-[#ffffff] w-full">
                             <div className="max-[500px]:pb-[64px] max-[500px]:border-0 border-[#808080] border-1 border-b-0 min-h-[100vh] pt-[20px]">
                                 {notFound &&
-                                    <div className="p-[30px] pt-[100px] flex flex-col items-center">
-                                        <h1 className="font-semibold text-[30px]">Essa conta não existe</h1>
-                                        <p className="mt-3 text-[17px]">Tente realizar outra busca.</p>
+                                    <div className="p-[30px] pt-[100px] flex flex-col items-center text-center">
+                                        <h1 className="max-[600px]:text-[25px] font-semibold text-[30px]">Essa conta não existe</h1>
+                                        <p className="max-[600px]:text-[16px] mt-3 text-[17px]">Tente realizar outra busca.</p>
                                     </div>
                                 }
 
@@ -1349,7 +1350,7 @@ const Profile = () => {
                         }
 
                         {for500Width &&
-                            <SideBar setShowSearch={setShowSearch} unreadMessages={unreadMessages} img={myImg} user={userName} />
+                            <SideBar setShowLoadingLogout={setShowLoadingEdit} setShowSearch={setShowSearch} unreadMessages={unreadMessages} img={myImg} user={userName} />
                         }
                     </div>
                 </>

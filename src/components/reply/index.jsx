@@ -53,9 +53,13 @@ const Reply = props => {
     }
 
     const submitReply = async (commentId) => {
-        const value = document.getElementById(id).firstChild.firstChild.firstChild.value
+        const value = document.getElementById(id).firstChild.firstChild.firstChild.firstChild.value
 
         if (value.length > 0 && value.length < 200) {
+            document.body.style.overflow = 'hidden'
+            scrollTo(top)
+            props.setShowLoadingComment(true)
+
             const result = await fetch('http://localhost:3000/createReply', {
                 method: 'POST',
                 headers: {

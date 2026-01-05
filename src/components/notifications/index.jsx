@@ -17,6 +17,7 @@ const Notifications = () => {
     const [notFound, setNotFound] = useState(false)
     const navigate = useNavigate()
     const [showSearch, setShowSearch] = useState(false)
+    const [showLoadingLogout, setShowLoadingLogout] = useState(false)
 
     useEffect(() => {
         const getSession = async () => {
@@ -97,13 +98,23 @@ const Notifications = () => {
 
             {!showLoading &&
                 <>
+                    {showLoadingLogout &&
+                        <>
+                            <div className="h-full w-full absolute z-1000 opacity-30 bg-[#808080]"></div>
+
+                            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-1001 animate-spin inline-block size-20 border-5 border-current border-t-transparent text-[#660eb3] rounded-full dark:text-[#660eb3]" role="status" aria-label="loading">
+                                <span className="sr-only">Loading...</span>
+                            </div>
+                        </>
+                    }
+
                     {showSearch &&
                         <SearchOverlay setShowSearch={setShowSearch} />
                     }
 
                     <div className="grid max-[500px]:flex max-[500px]:flex-col max-[500px]:justify-between max-[600px]:grid-cols-[0.7fr_3fr] max-[1080px]:grid-cols-[1fr_3fr_1fr] max-[1300px]:grid-cols-[0.7fr_3fr_1.7fr] grid-cols-[1fr_1.1fr_1fr]">
                         {!for500Width &&
-                            <SideBar setShowSearch={setShowSearch} img={img} user={user} />
+                            <SideBar setShowLoadingLogout={setShowLoadingLogout} setShowSearch={setShowSearch} img={img} user={user} />
                         }
 
                         <div className="bg-[#000000] text-[#ffffff] w-full max-[500px]:pb-[64px]">
@@ -154,7 +165,7 @@ const Notifications = () => {
                         }
 
                         {for500Width &&
-                            <SideBar setShowSearch={setShowSearch} img={img} user={user} />
+                            <SideBar setShowLoadingLogout={setShowLoadingLogout} setShowSearch={setShowSearch} img={img} user={user} />
                         }
                     </div>
                 </>

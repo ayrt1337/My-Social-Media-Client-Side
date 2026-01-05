@@ -2,9 +2,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons"
 import { faExclamation } from "@fortawesome/free-solid-svg-icons"
+import { useState } from "react";
 
 const ResetPassword = () => {
     const navigate = useNavigate()
+    const [showLoading, setShowLoading] = useState(false)
 
     const submitData = async (e) => {
         const event = e.key || e.type
@@ -14,7 +16,7 @@ const ResetPassword = () => {
             const errors = document.getElementsByClassName('error')
             const email = document.getElementById('email').value
 
-            for(let i = 0; i < errors.length; i++){
+            for (let i = 0; i < errors.length; i++) {
                 errors[i].classList.add('hidden')
             }
 
@@ -22,6 +24,8 @@ const ResetPassword = () => {
 
             else {
                 if (emailMask(email)) {
+                    setShowLoading(true)
+
                     await fetch('http://localhost:3000/reset', {
                         method: 'POST',
                         headers: {
@@ -81,47 +85,59 @@ const ResetPassword = () => {
     }
 
     return (
-        <div className="max-[631px]:bg-[#000000] flex flex-col items-center bg-[#0f0f0f] h-full justify-center">
-            <div className="max-[631px]:w-full text-[15px] text-center flex flex-col items-center justify-between bg-[#000000] rounded-[15px] pr-5 pl-5 pt-15 pb-15 text-[#FFFFFF]">
-                <div className="flex flex-col items-center w-full">
-                    <div className="max-[430px]:pl-4 max-[430px]:pr-4 max-[631px]:w-full relative text-center flex flex-col items-center justify-between bg-[#000000] rounded-[15px] pl-8 pr-8 pb-8 text-[#FFFFFF] w-[500px]">
-                        <div className="flex flex-col items-center">
-                            <h1 className="max-[430px]:text-[27px] text-[30px]">Mude sua senha</h1>
-                            <h1 className="max-[430px]:text-[16px] text-[18px] mb-0 mt-3">Insira abaixo o email da conta que você deseja alterar a senha</h1>
-                        </div>
+        <>
+            {showLoading &&
+                <>
+                    <div className="h-full w-full absolute z-1000 opacity-30 bg-[#808080]"></div>
+
+                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-1001 animate-spin inline-block size-20 border-5 border-current border-t-transparent text-[#660eb3] rounded-full dark:text-[#660eb3]" role="status" aria-label="loading">
+                        <span className="sr-only">Loading...</span>
                     </div>
+                </>
+            }
 
-                    <div className="error flex mb-5 items-center hidden">
-                        <div className="flex p-3 mr-2 bg-[#e30e2a] rounded-[50%] size-[15px] items-center justify-center">
-                            <FontAwesomeIcon icon={faExclamation} />
-                        </div>
-
-                        <p className="text-[#e30e2a]">Insira o email!</p>
-                    </div>
-
-                    <div className="error flex mb-5 items-center hidden">
-                        <div className="flex p-3 mr-2 bg-[#e30e2a] rounded-[50%] size-[15px] items-center justify-center">
-                            <FontAwesomeIcon icon={faExclamation} />
+            <div className="max-[631px]:pt-8 max-[631px]:pb-8 pt-13 pb-13 max-[631px]:bg-[#000000] flex flex-col items-center bg-[#0f0f0f] min-h-[100vh] justify-center">
+                <div className="max-[631px]:w-full text-[15px] text-center flex flex-col items-center justify-between bg-[#000000] rounded-[15px] pr-5 pl-5 pt-15 pb-15 text-[#FFFFFF]">
+                    <div className="flex flex-col items-center w-full">
+                        <div className="max-[430px]:pl-4 max-[430px]:pr-4 max-[631px]:w-full relative text-center flex flex-col items-center justify-between bg-[#000000] rounded-[15px] pl-8 pr-8 pb-8 text-[#FFFFFF] w-[500px]">
+                            <div className="flex flex-col items-center">
+                                <h1 className="max-[430px]:text-[27px] text-[30px]">Mude sua senha</h1>
+                                <h1 className="max-[430px]:text-[16px] text-[18px] mb-0 mt-3">Insira abaixo o email da conta que você deseja alterar a senha</h1>
+                            </div>
                         </div>
 
-                        <p className="text-[#e30e2a]">Formato de email inválido!</p>
+                        <div className="error flex mb-5 items-center hidden">
+                            <div className="flex p-3 mr-2 bg-[#e30e2a] rounded-[50%] size-[15px] items-center justify-center">
+                                <FontAwesomeIcon icon={faExclamation} />
+                            </div>
+
+                            <p className="text-[#e30e2a]">Insira o email!</p>
+                        </div>
+
+                        <div className="error flex mb-5 items-center hidden">
+                            <div className="flex p-3 mr-2 bg-[#e30e2a] rounded-[50%] size-[15px] items-center justify-center">
+                                <FontAwesomeIcon icon={faExclamation} />
+                            </div>
+
+                            <p className="text-[#e30e2a]">Formato de email inválido!</p>
+                        </div>
+
+                        <div className="flex w-full items-stretch text-center justify-center mb-3">
+                            <label className="border-r-0 border-transparent border-2 pl-5 rounded-r-[0px] rounded-[7px] bg-[#0f0f0f] flex items-center" htmlFor="email"><FontAwesomeIcon icon={faEnvelope} /></label>
+                            <input onKeyDown={submitData} onFocus={handleFocus} onBlur={handleBlur} className="focus:outline-2 focus:outline-offset-2 focus:outline-none border-l-0 border-transparent border-2 focus:border-b-[#660eb3] focus:border-t-[#660eb3] focus:border-r-[#660eb3] w-[400px] bg-[#0f0f0f] rounded-l-[0px] rounded-[7px] pt-3 pb-3 pr-5 pl-3" type="text" placeholder="Email" id="email" />
+                        </div>
+
+                        <a onClick={submitData} className="max-[631px]:pl-10 max-[631px]:pr-10 font-semibold text-[16px] bg-[#660eb3] pb-4 pt-4 pl-15 pr-15 mb-5 mt-5 rounded-[20px] cursor-pointer">
+                            Solicitar troca de senha
+                        </a>
+
+                        <Link to={'/login'} className="text-[#660eb3] cursor-pointer underline">
+                            Voltar para o login
+                        </Link>
                     </div>
-
-                    <div className="flex w-full items-center text-center justify-center mb-3">
-                        <label className="border-r-0 border-transparent border-2 pl-5 rounded-r-[0px] rounded-[7px] bg-[#0f0f0f] h-full flex items-center" htmlFor="email"><FontAwesomeIcon icon={faEnvelope} /></label>
-                        <input onKeyDown={submitData} onFocus={handleFocus} onBlur={handleBlur} className="focus:outline-2 focus:outline-offset-2 focus:outline-none border-l-0 border-transparent border-2 focus:border-b-[#660eb3] focus:border-t-[#660eb3] focus:border-r-[#660eb3] w-[400px] bg-[#0f0f0f] rounded-l-[0px] rounded-[7px] pt-3 pb-3 pr-5 pl-3" type="text" placeholder="Email" id="email" />
-                    </div>
-
-                    <a onClick={submitData} className="max-[631px]:pl-10 max-[631px]:pr-10 font-semibold text-[16px] bg-[#660eb3] pb-4 pt-4 pl-15 pr-15 mb-5 mt-5 rounded-[20px] cursor-pointer">
-                        Solicitar troca de senha
-                    </a>
-
-                    <Link to={'/login'} className="text-[#660eb3] cursor-pointer underline">
-                        Voltar para o login
-                    </Link>
                 </div>
             </div>
-        </div>
+        </>
     )
 }
 

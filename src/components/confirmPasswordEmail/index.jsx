@@ -25,7 +25,7 @@ const ConfirmEmailPassword = () => {
     }
 
     return(
-        <div className="max-[681px]:bg-[#000000] flex flex-col items-center bg-[#0f0f0f] h-full justify-center">
+        <div className="max-[681px]:pt-8 max-[681px]:pb-8 pt-13 pb-13 max-[681px]:bg-[#000000] flex flex-col items-center bg-[#0f0f0f] min-h-[100vh] justify-center">
             <div className="max-[681px]:w-full max-[681px]:p-8 w-[600px] relative text-center flex flex-col items-center justify-between bg-[#000000] rounded-[15px] p-12 text-[#FFFFFF]">
                 <img className='max-[421px]:size-[180px] size-[200px] h-full' src={EmailImg} alt="" />
                 

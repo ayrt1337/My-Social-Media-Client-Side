@@ -81,7 +81,7 @@ const SearchInput = () => {
                 }
 
                 {results &&
-                    <div style={users.length > 5 ? { overflow: 'auto', height: '337px' } : { overflow: 'visible' }} id="result" className="absolute mt-17 bg-[#0f0f0f] max-w-[280px] w-full rounded-[15px]">
+                    <div style={users.length > 4 ? { overflow: 'auto', height: '337px' } : { overflow: 'visible' }} id="result" className="absolute mt-17 bg-[#0f0f0f] max-w-[280px] w-full rounded-[15px]">
                         {showLoading &&
                             <div className="rounded-tl-[15px] rounded-tr-[15px] pt-5 flex flex-col items-center bg-[#0f0f0f] h-full justify-center">
                                 <div className="animate-spin inline-block size-5 border-5 border-current border-t-transparent text-[#660eb3] rounded-full dark:text-[#660eb3]" role="status" aria-label="loading">

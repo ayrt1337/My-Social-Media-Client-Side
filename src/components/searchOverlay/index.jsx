@@ -85,7 +85,7 @@ const SearchOverlay = props => {
                 <input onKeyDown={handleEnter} ref={inputRef} onInput={handleInput} className="max-[506px]:w-full w-[400px] rounded-[15px] focus:outline-2 focus:outline-offset-2 focus:outline-none border-transparent border-2 focus:border-[#660eb3] bg-[#0f0f0f] pt-3 pb-3 pr-5 pl-4" placeholder="Pesquisar" id="search" />
 
                 {results &&
-                    <div style={users.length > 5 ? { overflow: 'auto', height: '337px' } : { overflow: 'visible' }} id="result" className="max-[506px]:max-w-full mt-8 bg-[#0f0f0f] max-w-[400px] w-full rounded-[15px]">
+                    <div style={users.length > 4 ? { overflow: 'auto', height: '337px' } : { overflow: 'visible' }} id="result" className="max-[506px]:max-w-full mt-8 bg-[#0f0f0f] max-w-[400px] w-full rounded-[15px]">
                         {showLoading &&
                             <div className="rounded-tl-[15px] rounded-tr-[15px] pt-5 flex flex-col items-center bg-[#0f0f0f] h-full justify-center">
                                 <div className="animate-spin inline-block size-5 border-5 border-current border-t-transparent text-[#660eb3] rounded-full dark:text-[#660eb3]" role="status" aria-label="loading">

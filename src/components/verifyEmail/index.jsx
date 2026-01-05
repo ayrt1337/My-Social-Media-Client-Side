@@ -54,7 +54,7 @@ const VerifyEmail = () => {
             }
 
             {!showLoading &&
-                <div className="flex flex-col items-center bg-[#0f0f0f] h-full justify-center">
+                <div className="max-[590px]:pt-8 max-[590px]:pb-8 pt-13 pb-13 max-[590px]:bg-[#000000] flex flex-col items-center bg-[#0f0f0f] min-h-[100vh] justify-center">
                     {!showError &&
                         <div className="max-[590px]:pr-8 max-[590px]:pl-8 max-[590px]:rounded-[0px] max-[590px]:w-full max-[590px]:h-full relative text-center flex flex-col items-center justify-center bg-[#000000] rounded-[15px] p-17 pb-14 pt-14 text-[#FFFFFF]">
                             <img className='max-[590px]:size-[180px] size-[200px]' src={Checked} alt="" />

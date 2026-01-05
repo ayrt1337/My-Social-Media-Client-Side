@@ -27,6 +27,7 @@ const Post = () => {
     const [unreadMessages, setUnreadMessages] = useState(null)
     const [notFound, setNotFound] = useState(false)
     const [showSearch, setShowSearch] = useState(false)
+    const [showLoadingComment, setShowLoadingComment] = useState(false)
 
     const { id } = useParams()
 
@@ -145,9 +146,13 @@ const Post = () => {
     }
 
     const submitComment = async () => {
-        const value = document.getElementById(_id3).firstChild.firstChild.firstChild.value
+        const value = document.getElementById(_id3).firstChild.firstChild.firstChild.firstChild.value
 
         if (value.length > 0 && value.length < 200) {
+            document.body.style.overflow = 'hidden'
+            scrollTo(top)
+            setShowLoadingComment(true)
+
             const result = await fetch('http://localhost:3000/createComment', {
                 method: 'POST',
                 headers: {
@@ -176,21 +181,31 @@ const Post = () => {
 
             {!showLoading &&
                 <>
+                    {showLoadingComment &&
+                        <>
+                            <div className="h-full w-full absolute z-1000 opacity-30 bg-[#808080]"></div>
+
+                            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-1001 animate-spin inline-block size-20 border-5 border-current border-t-transparent text-[#660eb3] rounded-full dark:text-[#660eb3]" role="status" aria-label="loading">
+                                <span className="sr-only">Loading...</span>
+                            </div>
+                        </>
+                    }
+
                     {showSearch &&
                         <SearchOverlay setShowSearch={setShowSearch} />
                     }
 
                     <div className="grid max-[500px]:flex max-[500px]:flex-col max-[500px]:justify-between max-[761px]:grid-cols-[0.7fr_3fr] max-[1080px]:grid-cols-[1fr_3fr_1fr] max-[1300px]:grid-cols-[0.7fr_3fr_1.7fr] grid-cols-[1fr_1.1fr_1fr]">
                         {!for500Width &&
-                            <SideBar unreadMessages={unreadMessages} setShowSearch={setShowSearch} img={img} user={user} />
+                            <SideBar setShowLoadingLogout={setShowLoadingComment} unreadMessages={unreadMessages} setShowSearch={setShowSearch} img={img} user={user} />
                         }
 
                         <div className="bg-[#000000] text-[#ffffff] w-full max-[500px]:pb-[64px]">
                             <div className="max-[500px]:min-h-[0px] max-[500px]:border-0 max-[600px]:border-r-0 border-[#808080] border-1 border-b-0 min-h-[100vh] pt-[50px]">
                                 {notFound &&
                                     <div className="p-[30px] pt-[100px] flex flex-col items-center">
-                                        <h1 className="font-semibold text-[30px]">Este post não existe</h1>
-                                        <p className="mt-3 text-[17px]">Tente realizar outra busca.</p>
+                                        <h1 className="max-[600px]:text-[25px] font-semibold text-[30px]">Este post não existe</h1>
+                                        <p className="max-[600px]:text-[16px] mt-3 text-[17px]">Tente realizar outra busca.</p>
                                     </div>
                                 }
 
@@ -267,7 +282,7 @@ const Post = () => {
 
                                         {(comments.length > 0) &&
                                             comments.map((element, index) => {
-                                                return <Comment key={index} comment={element} profileImg={img} user={user} postId={id} />
+                                                return <Comment setShowLoadingComment={setShowLoadingComment} key={index} comment={element} profileImg={img} user={user} postId={id} />
                                             })
                                         }
                                     </>
@@ -280,7 +295,7 @@ const Post = () => {
                         }
 
                         {for500Width &&
-                            <SideBar setShowSearch={setShowSearch} unreadMessages={unreadMessages} img={img} user={user} />
+                            <SideBar setShowLoadingLogout={setShowLoadingComment} setShowSearch={setShowSearch} unreadMessages={unreadMessages} img={img} user={user} />
                         }
                     </div>
                 </>

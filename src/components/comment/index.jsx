@@ -92,9 +92,13 @@ const Comment = props => {
     }
 
     const submitReply = async (commentId) => {
-        const value = document.getElementById(id).firstChild.firstChild.value
+        const value = document.getElementById(id).firstChild.firstChild.firstChild.value
 
         if (value.length > 0 && value.length < 200) {
+            document.body.style.overflow = 'hidden'
+            scrollTo(top)
+            props.setShowLoadingComment(true)
+
             const result = await fetch('http://localhost:3000/createReply', {
                 method: 'POST',
                 headers: {
@@ -215,7 +219,7 @@ const Comment = props => {
 
                                             if (index == replies.length - 1) lastIndex = true
 
-                                            return <Reply postId={props.comment.postId} key={index} reply={element} index={lastIndex} commentId={props.comment._id} />
+                                            return <Reply setShowLoadingComment={props.setShowLoadingComment} postId={props.comment.postId} key={index} reply={element} index={lastIndex} commentId={props.comment._id} />
                                         })
                                     }
                                 </>
