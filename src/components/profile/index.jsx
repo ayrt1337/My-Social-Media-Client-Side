@@ -675,6 +675,10 @@ const Profile = () => {
                                                                                         {for390Width &&
                                                                                             <p className="ml-3">{element.user.length > 8 ? element.user.substring(0, 8) + '...' : element.user}</p>
                                                                                         }
+                                        
+                                                                                        {element.isFollowingMe == undefined &&
+                                                                                            <p className="mt-[5px] ml-3 text-[15px]">{element.bio.length <= 25 ? element.bio : element.bio.substring(0, 22) + '...'}</p>
+                                                                                        }
 
                                                                                         {element.isFollowingMe &&
                                                                                             <p className="mt-[1px] ml-[8px] text-[14px] bg-[#0f0f0f] rounded-[5px] p-[2px] pl-2 pr-2">Segue você</p>
@@ -696,7 +700,9 @@ const Profile = () => {
                                                                                     }
                                                                                 </div>
 
-                                                                                <p className="mt-[5px] ml-3 text-[15px]">{element.bio.length <= 30 ? element.bio : element.bio.substring(0, 27) + '...'}</p>
+                                                                                {element.isFollowingMe != undefined &&
+                                                                                    <p className="mt-[5px] ml-3 text-[15px]">{element.bio.length <= 30 ? element.bio : element.bio.substring(0, 27) + '...'}</p>
+                                                                                }
                                                                             </div>
                                                                         </>
                                                                     }
@@ -766,6 +772,10 @@ const Profile = () => {
                                                                                     <p className="ml-3">{element.user.length > 8 ? element.user.substring(0, 8) + '...' : element.user}</p>
                                                                                 }
 
+                                                                                {element.isFollowingMe == undefined &&
+                                                                                    <p className="mt-[1px] ml-3 text-[15px]">{element.bio.length <= 25 ? element.bio : element.bio.substring(0, 22) + '...'}</p>
+                                                                                }
+
                                                                                 {element.isFollowingMe &&
                                                                                     <p className="mt-[1px] ml-[8px] text-[14px] bg-[#0f0f0f] rounded-[5px] p-[2px] pl-2 pr-2">Segue você</p>
                                                                                 }
@@ -785,8 +795,10 @@ const Profile = () => {
                                                                                 }} className="btnFollow bg-[#660eb3] cursor-pointer border-2 border-[#660eb3] rounded-[10px] text-[15px] pl-[15px] pr-[15px] pt-[5px] pb-[5px]">Seguir</p>
                                                                             }
                                                                         </div>
-
-                                                                        <p className="mt-[5px] ml-3 text-[15px]">{element.bio.length <= 30 ? element.bio : element.bio.substring(0, 27) + '...'}</p>
+                                                                        
+                                                                        {element.isFollowingMe != undefined &&
+                                                                            <p className="mt-[5px] ml-3 text-[15px]">{element.bio.length <= 30 ? element.bio : element.bio.substring(0, 27) + '...'}</p>
+                                                                        }
                                                                     </div>
                                                                 </>
                                                             }
@@ -886,6 +898,10 @@ const Profile = () => {
                                                                                             <p className="ml-3">{element.user.length > 8 ? element.user.substring(0, 8) + '...' : element.user}</p>
                                                                                         }
 
+                                                                                        {element.isFollowingMe == undefined &&
+                                                                                            <p className="mt-[1px] ml-3 text-[15px]">{element.bio.length <= 25 ? element.bio : element.bio.substring(0, 22) + '...'}</p>
+                                                                                        }
+
                                                                                         {element.isFollowingMe &&
                                                                                             <p className="mt-[1px] ml-[8px] text-[14px] bg-[#0f0f0f] rounded-[5px] p-[2px] pl-2 pr-2">Segue você</p>
                                                                                         }
@@ -906,7 +922,9 @@ const Profile = () => {
                                                                                     }
                                                                                 </div>
 
-                                                                                <p className="mt-[5px] ml-3 text-[15px]">{element.bio.length <= 30 ? element.bio : element.bio.substring(0, 27) + '...'}</p>
+                                                                                {element.isFollowingMe != undefined &&
+                                                                                    <p className="mt-[5px] ml-3 text-[15px]">{element.bio.length <= 30 ? element.bio : element.bio.substring(0, 27) + '...'}</p>
+                                                                                }
                                                                             </div>
                                                                         </>
                                                                     }
@@ -976,6 +994,10 @@ const Profile = () => {
                                                                                     <p className="ml-3">{element.user.length > 8 ? element.user.substring(0, 8) + '...' : element.user}</p>
                                                                                 }
 
+                                                                                {element.isFollowingMe == undefined &&
+                                                                                    <p className="mt-[1px] ml-3 text-[15px]">{element.bio.length <= 25 ? element.bio : element.bio.substring(0, 22) + '...'}</p>
+                                                                                }
+
                                                                                 {element.isFollowingMe &&
                                                                                     <p className="mt-[1px] ml-[8px] text-[14px] bg-[#0f0f0f] rounded-[5px] p-[2px] pl-2 pr-2">Segue você</p>
                                                                                 }
@@ -996,7 +1018,9 @@ const Profile = () => {
                                                                             }
                                                                         </div>
 
-                                                                        <p className="mt-[5px] ml-3 text-[15px]">{element.bio.length <= 30 ? element.bio : element.bio.substring(0, 27) + '...'}</p>
+                                                                        {element.isFollowingMe != undefined &&
+                                                                            <p className="mt-[5px] ml-3 text-[15px]">{element.bio.length <= 30 ? element.bio : element.bio.substring(0, 27) + '...'}</p>
+                                                                        }
                                                                     </div>
                                                                 </>
                                                             }
