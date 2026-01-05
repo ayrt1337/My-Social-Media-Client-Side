@@ -666,7 +666,7 @@ const Profile = () => {
                                                                             <img className="size-[50px] rounded-[50%] border-[2px] border-[#660eb3]" src={element.profileImg == null ? ImageProfile : element.profileImg} alt="" />
 
                                                                             <div className="w-full">
-                                                                                <div className="w-full flex justify-between items-start">
+                                                                                <div style={element.bio == '' && element.isFollowingMe == undefined ? { marginTop: '5px', alignItems: 'center' } : {}} className="w-full flex justify-between items-start">
                                                                                     <div className="flex flex-col items-start">
                                                                                         {!for390Width &&
                                                                                             <p className="ml-3">{element.user}</p>
@@ -762,7 +762,7 @@ const Profile = () => {
                                                                     <img className="size-[50px] rounded-[50%] border-[2px] border-[#660eb3]" src={element.profileImg == null ? ImageProfile : element.profileImg} alt="" />
 
                                                                     <div className="w-full">
-                                                                        <div className="w-full flex justify-between items-start">
+                                                                        <div style={element.bio == '' && element.isFollowingMe == undefined ? { marginTop: '5px', alignItems: 'center' } : {}} className="w-full flex justify-between items-start">
                                                                             <div className="flex flex-col items-start">
                                                                                 {!for390Width &&
                                                                                     <p className="ml-3">{element.user}</p>
@@ -888,7 +888,7 @@ const Profile = () => {
                                                                             <img className="size-[50px] rounded-[50%] border-[2px] border-[#660eb3]" src={element.profileImg == null ? ImageProfile : element.profileImg} alt="" />
 
                                                                             <div className="w-full">
-                                                                                <div className="w-full flex justify-between items-start">
+                                                                                <div style={element.bio == '' && element.isFollowingMe == undefined ? { marginTop: '5px', alignItems: 'center' } : {}} className="w-full flex justify-between items-start">
                                                                                     <div className="flex flex-col items-start">
                                                                                         {!for390Width &&
                                                                                             <p className="ml-3">{element.user}</p>
@@ -984,7 +984,7 @@ const Profile = () => {
                                                                     <img className="size-[50px] rounded-[50%] border-[2px] border-[#660eb3]" src={element.profileImg == null ? ImageProfile : element.profileImg} alt="" />
 
                                                                     <div className="w-full">
-                                                                        <div className="w-full flex justify-between items-start">
+                                                                        <div style={element.bio == '' && element.isFollowingMe == undefined ? { marginTop: '5px', alignItems: 'center' } : {}} className="w-full flex justify-between items-start">
                                                                             <div className="flex flex-col items-start">
                                                                                 {!for390Width &&
                                                                                     <p className="ml-3">{element.user}</p>
