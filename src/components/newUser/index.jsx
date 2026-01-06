@@ -60,6 +60,8 @@ const NewUser = () => {
                 else if (inputUser.length < 3) errors[4].classList.remove('hidden')
 
                 else {
+                    document.body.style.overflow = 'hidden'
+                    scrollTo(top)
                     setShowLoadingHome(true)
 
                     const result = await fetch('http://localhost:3000/verifyUser', {
@@ -74,11 +76,13 @@ const NewUser = () => {
                     const output = await result.json()
 
                     if (output.status == 'fail'){
+                        document.body.style.overflow = 'visible'
                         setShowLoadingHome(false)
                         errors[1].classList.remove('hidden')
                     }
 
                     else {
+                        document.body.style.overflow = 'visible'
                         setShowLoadingHome(false)
                         setUser(inputUser)
                         setShowTerms(true)
@@ -94,6 +98,8 @@ const NewUser = () => {
         const event = e.key || e.type
 
         if (event == 'Enter' || event == 'click') {
+            document.body.style.overflow = 'hidden'
+            scrollTo(top)
             setShowLoadingHome(true)
 
             const result = await fetch('http://localhost:3000/updateUser', {
@@ -108,7 +114,10 @@ const NewUser = () => {
 
             const output = await result.json()
 
-            if (output.status == 'success') navigate('/home')
+            if (output.status == 'success'){
+                document.body.style.overflow = 'visible'
+                navigate('/home')
+            }
         }
     }
 

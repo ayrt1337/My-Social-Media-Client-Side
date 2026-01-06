@@ -24,6 +24,8 @@ const ResetPassword = () => {
 
             else {
                 if (emailMask(email)) {
+                    document.body.style.overflow = 'hidden'
+                    scrollTo(top)
                     setShowLoading(true)
 
                     await fetch('http://localhost:3000/reset', {
@@ -35,6 +37,7 @@ const ResetPassword = () => {
                         body: JSON.stringify({ 'email': email })
                     })
 
+                    document.body.style.overflow = 'visible'
                     navigate(`/confirmemailpassword?email=${email}`)
                 }
 

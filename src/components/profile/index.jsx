@@ -632,16 +632,16 @@ const Profile = () => {
                                                                             <div className="flex items-center">
                                                                                 <img className="size-[50px] rounded-[50%] border-[2px] border-[#660eb3]" src={element.profileImg == null ? ImageProfile : element.profileImg} alt="" />
 
-                                                                                <div className="ml-1">
+                                                                                <div>
                                                                                     <div className="flex items-center">
-                                                                                        <p className="ml-3">{element.user}</p>
+                                                                                        <p className="ml-[10px]">{element.user}</p>
 
                                                                                         {element.isFollowingMe &&
                                                                                             <p className="text-[14px] ml-1 bg-[#0f0f0f] rounded-[5px] p-[2px] pl-2 pr-2">Segue você</p>
                                                                                         }
                                                                                     </div>
 
-                                                                                    <p className="max-[586px]:mr-3 ml-3 text-[15px]">{element.bio.length <= 30 ? element.bio : element.bio.substring(0, 27) + '...'}</p>
+                                                                                    <p className="max-[586px]:mr-3 ml-[10px] text-[15px]">{element.bio.length <= 30 ? element.bio : element.bio.substring(0, 27) + '...'}</p>
                                                                                 </div>
                                                                             </div>
 
@@ -728,16 +728,16 @@ const Profile = () => {
                                                                     <div className="flex items-center">
                                                                         <img className="size-[50px] rounded-[50%] border-[2px] border-[#660eb3]" src={element.profileImg == null ? ImageProfile : element.profileImg} alt="" />
 
-                                                                        <div className="ml-1">
+                                                                        <div>
                                                                             <div className="flex items-center">
-                                                                                <p className="ml-3">{element.user}</p>
+                                                                                <p className="ml-[10px]">{element.user}</p>
 
                                                                                 {element.isFollowingMe &&
                                                                                     <p className="text-[14px] ml-1 bg-[#0f0f0f] rounded-[5px] p-[2px] pl-2 pr-2">Segue você</p>
                                                                                 }
                                                                             </div>
 
-                                                                            <p className="max-[586px]:mr-3 ml-3 text-[15px]">{element.bio.length <= 30 ? element.bio : element.bio.substring(0, 27) + '...'}</p>
+                                                                            <p className="max-[586px]:mr-3 ml-[10px] text-[15px]">{element.bio.length <= 30 ? element.bio : element.bio.substring(0, 27) + '...'}</p>
                                                                         </div>
                                                                     </div>
 
@@ -854,16 +854,16 @@ const Profile = () => {
                                                                             <div className="flex items-center">
                                                                                 <img className="size-[50px] rounded-[50%] border-[2px] border-[#660eb3]" src={element.profileImg == null ? ImageProfile : element.profileImg} alt="" />
 
-                                                                                <div className="ml-1">
+                                                                                <div>
                                                                                     <div className="flex items-center">
-                                                                                        <p className="ml-3">{element.user}</p>
+                                                                                        <p className="ml-[10px]">{element.user}</p>
 
                                                                                         {element.isFollowingMe &&
                                                                                             <p className="text-[14px] ml-1 bg-[#0f0f0f] rounded-[5px] p-[2px] pl-2 pr-2">Segue você</p>
                                                                                         }
                                                                                     </div>
 
-                                                                                    <p className="max-[586px]:mr-3 ml-3 text-[15px]">{element.bio.length <= 30 ? element.bio : element.bio.substring(0, 27) + '...'}</p>
+                                                                                    <p className="max-[586px]:mr-3 ml-[10px] text-[15px]">{element.bio.length <= 30 ? element.bio : element.bio.substring(0, 27) + '...'}</p>
                                                                                 </div>
                                                                             </div>
 
@@ -950,16 +950,16 @@ const Profile = () => {
                                                                     <div className="flex items-center">
                                                                         <img className="size-[50px] rounded-[50%] border-[2px] border-[#660eb3]" src={element.profileImg == null ? ImageProfile : element.profileImg} alt="" />
 
-                                                                        <div className="ml-1">
+                                                                        <div>
                                                                             <div className="flex items-center">
-                                                                                <p className="ml-3">{element.user}</p>
+                                                                                <p className="ml-[10px]">{element.user}</p>
 
                                                                                 {element.isFollowingMe &&
                                                                                     <p className="text-[14px] ml-1 bg-[#0f0f0f] rounded-[5px] p-[2px] pl-2 pr-2">Segue você</p>
                                                                                 }
                                                                             </div>
 
-                                                                            <p className="max-[586px]:mr-3 ml-3 text-[15px]">{element.bio.length <= 30 ? element.bio : element.bio.substring(0, 27) + '...'}</p>
+                                                                            <p className="max-[586px]:mr-3 ml-[10px] text-[15px]">{element.bio.length <= 30 ? element.bio : element.bio.substring(0, 27) + '...'}</p>
                                                                         </div>
                                                                     </div>
 

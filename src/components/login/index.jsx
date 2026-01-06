@@ -33,6 +33,8 @@ const Login = () => {
             if (emptyCamps > 0) errors[0].classList.remove('hidden')
 
             else {
+                document.body.style.overflow = 'hidden'
+                scrollTo(top)
                 setShowLoading(true)
 
                 const result = await fetch('http://localhost:3000/login', {
@@ -48,11 +50,13 @@ const Login = () => {
                 const output = await result.json()
 
                 if (output.status == 'fail'){
-                    setShowLoading(true)
+                    document.body.style.overflow = 'visible'
+                    setShowLoading(false)
                     errors[1].classList.remove('hidden')
                 } 
 
                 else {
+                    document.body.style.overflow = 'visible'
                     navigate('/home')
                 }
             }

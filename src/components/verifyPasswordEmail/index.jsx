@@ -38,8 +38,9 @@ const VerifyPassword = () => {
             }
 
             if (emptyCamps == 0) {
-                if (password == confirmPassword) {
-                    setShowInputs(false)
+                if (password == confirmPassword) {                    
+                    document.body.style.overflow = 'hidden'
+                    scrollTo(top)
                     setShowLoading(true)
 
                     const result = await fetch('http://localhost:3000/verifypassword', {
@@ -54,14 +55,15 @@ const VerifyPassword = () => {
                     const output = await result.json()
 
                     if (output.status == 'success') {
-                        setShowLoading(false)
-
                         setTimeout(() => {
+                            document.body.style.overflow = 'visible'
                             navigate('/login')
                         }, 2000)
                     }
 
                     else {
+                        document.body.style.overflow = 'visible'
+                        setShowInputs(false)
                         setShowLoading(false)
                         setShowError(true)
                     }

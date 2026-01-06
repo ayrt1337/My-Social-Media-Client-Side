@@ -41,6 +41,8 @@ const Register = () => {
                     if (password.includes(' ')) errors[4].classList.remove('hidden')
 
                     else {
+                        document.body.style.overflow = 'hidden'
+                        scrollTo(top)
                         setShowLoading(true)
 
                         const result = await fetch('http://localhost:3000/confirmEmail', {
@@ -54,9 +56,13 @@ const Register = () => {
 
                         const output = await result.json()
 
-                        if (output.status == 'success') navigate(`/confirmemail?email=${email}&password=${password}`)
+                        if (output.status == 'success'){
+                            document.body.style.overflow = 'visible'
+                            navigate(`/confirmemail?email=${email}&password=${password}`)
+                        }
 
                         else{
+                            document.body.style.overflow = 'visible'
                             setShowLoading(false)
                             errors[2].classList.remove('hidden')
                         }
