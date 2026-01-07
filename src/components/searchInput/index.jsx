@@ -19,12 +19,6 @@ const SearchInput = () => {
     const inputRef = useRef(null)
     const [showLoading, setShowLoading] = useState(false)
 
-    document.body.addEventListener('click', (e) => {
-        if (!inputDiv.current.contains(e.target)) {
-            if (showResults) showResults(false)
-        }
-    })
-
     const handleInput = (e) => {
         if (e.target.value.length >= 2) {
             if (results == false) showResults(true)
@@ -77,7 +71,7 @@ const SearchInput = () => {
         <div className="max-[1300px]:pl-[30px] h-full bg-[#000000] text-[#ffffff] top-[0px] right-[0px] pl-[50px] pt-[50px] w-full">
             <div ref={inputDiv} onFocus={handleInput} className="fixed flex flex-col relative">
                 {!for1080Width &&
-                    <input onKeyDown={handleEnter} ref={inputRef} onInput={handleInput} className="focus:outline-2 focus:outline-offset-2 focus:outline-none border-transparent border-2 rounded-[15px] focus:border-[#660eb3] max-w-[280px] w-full bg-[#0f0f0f] pt-3 pb-3 pr-5 pl-4" placeholder="Pesquisar" id="search" />
+                    <input onBlur={() => {if(results) showResults(false)}} onKeyDown={handleEnter} ref={inputRef} onInput={handleInput} className="focus:outline-2 focus:outline-offset-2 focus:outline-none border-transparent border-2 rounded-[15px] focus:border-[#660eb3] max-w-[280px] w-full bg-[#0f0f0f] pt-3 pb-3 pr-5 pl-4" placeholder="Pesquisar" id="search" />
                 }
 
                 {results &&
@@ -101,7 +95,7 @@ const SearchInput = () => {
                                         {
                                             users.map((user, index) => {
                                                 return (
-                                                    <div style={index == 0 ? { borderTopLeftRadius: '15px', borderTopRightRadius: '15px', paddingTop: '18px' } : { borderTopLeftRadius: '0px', borderTopRightRadius: '0px' }} onClick={() => navigate(`/profile/${user.user}`)} className="hover:bg-[#30005bff] flex cursor-pointer items-center p-4 pb-3 pt-3" key={index}>
+                                                    <div style={index == 0 ? { borderTopLeftRadius: '15px', borderTopRightRadius: '15px', paddingTop: '18px' } : { borderTopLeftRadius: '0px', borderTopRightRadius: '0px' }} onMouseDown={() => navigate(`/profile/${user.user}`)} className="hover:bg-[#30005bff] flex cursor-pointer items-center p-4 pb-3 pt-3" key={index}>
                                                         <img className="w-[45px] h-[45px] rounded-[50%]" src={user.profileImg == null ? ImageProfile : user.profileImg} alt="" />
 
                                                         <div className="flex flex-col ml-2">
@@ -134,7 +128,7 @@ const SearchInput = () => {
                             </>
                         }
 
-                        <div onClick={() => navigate(`/profile/${inputRef.current.value}`)} className="cursor-pointer items-center p-4 pt-2">
+                        <div onMouseDown={() => navigate(`/profile/${inputRef.current.value}`)} className="cursor-pointer items-center p-4 pt-2">
                             <div className="">
                                 <p className="text-[15px]">Acesse @{inputValue}</p>
                             </div>
