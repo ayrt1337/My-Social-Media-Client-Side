@@ -165,7 +165,7 @@ const Post = () => {
 
             const output = await result.json()
 
-            if (output.status == 'success') window.location.href = `/post/${id}`
+            if (output.status == 'success') window.location.replace(`/post/${id}`)
         }
     }
 

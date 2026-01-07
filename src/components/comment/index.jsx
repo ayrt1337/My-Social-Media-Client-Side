@@ -112,7 +112,11 @@ const Comment = props => {
             const output = await result.json()
             const replyId = output.id
 
-            if (output.status == 'success') window.location.href = `?commentId=${commentId}&replyId=${replyId}`
+            if (output.status == 'success'){
+                document.body.style.overflow = 'visible'
+                props.setShowLoadingComment(false)
+                window.location.replace(`?commentId=${commentId}&replyId=${replyId}`)
+            }
         }
     }
 

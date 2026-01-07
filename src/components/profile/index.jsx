@@ -106,6 +106,11 @@ const Profile = () => {
         setReplies(null)
         setLikes(null)
         setView('posts')
+        setShowEdit(false)
+        setShowFollowers(false)
+        setShowFollowing(false)
+        setFilteredFollowers([])
+        setFilteredFollowing([])
 
         if (userName != '') {
             const getUserData = async () => {
@@ -1304,6 +1309,12 @@ const Profile = () => {
                                                         )
                                                     })
                                                 }
+
+                                                {(posts != null && posts.length == 0) &&
+                                                    <div className="flex justify-center mt-10 mb-10">
+                                                        <p className="text-[18px]">Não há postagens</p>
+                                                    </div>
+                                                }
                                             </>
                                         }
 
@@ -1323,6 +1334,12 @@ const Profile = () => {
                                                             <Comment profile={true} key={index} comment={element} />
                                                         )
                                                     })
+                                                }
+
+                                                {(comments != null && comments.length == 0) &&
+                                                    <div className="flex justify-center mt-10 mb-10">
+                                                        <p className="text-[18px]">Não há comentários</p>
+                                                    </div>
                                                 }
                                             </>
                                         }
@@ -1344,6 +1361,12 @@ const Profile = () => {
                                                         )
                                                     })
                                                 }
+
+                                                {(replies != null && replies.length == 0) &&
+                                                    <div className="flex justify-center mt-10 mb-10">
+                                                        <p className="text-[18px]">Não há respostas</p>
+                                                    </div>
+                                                }
                                             </>
                                         }
 
@@ -1361,6 +1384,12 @@ const Profile = () => {
                                                     likes.map((element, index) => {
                                                         return <Likes key={index} likes={element} />
                                                     })
+                                                }
+                                                
+                                                {(likes != null && likes.length == 0) &&
+                                                    <div className="flex justify-center mt-10 mb-10">
+                                                        <p className="text-[18px]">Não há curtidas</p>
+                                                    </div>
                                                 }
                                             </>
                                         }
