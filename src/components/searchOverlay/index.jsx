@@ -140,7 +140,7 @@ const SearchOverlay = props => {
                             </>
                         }
 
-                        <div onClick={() => navigate(`/profile/${inputRef.current.value}`)} className="cursor-pointer items-center p-4 pt-2">
+                        <div onClick={() => {props.setShowSearch(false); navigate(`/profile/${inputRef.current.value}`)}} className="cursor-pointer items-center p-4 pt-2">
                             <div className="">
                                 <p className="text-[15px]">Acesse @{inputValue}</p>
                             </div>
