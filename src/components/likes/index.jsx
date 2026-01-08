@@ -58,14 +58,16 @@ const Likes = props => {
         <div onClick={handleClick} className="cursor-pointer flex w-auto wrap-anywhere p-7 border-[#808080] border-1 border-t-0 border-l-0 border-r-0">
             <img onClick={(e) => {
                 e.stopPropagation()
-                navigate(`/profile/${props.likes.user}`)
+                if (props.likes.user == props.user && props.profile == true) window.scrollTo({ top: 0 })
+                else navigate(`/profile/${props.likes.user}`)
             }} className="max-[510px]:size-[45px] border-[2px] border-[#660eb3] size-[55px] rounded-[50%]" src={props.likes.profileImg == null ? ImageProfile : props.likes.profileImg} alt="" />
 
             <div className="ml-3 mt-[2px]">
                 <div className="max-[387px]:flex-col flex">
                     <p onClick={(e) => {
                         e.stopPropagation()
-                        navigate(`/profile/${props.likes.user}`)
+                        if (props.likes.user == props.user && props.profile == true) window.scrollTo({ top: 0 })
+                        else navigate(`/profile/${props.likes.user}`)
                     }} className="max-[387px]:mb-[2px] max-[510px]:text-[15px] mb-1 font-semibold max-w-[150px]">{props.likes.user}</p>
 
                     {!for386Width &&

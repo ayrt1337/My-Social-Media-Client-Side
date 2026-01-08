@@ -1238,7 +1238,8 @@ const Profile = () => {
                                                                     <>
                                                                         <span onClick={(e) => {
                                                                             e.stopPropagation()
-                                                                            navigate(`/profile/${element.replace('@', '')}`)
+                                                                            if(element.replace('@', '') == userName) window.scrollTo({ top: 0 })
+                                                                            else navigate(`/profile/${element.replace('@', '')}`)
                                                                         }} className="cursor-pointer text-[#660eb3] hover:underline">{element}</span>
 
                                                                         {'\u00A0'}
@@ -1305,7 +1306,7 @@ const Profile = () => {
                                                 {(posts != null && posts.length > 0) &&
                                                     posts.map((element, index) => {
                                                         return (
-                                                            <Posts profile={true} key={index} post={element} />
+                                                            <Posts user={userName} profile={true} key={index} post={element} />
                                                         )
                                                     })
                                                 }
@@ -1331,7 +1332,7 @@ const Profile = () => {
                                                 {(comments != null && comments.length > 0) &&
                                                     comments.map((element, index) => {
                                                         return (
-                                                            <Comment profile={true} key={index} comment={element} />
+                                                            <Comment user={userName} profile={true} key={index} comment={element} />
                                                         )
                                                     })
                                                 }
@@ -1357,7 +1358,7 @@ const Profile = () => {
                                                 {(replies != null && replies.length > 0) &&
                                                     replies.map((element, index) => {
                                                         return (
-                                                            <Posts profile={true} key={index} post={element} reply={true} />
+                                                            <Posts user={userName} profile={true} key={index} post={element} reply={true} />
                                                         )
                                                     })
                                                 }
@@ -1382,7 +1383,7 @@ const Profile = () => {
 
                                                 {(likes != null && likes.length > 0) &&
                                                     likes.map((element, index) => {
-                                                        return <Likes key={index} likes={element} />
+                                                        return <Likes user={userName} key={index} likes={element} />
                                                     })
                                                 }
                                                 

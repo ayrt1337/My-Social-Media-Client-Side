@@ -113,8 +113,7 @@ const Comment = props => {
             const replyId = output.id
 
             if (output.status == 'success'){
-                document.body.style.overflow = 'visible'
-                props.setShowLoadingComment(false)
+                document.body.style.overflow = 'visible'      
                 window.location.replace(`?commentId=${commentId}&replyId=${replyId}`)
             }
         }
@@ -125,14 +124,16 @@ const Comment = props => {
             <div id={props.comment._id} onLoad={handleLoad} onClick={() => handleClick(props.comment._id, props.comment.comments)} className="max-[611px]:pr-7 cursor-pointer flex pl-7 pr-7 pb-7">
                 <img onClick={(e) => {
                     e.stopPropagation()
-                    navigate(`/profile/${props.comment.user}`)
+                    if (props.comment.user == props.user && props.profile == true) window.scrollTo({ top: 0 })
+                    else navigate(`/profile/${props.comment.user}`)
                 }} className="max-[611px]:w-[45px] max-[611px]:h-[45px] border-[2px] border-[#660eb3] w-[55px] h-[55px] rounded-[50%]" src={props.comment.profileImg == null ? ImageProfile : props.comment.profileImg} alt="" />
 
                 <div className="ml-3 mt-[2px]">
                     <div className="flex max-[541px]:flex-col">
                         <p onClick={(e) => {
                             e.stopPropagation()
-                            navigate(`/profile/${props.comment.user}`)
+                            if (props.comment.user == props.user && props.profile == true) window.scrollTo({ top: 0 })
+                            else navigate(`/profile/${props.comment.user}`)
                         }} className="max-[611px]:text-[15px] max-[468px]:mb-[2px] mb-1 font-semibold max-w-[150px]">{props.comment.user}</p>
 
                         {!for541Width &&

@@ -75,7 +75,6 @@ const Reply = props => {
 
             if (output.status = 'success'){
                 document.body.style.overflow = 'visible'
-                props.setShowLoadingComment(false)
                 window.location.replace(`?commentId=${commentId}&replyId=${replyId}`)
             }
         }
