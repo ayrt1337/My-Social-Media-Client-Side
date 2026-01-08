@@ -113,7 +113,6 @@ const Comment = props => {
             const replyId = output.id
 
             if (output.status == 'success'){
-                document.body.style.overflow = 'visible'      
                 window.location.replace(`?commentId=${commentId}&replyId=${replyId}`)
             }
         }
