@@ -82,7 +82,7 @@ const Home = () => {
     const submitPost = async () => {
         const value = document.getElementById(id).firstChild.firstChild.firstChild.firstChild.value
 
-        if (value.length > 0 && value.length < 200) {
+        if (value.length > 0 && value.length <= 200) {
             setShowLoadingPost(true)
 
             const result = await fetch('http://localhost:3000/createPost', {

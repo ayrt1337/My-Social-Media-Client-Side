@@ -148,7 +148,7 @@ const Post = () => {
     const submitComment = async () => {
         const value = document.getElementById(_id3).firstChild.firstChild.firstChild.firstChild.value
 
-        if (value.length > 0 && value.length < 200) {
+        if (value.length > 0 && value.length <= 200) {
             document.body.style.overflow = 'hidden'
             scrollTo(top)
             setShowLoadingComment(true)

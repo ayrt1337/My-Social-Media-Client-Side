@@ -56,6 +56,7 @@ const Profile = () => {
     const [unreadMessages, setUnreadMessages] = useState(null)
     const [showSearch, setShowSearch] = useState(false)
     const [showLoadingEdit, setShowLoadingEdit] = useState(false)
+    const [imageSize, setImageSize] = useState(null)
 
     const { user } = useParams()
     const navigate = useNavigate()
@@ -288,6 +289,11 @@ const Profile = () => {
                 return
             }
 
+            const sizeInBytes = file.size
+            const sizeInKb = sizeInBytes / 1024
+            const sizeInMb = sizeInKb / 1024
+            setImageSize(sizeInMb)
+
             const reader = new FileReader()
             reader.readAsDataURL(file)
             reader.onload = () => {
@@ -309,6 +315,7 @@ const Profile = () => {
                 image,
                 croppedAreaPixels,
             )
+
             setCroppedImage(croppedImg)
             document.getElementById('cropper').classList.add('hidden')
             document.getElementById('edit').classList.remove('hidden')
@@ -320,7 +327,9 @@ const Profile = () => {
     }, [croppedAreaPixels, image])
 
     const getCroppedImg = async (imageSrc, pixelCrop, rotation = 0) => {
+        setShowLoadingEdit(true)
         const image = await createImage(imageSrc)
+        setShowLoadingEdit(false)
         const canvas = document.createElement('canvas')
         const ctx = canvas.getContext('2d')
 
@@ -389,6 +398,10 @@ const Profile = () => {
         else if (newUser == 0) errors[4].classList.remove('hidden')
 
         else if (newUser.length < 3) errors[5].classList.remove('hidden')
+
+        else if(imageSize > 2){
+            document.getElementsByClassName('error')[6].classList.remove('hidden')
+        }
 
         else {
             if (!document.getElementById('img').src.includes(ImageProfile)) newProfileImage = document.getElementById('img').src
@@ -1100,6 +1113,7 @@ const Profile = () => {
                                             <FontAwesomeIcon onClick={() => {
                                                 setShowEdit(false)
                                                 setCroppedImage(null)
+                                                setImageSize(null)
                                             }} icon={faClose} className="text-[30px] cursor-pointer" />
 
                                             <h1 className="max-[381px]:ml-3 max-[381px]:text-[18px] text-[20px] ml-4">Editar Perfil</h1>
@@ -1110,7 +1124,7 @@ const Profile = () => {
 
                                     <div className="max-[466px]:pl-7 max-[466px]:pr-7 pt-10 pl-10 pr-10 pb-8 flex flex-col items-center">
                                         <div>
-                                            <input onChange={onFileChange} type="file" ref={fileInputRef} className="hidden" />
+                                            <input onClick={() => fileInputRef.current.value = null} onChange={onFileChange} type="file" ref={fileInputRef} className="hidden" />
 
                                             <div onClick={() => fileInputRef.current.click()} className="relative">
                                                 <FontAwesomeIcon icon={faCamera} className="max-[381px]:text-[18px] max-[571px]:text-[20px] bg-[#000000] p-3 rounded-[50%] cursor-pointer absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-80 text-[23px]" />
@@ -1165,6 +1179,14 @@ const Profile = () => {
                                             </div>
 
                                             <p className="max-[381px]:text-[15px] text-[#e30e2a]">Usuário muito curto!</p>
+                                        </div>
+
+                                        <div className="error flex items-center mt-6 hidden">
+                                            <div className="flex p-3 mr-2 bg-[#e30e2a] rounded-[50%] size-[15px] items-center justify-center">
+                                                <FontAwesomeIcon icon={faExclamation} />
+                                            </div>
+
+                                            <p className="max-[381px]:text-[14px] text-[#e30e2a]">Imagem maior que 2 MB!</p>
                                         </div>
 
                                         <div className="w-full mt-8 mb-5">
