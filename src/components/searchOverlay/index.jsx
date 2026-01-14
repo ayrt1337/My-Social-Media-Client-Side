@@ -27,11 +27,13 @@ const SearchOverlay = props => {
     }, [])
 
     const handleInput = (e) => {
-        if (e.target.value.length >= 2) {
+        const user = e.target.value
+
+        if (user.length >= 2) {
             if (results == false) showResults(true)
 
             setShowLoading(true)
-            setInputValue(e.target.value)
+            setInputValue(user)
 
             clearTimeout(timeout)
             timeout = setTimeout(async () => {
@@ -50,7 +52,7 @@ const SearchOverlay = props => {
                     },
                     signal,
                     credentials: 'include',
-                    body: JSON.stringify({ value: e.target.value })
+                    body: JSON.stringify({ value: user })
                 })
 
                 const output = await result.json()
@@ -97,7 +99,7 @@ const SearchOverlay = props => {
                         {!showLoading &&
                             <>
                                 {users.length == 0 &&
-                                    <h2 className="text-center p-4 pb-2 pt-[20px]">Não encotrado</h2>
+                                    <h2 className="text-center p-4 pb-2 pt-[20px]">Não encontrado</h2>
                                 }
 
                                 {users.length > 0 &&
