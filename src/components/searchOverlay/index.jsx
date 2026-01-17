@@ -90,7 +90,7 @@ const SearchOverlay = props => {
         <>
             <div className="absolute h-full w-screen bg-[#808080] z-20 opacity-30"></div>
 
-            <div className="max-[506px]:pr-6 max-[506px]:pl-6 max-[506px]:w-full flex flex-col flex-end absolute z-999 text-[#ffffff] bottom-[270px] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <div className="max-[506px]:pr-6 max-[506px]:pl-6 max-[506px]:w-full flex flex-col flex-end absolute z-999 text-[#ffffff] top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                 <FontAwesomeIcon onClick={() => props.setShowSearch(false)} className="cursor-pointer text-[33px] mb-[5px] mr-[3px] self-end" icon={faClose} />
 
                 <input onKeyDown={handleEnter} ref={inputRef} onInput={handleInput} className="max-[506px]:w-full w-[400px] rounded-[15px] focus:outline-2 focus:outline-offset-2 focus:outline-none border-transparent border-2 focus:border-[#660eb3] bg-[#0f0f0f] pt-3 pb-3 pr-5 pl-4" placeholder="Pesquisar" id="search" />
