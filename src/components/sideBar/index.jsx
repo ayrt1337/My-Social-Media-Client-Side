@@ -11,6 +11,8 @@ const SideBar = props => {
     const location = useLocation()
 
     const logout = async () => {
+        document.body.style.overflow = 'hidden'
+        scrollTo(top)
         props.setShowLoadingLogout(true)
 
         const result = await fetch('http://localhost:3000/logout', {
@@ -24,7 +26,10 @@ const SideBar = props => {
 
         const output = await result.json()
 
-        if (output.status == 'success') navigate('/login')
+        if (output.status == 'success'){
+            document.body.style.overflow = 'visible'
+            navigate('/login')
+        }
     }
 
     return (
